@@ -19,10 +19,11 @@ export class HomePage {
     const paramediciButton = document.getElementById('paramediciButton');
     const pompieriButton = document.getElementById('pompieriButton');
 
-
-    // carabinieriButton.addEventListener('click', (e: Event) => this.goto);
+    if (carabinieriButton) {
+      carabinieriButton.addEventListener('click', (e: Event) => this.goToAllega());
+    }
   }
   goToAllega() {
-    this.router.navigate(['/allegaFile']);
+    this.router.navigate(['/allega-files']);
   }
 }

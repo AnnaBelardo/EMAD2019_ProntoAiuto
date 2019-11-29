@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
-  { path: 'allegafile', loadChildren: () => import('./allegaFiles/allega.module').then( m => m.AllegaFileModule)},
+  { path: 'allega-files', loadChildren: './allega-files/allega-files.module#AllegaFilesPageModule' },
 ];
 
 @NgModule({
