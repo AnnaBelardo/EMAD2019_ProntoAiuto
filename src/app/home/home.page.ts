@@ -18,10 +18,6 @@ export class HomePage {
     const poliziaButton = document.getElementById('poliziaButton');
     const paramediciButton = document.getElementById('paramediciButton');
     const pompieriButton = document.getElementById('pompieriButton');
-
-    if (carabinieriButton) {
-      carabinieriButton.addEventListener('click', (e: Event) => this.goToAllega());
-    }
   }
   goToAllega() {
     this.router.navigate(['/allega-files']);
