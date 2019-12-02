@@ -27,7 +27,10 @@ export class AllegaFilesPage implements OnInit {
               private media: Media,
               private file: File,
               public platform: Platform,
-              private camera: Camera) {}
+              private camera: Camera) {
+    this.audioList = [];
+    localStorage.setItem('audiolist', JSON.stringify(this.audioList));
+  }
   ngOnInit() {
   }
   takePicture() {
