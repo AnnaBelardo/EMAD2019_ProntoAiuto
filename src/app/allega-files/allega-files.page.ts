@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, Platform } from '@ionic/angular';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-allega-files',
@@ -9,7 +10,14 @@ import { File } from '@ionic-native/file/ngx';
   styleUrls: ['./allega-files.page.scss'],
 })
 export class AllegaFilesPage implements OnInit {
+  capturedSnapURL: string;
 
+  cameraOptions: CameraOptions = {
+    quality: 20,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE
+  } ;
   recording = false;
   filePath: string;
   fileName: string;
@@ -18,8 +26,25 @@ export class AllegaFilesPage implements OnInit {
   constructor(public navCtrl: NavController,
               private media: Media,
               private file: File,
-              public platform: Platform) {}
+              public platform: Platform,
+              private camera: Camera) {}
   ngOnInit() {
+  }
+  takePicture() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE
+    };
+    this.camera.getPicture(this.cameraOptions).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      const base64Image = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+      console.log(err);
+    });
   }
   getAudioList() {
     if (localStorage.getItem('audiolist')) {
