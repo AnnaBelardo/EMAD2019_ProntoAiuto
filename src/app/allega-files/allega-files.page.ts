@@ -3,9 +3,11 @@ import { NavController, Platform } from '@ionic/angular';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
+import { Uid } from '@ionic-native/uid/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-allega-files',
@@ -27,6 +29,8 @@ export class AllegaFilesPage implements OnInit {
   fileName: string;
   audio: MediaObject;
   audioList: any[] = [];
+  informazioniAggiuntive: any;
+  motivation: any;
   // Per le coordinate GPS
   locationCoords: any;
   timetest: any;
@@ -34,6 +38,7 @@ export class AllegaFilesPage implements OnInit {
               private media: Media,
               private file: File,
               public platform: Platform,
+              private uid: Uid,
               private camera: Camera,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -79,6 +84,7 @@ export class AllegaFilesPage implements OnInit {
   ionViewWillEnter() {
     this.getAudioList();
     this.checkGPSPermission();
+    this.getImeiPermission();
   }
 
   startRecord() {
@@ -105,6 +111,29 @@ export class AllegaFilesPage implements OnInit {
     this.audio = this.media.create(this.filePath);
     this.audio.play();
     this.audio.setVolume(0.8);
+  }
+
+  inviaRichiesta() {
+    this.getAllegati();
+  }
+
+  getImeiPermission() {
+    this.androidPermissions.checkPermission(
+        this.androidPermissions.PERMISSION.READ_PHOE_STATE
+    ).then(res => {
+      if (res.hasPermission) {
+
+      } else {
+        // tslint:disable-next-line:no-shadowed-variable
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_PHONE_STATE).then(res => {
+          alert('Persmission Granted Please Restart App!');
+        }).catch(error => {
+          alert('Error! ' + error);
+        });
+      }
+    }).catch(error => {
+      alert('Error! ' + error);
+    });
   }
 
   // Check per vedere se l'applicazione ha l'accesso al GPS
@@ -170,9 +199,9 @@ export class AllegaFilesPage implements OnInit {
     });
   }
 
-  // Mostro gli allegati
   getAllegati() {
     alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
-        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n');
+        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
+        '\n' + 'Text area:' + this.informazioniAggiuntive + '\n' + 'Motivation:' + this.motivation);
   }
 }

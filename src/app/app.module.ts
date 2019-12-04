@@ -13,7 +13,9 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { Media } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 
+import { Uid } from '@ionic-native/uid/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
@@ -25,6 +27,9 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
   providers: [
     StatusBar,
     SplashScreen,
+    Uid,
+    AndroidPermissions,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Media,
     File,
     Camera,
