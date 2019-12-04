@@ -3,6 +3,9 @@ import { NavController, Platform } from '@ionic/angular';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 @Component({
   selector: 'app-allega-files',
@@ -10,29 +13,45 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
   styleUrls: ['./allega-files.page.scss'],
 })
 export class AllegaFilesPage implements OnInit {
+  // Per le foto
   capturedSnapURL: string;
-
   cameraOptions: CameraOptions = {
     quality: 20,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
   } ;
+  // Per le note audio
   recording = false;
   filePath: string;
   fileName: string;
   audio: MediaObject;
   audioList: any[] = [];
+  // Per le coordinate GPS
+  locationCoords: any;
+  timetest: any;
   constructor(public navCtrl: NavController,
               private media: Media,
               private file: File,
               public platform: Platform,
-              private camera: Camera) {
+              private camera: Camera,
+              private androidPermissions: AndroidPermissions,
+              private geolocation: Geolocation,
+              private locationAccuracy: LocationAccuracy) {
     this.audioList = [];
     localStorage.setItem('audiolist', JSON.stringify(this.audioList));
+    this.locationCoords = {
+      latitude: '',
+      longitude: '',
+      accuracy: '',
+      timestamp: ''
+    };
+    this.timetest = Date.now();
   }
+
   ngOnInit() {
   }
+
   takePicture() {
     const options: CameraOptions = {
       quality: 100,
@@ -49,15 +68,19 @@ export class AllegaFilesPage implements OnInit {
       console.log(err);
     });
   }
+
   getAudioList() {
     if (localStorage.getItem('audiolist')) {
       this.audioList = JSON.parse(localStorage.getItem('audiolist'));
       console.log(this.audioList);
     }
   }
+
   ionViewWillEnter() {
     this.getAudioList();
+    this.checkGPSPermission();
   }
+
   startRecord() {
     this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear()
         + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
@@ -66,6 +89,7 @@ export class AllegaFilesPage implements OnInit {
     this.audio.startRecord();
     this.recording = true;
   }
+
   stopRecord() {
     this.audio.stopRecord();
     const data = { filename: this.fileName };
@@ -75,10 +99,80 @@ export class AllegaFilesPage implements OnInit {
     this.recording = false;
     this.getAudioList();
   }
+
   playAudio(file, idx) {
     this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + file;
     this.audio = this.media.create(this.filePath);
     this.audio.play();
     this.audio.setVolume(0.8);
+  }
+
+  // Check per vedere se l'applicazione ha l'accesso al GPS
+  checkGPSPermission() {
+    this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
+        result => {
+          if (result.hasPermission) {
+
+            // Se ha i permessi mostro il pulsante per attivarlo
+            this.askToTurnOnGPS();
+          } else {
+
+            // Se non ha i permessi, li chiedo
+            this.requestGPSPermission();
+          }
+        },
+        err => {
+          alert(err);
+        }
+    );
+  }
+
+  requestGPSPermission() {
+    this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+      if (canRequest) {
+        console.log('4');
+      } else {
+        // Finestra di dialogo per la richiesta dei permessi
+        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
+            .then(
+                () => {
+                  // Metodo per attivare il GPS
+                  this.askToTurnOnGPS();
+                },
+                error => {
+                  // Se l'utente rifiuta mostro l'errore
+                  alert('requestPermission Error requesting location permissions ' + error);
+                }
+            );
+      }
+    });
+  }
+
+  askToTurnOnGPS() {
+    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
+        () => {
+          // Quando il GPS è ON prendo le coordinate accurate
+          this.getLocationCoordinates();
+        },
+        error => alert('Error requesting location permissions ' + JSON.stringify(error))
+    );
+  }
+
+  // Memorizzo le coordinate per riutilizzarle
+  getLocationCoordinates() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.locationCoords.latitude = resp.coords.latitude;
+      this.locationCoords.longitude = resp.coords.longitude;
+      this.locationCoords.accuracy = resp.coords.accuracy;
+      this.locationCoords.timestamp = resp.timestamp;
+    }).catch((error) => {
+      alert('Error getting location' + error);
+    });
+  }
+
+  // Mostro gli allegati
+  getAllegati() {
+    alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
+        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n');
   }
 }

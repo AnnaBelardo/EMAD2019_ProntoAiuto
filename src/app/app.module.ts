@@ -13,6 +13,11 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { Media } from '@ionic-native/media/ngx';
 import { File } from '@ionic-native/file/ngx';
 
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -20,11 +25,13 @@ import { File } from '@ionic-native/file/ngx';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Media,
     File,
     Camera,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    AndroidPermissions,
+    Geolocation,
+    LocationAccuracy,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
