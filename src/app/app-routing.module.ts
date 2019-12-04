@@ -5,6 +5,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'allega-files', loadChildren: './allega-files/allega-files.module#AllegaFilesPageModule' },
+  { path: 'cittadino-statistiche', loadChildren: './cittadino-statistiche/cittadino-statistiche.module#CittadinoStatistichePageModule' },
 ];
 
 @NgModule({

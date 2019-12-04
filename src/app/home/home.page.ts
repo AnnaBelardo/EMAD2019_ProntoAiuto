@@ -22,4 +22,7 @@ export class HomePage {
   goToAllega() {
     this.router.navigate(['/allega-files']);
   }
+  goToStatistiche() {
+    this.router.navigate(['/cittadino-statistiche']);
+  }
 }

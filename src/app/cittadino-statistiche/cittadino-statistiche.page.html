@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar no-border-bottom color="tertiary">
+    <ion-buttons slot="start" color="primary">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>INFO E STATISTICHE</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+
+    <ion-card><!---->
+      <img src="../assets/images/carcrash.jpg">
+      <ion-card-header>
+        <ion-card-title>Incidenti stradali</ion-card-title>
+      </ion-card-header>
+      <ion-card-content >
+        Il numero delle morti sulle strade in Europa è calato del 57,5%,
+        ma i dati dimostrano che la diminuzione del tasso di mortalità sulle strade sta rallentando.
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Maggiori cause di incidente stradale
+      </ion-card-header>
+      <ion-card-content>
+        <canvas #doughnutCanvas></canvas>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
