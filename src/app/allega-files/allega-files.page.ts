@@ -146,8 +146,7 @@ export class AllegaFilesPage implements OnInit {
           if (result.hasPermission) {
 
             // Se ha i permessi mostro il pulsante per attivarlo
-            //
-               this.askToTurnOnGPS();
+            this.askToTurnOnGPS();
           } else {
 
             // Se non ha i permessi, li chiedo
