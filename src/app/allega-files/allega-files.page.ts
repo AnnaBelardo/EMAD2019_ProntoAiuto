@@ -5,6 +5,8 @@ import { File } from '@ionic-native/file/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Uid } from '@ionic-native/uid/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -40,6 +42,7 @@ export class AllegaFilesPage implements OnInit {
               public platform: Platform,
               private uid: Uid,
               private camera: Camera,
+              private http: HttpClient,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
               private locationAccuracy: LocationAccuracy) {
@@ -81,11 +84,7 @@ export class AllegaFilesPage implements OnInit {
     }
   }
 
-  ionViewWillEnter() {
-    this.getAudioList();
-    this.checkGPSPermission();
-    this.getImeiPermission();
-  }
+
 
   startRecord() {
     this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear()
@@ -113,27 +112,31 @@ export class AllegaFilesPage implements OnInit {
     this.audio.setVolume(0.8);
   }
 
+  ionViewWillEnter() {
+    this.getAudioList();
+    this.checkGPSPermission();
+  }
+
   inviaRichiesta() {
     this.getAllegati();
   }
 
-  getImeiPermission() {
-    this.androidPermissions.checkPermission(
-        this.androidPermissions.PERMISSION.READ_PHOE_STATE
-    ).then(res => {
-      if (res.hasPermission) {
-
-      } else {
-        // tslint:disable-next-line:no-shadowed-variable
-        this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_PHONE_STATE).then(res => {
-          alert('Persmission Granted Please Restart App!');
-        }).catch(error => {
-          alert('Error! ' + error);
-        });
-      }
-    }).catch(error => {
-      alert('Error! ' + error);
+  // Memorizzo le coordinate per riutilizzarle
+  getLocationCoordinates() {
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.locationCoords.latitude = resp.coords.latitude;
+      this.locationCoords.longitude = resp.coords.longitude;
+      this.locationCoords.accuracy = resp.coords.accuracy;
+      this.locationCoords.timestamp = resp.timestamp;
+    }).catch((error) => {
+      alert('Error getting location' + error);
     });
+  }
+
+  getAllegati() {
+    alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
+        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
+        '\n' + 'Text area:' + this.informazioniAggiuntive + '\n' + 'Motivation:' + this.motivation);
   }
 
   // Check per vedere se l'applicazione ha l'accesso al GPS
@@ -143,7 +146,8 @@ export class AllegaFilesPage implements OnInit {
           if (result.hasPermission) {
 
             // Se ha i permessi mostro il pulsante per attivarlo
-            this.askToTurnOnGPS();
+            //
+               this.askToTurnOnGPS();
           } else {
 
             // Se non ha i permessi, li chiedo
@@ -166,7 +170,7 @@ export class AllegaFilesPage implements OnInit {
             .then(
                 () => {
                   // Metodo per attivare il GPS
-                  this.askToTurnOnGPS();
+                   this.askToTurnOnGPS();
                 },
                 error => {
                   // Se l'utente rifiuta mostro l'errore
@@ -187,21 +191,12 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  // Memorizzo le coordinate per riutilizzarle
-  getLocationCoordinates() {
-    this.geolocation.getCurrentPosition().then((resp) => {
-      this.locationCoords.latitude = resp.coords.latitude;
-      this.locationCoords.longitude = resp.coords.longitude;
-      this.locationCoords.accuracy = resp.coords.accuracy;
-      this.locationCoords.timestamp = resp.timestamp;
-    }).catch((error) => {
-      alert('Error getting location' + error);
-    });
-  }
-
-  getAllegati() {
-    alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
-        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
-        '\n' + 'Text area:' + this.informazioniAggiuntive + '\n' + 'Motivation:' + this.motivation);
-  }
+  sendPostRequest() {
+      this.http.post('https://someapi.com/posts', {
+          content: 'hello',
+          submittedBy: 'Josh'
+      }).subscribe((response) => {
+          console.log(response);
+      });
+    }
 }

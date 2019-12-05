@@ -18,12 +18,17 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import {HttpClientModule} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, BrowserModule,
+    HttpClientModule,
+    IonicModule.forRoot(),
+    AppRoutingModule],
   providers: [
     StatusBar,
     SplashScreen,
