@@ -50,7 +50,7 @@ export class HomePage {
       } else {
         // tslint:disable-next-line:no-shadowed-variable
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_PHONE_STATE).then(res => {
-          alert('Persmission Granted Please Restart App!');
+          // alert('Persmission Granted Please Restart App!');
         }).catch(error => {
           alert('Error! ' + error);
         });

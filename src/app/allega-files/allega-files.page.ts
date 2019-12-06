@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, Platform } from '@ionic/angular';
-import { Media, MediaObject } from '@ionic-native/media/ngx';
-import { File } from '@ionic-native/file/ngx';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {NavController, Platform} from '@ionic/angular';
+import {Media, MediaObject} from '@ionic-native/media/ngx';
+import {File, FileEntry } from '@ionic-native/file/ngx';
+import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
+import {HttpClient} from '@angular/common/http';
+import {Uid} from '@ionic-native/uid/ngx';
+import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
-import { Uid } from '@ionic-native/uid/ngx';
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+// import {HTTP} from '@ionic-native/http/ngx';
+
 
 @Component({
   selector: 'app-allega-files',
@@ -19,20 +21,18 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 export class AllegaFilesPage implements OnInit {
   // Per le foto
   capturedSnapURL: string;
-  cameraOptions: CameraOptions = {
-    quality: 20,
-    destinationType: this.camera.DestinationType.DATA_URL,
-    encodingType: this.camera.EncodingType.JPEG,
-    mediaType: this.camera.MediaType.PICTURE
-  } ;
+  photoList: any[] = [];
+  photoName = 'fotoAllegata.jpg';
   // Per le note audio
+  audioName = 'audioAllegato.3gp';
   recording = false;
-  filePath: string;
-  fileName: string;
+  playing = false;
+  audioPath: string;
   audio: MediaObject;
   audioList: any[] = [];
   informazioniAggiuntive: any;
   motivation: any;
+  finished: boolean;
   // Per le coordinate GPS
   locationCoords: any;
   timetest: any;
@@ -45,7 +45,9 @@ export class AllegaFilesPage implements OnInit {
               private http: HttpClient,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
-              private locationAccuracy: LocationAccuracy) {
+              private locationAccuracy: LocationAccuracy,
+              private photoViewer: PhotoViewer
+              ) {
     this.audioList = [];
     localStorage.setItem('audiolist', JSON.stringify(this.audioList));
     this.locationCoords = {
@@ -62,63 +64,90 @@ export class AllegaFilesPage implements OnInit {
 
   takePicture() {
     const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
+      quality: 50,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      saveToPhotoAlbum: false,
+      correctOrientation: true
     };
-    this.camera.getPicture(this.cameraOptions).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      const base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-      console.log(err);
+    this.camera.getPicture(options).then(imagePath => {
+      const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+      const correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+      this.copyFileToLocalDir(correctPath, currentName, this.photoName, imagePath);
     });
   }
 
-  getAudioList() {
-    if (localStorage.getItem('audiolist')) {
-      this.audioList = JSON.parse(localStorage.getItem('audiolist'));
-      console.log(this.audioList);
-    }
+  copyFileToLocalDir(namePath, currentName, newFileName, cacheImagePath) {
+    this.file.copyFile(namePath, currentName, this.file.externalDataDirectory, newFileName).then(success => {
+      if ( !this.photoList.some(e => e.filename === this.photoName) ) {
+        const data = {filename: newFileName};
+        this.photoList.push(data);
+        localStorage.setItem('photolist', JSON.stringify(this.audioList));
+      }
+      this.file.removeFile(cacheImagePath.substring(0, cacheImagePath.lastIndexOf('/')), currentName).then(res => {
+      });
+    }, error => {
+      alert('Error while storing file.' + error);
+    });
   }
 
+  deletePhoto() {
+    this.file.removeFile(this.file.externalDataDirectory, this.photoName).then(res => {
+      this.photoList = [];
+    });
+  }
 
+  deleteAudio() {
+    this.file.removeFile(this.file.externalDataDirectory, this.audioName).then(res => {
+      this.audioList = [];
+    });
+  }
+
+  showPhoto() {
+    this.photoViewer.show(this.file.externalDataDirectory + this.photoName, 'Anteprima foto');
+  }
 
   startRecord() {
-    this.fileName = 'record' + new Date().getDate() + new Date().getMonth() + new Date().getFullYear()
-        + new Date().getHours() + new Date().getMinutes() + new Date().getSeconds() + '.3gp';
-    this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.fileName;
-    this.audio = this.media.create(this.filePath);
+    this.audioPath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + this.audioName;
+    this.audio = this.media.create(this.audioPath);
     this.audio.startRecord();
     this.recording = true;
   }
 
   stopRecord() {
     this.audio.stopRecord();
-    const data = { filename: this.fileName };
-    this.audioList = [];
-    this.audioList.push(data);
-    localStorage.setItem('audiolist', JSON.stringify(this.audioList));
+    if ( !this.audioList.some(e => e.filename === this.audioName) ) {
+      const data = {filename: this.audioName};
+      this.audioList.push(data);
+      localStorage.setItem('audiolist', JSON.stringify(this.audioList));
+    }
     this.recording = false;
-    this.getAudioList();
   }
 
   playAudio(file, idx) {
-    this.filePath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + file;
-    this.audio = this.media.create(this.filePath);
+    this.audioPath = this.file.externalDataDirectory.replace(/file:\/\//g, '') + file;
+    this.audio = this.media.create(this.audioPath);
     this.audio.play();
     this.audio.setVolume(0.8);
+    this.playing = true;
+    this.audio.onStatusUpdate.subscribe((statusCode) => {
+      if (statusCode === 4) {
+        document.getElementById('stopButton').click();
+      }
+    });
+  }
+
+  stopAudio() {
+    this.audio.stop();
+    this.playing = false;
   }
 
   ionViewWillEnter() {
-    this.getAudioList();
     this.checkGPSPermission();
   }
 
   inviaRichiesta() {
-    this.getAllegati();
+    // this.getAllegati();
+    this.sendPostRequest();
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -135,7 +164,7 @@ export class AllegaFilesPage implements OnInit {
 
   getAllegati() {
     alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
-        'Audio: ' + this.fileName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
+        'Audio: ' + this.audioName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
         '\n' + 'Text area:' + this.informazioniAggiuntive + '\n' + 'Motivation:' + this.motivation);
   }
 
@@ -191,11 +220,13 @@ export class AllegaFilesPage implements OnInit {
   }
 
   sendPostRequest() {
-      this.http.post('https://someapi.com/posts', {
-          content: 'hello',
-          submittedBy: 'Josh'
-      }).subscribe((response) => {
-          console.log(response);
-      });
-    }
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    // this.http.setDataSerializer('json');
+    this.http.post('http://127.0.0.1:8000/forma-login/', {
+      prova: 'prova',
+      asd: 'asd'
+    });
+  }
 }

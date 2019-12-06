@@ -16,10 +16,18 @@ import { File } from '@ionic-native/file/ngx';
 import { Uid } from '@ionic-native/uid/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
+import { HTTP } from '@ionic-native/http/ngx';
+
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import {HttpClientModule} from '@angular/common/http';
-import { HttpClient } from '@angular/common/http';
+
+import { FilePath } from '@ionic-native/file-path/ngx';
+
+import { IonicStorageModule } from '@ionic/storage';
+
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+
 
 
 @NgModule({
@@ -28,7 +36,9 @@ import { HttpClient } from '@angular/common/http';
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(),
-    AppRoutingModule],
+    AppRoutingModule,
+    IonicStorageModule.forRoot()
+  ],
   providers: [
     StatusBar,
     SplashScreen,
@@ -41,6 +51,8 @@ import { HttpClient } from '@angular/common/http';
     AndroidPermissions,
     Geolocation,
     LocationAccuracy,
+    HTTP,
+    PhotoViewer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
