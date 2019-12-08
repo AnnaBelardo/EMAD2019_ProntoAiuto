@@ -47,7 +47,7 @@ export class AllegaFilesPage implements OnInit {
               private geolocation: Geolocation,
               private locationAccuracy: LocationAccuracy,
               private photoViewer: PhotoViewer
-              ) {
+  ) {
     this.audioList = [];
     localStorage.setItem('audiolist', JSON.stringify(this.audioList));
     this.locationCoords = {
@@ -198,7 +198,7 @@ export class AllegaFilesPage implements OnInit {
             .then(
                 () => {
                   // Metodo per attivare il GPS
-                   this.askToTurnOnGPS();
+                  this.askToTurnOnGPS();
                 },
                 error => {
                   // Se l'utente rifiuta mostro l'errore
