@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import {ActivatedRoute, Router} from '@angular/router';
 
 // import {HTTP} from '@ionic-native/http/ngx';
 
@@ -32,10 +33,13 @@ export class AllegaFilesPage implements OnInit {
   audioList: any[] = [];
   informazioniAggiuntive: any;
   motivation: any;
-  finished: boolean;
+  photoAttached = false;
+  audioAttached = false;
   // Per le coordinate GPS
   locationCoords: any;
   timetest: any;
+  tipoForza;
+  motivi: any[] = [];
   constructor(public navCtrl: NavController,
               private media: Media,
               private file: File,
@@ -46,8 +50,10 @@ export class AllegaFilesPage implements OnInit {
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
               private locationAccuracy: LocationAccuracy,
-              private photoViewer: PhotoViewer
-  ) {
+              private photoViewer: PhotoViewer,
+              private router: Router
+) {
+    this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
     localStorage.setItem('audiolist', JSON.stringify(this.audioList));
     this.locationCoords = {
@@ -60,6 +66,22 @@ export class AllegaFilesPage implements OnInit {
   }
 
   ngOnInit() {
+    switch (this.tipoForza) {
+      case (1):
+        this.motivi = ['Furto', 'Incidente stradale', 'Violenza domestica', 'Altro...'];
+        break;
+      case (2):
+        this.motivi = ['Furto', 'Incidente stradale', 'Violenza domestica', 'Altro...'];
+        break;
+      case (3):
+        this.motivi = ['Malore improvviso', 'Incidente', 'Altro...'];
+        break;
+      case (4):
+        this.motivi = ['Incidente', 'Incendio', 'Dissesti statici', 'Altro...'];
+        break;
+      default:
+        break;
+    }
   }
 
   takePicture() {
@@ -73,6 +95,7 @@ export class AllegaFilesPage implements OnInit {
       const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
       const correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
       this.copyFileToLocalDir(correctPath, currentName, this.photoName, imagePath);
+      this.photoAttached = true;
     });
   }
 
@@ -93,12 +116,14 @@ export class AllegaFilesPage implements OnInit {
   deletePhoto() {
     this.file.removeFile(this.file.externalDataDirectory, this.photoName).then(res => {
       this.photoList = [];
+      this.photoAttached = false;
     });
   }
 
   deleteAudio() {
     this.file.removeFile(this.file.externalDataDirectory, this.audioName).then(res => {
       this.audioList = [];
+      this.audioAttached = false;
     });
   }
 
@@ -111,6 +136,7 @@ export class AllegaFilesPage implements OnInit {
     this.audio = this.media.create(this.audioPath);
     this.audio.startRecord();
     this.recording = true;
+    this.audioAttached = true;
   }
 
   stopRecord() {
@@ -146,8 +172,8 @@ export class AllegaFilesPage implements OnInit {
   }
 
   inviaRichiesta() {
-    // this.getAllegati();
-    this.sendPostRequest();
+    this.getAllegati();
+    // this.sendPostRequest();
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -163,9 +189,18 @@ export class AllegaFilesPage implements OnInit {
   }
 
   getAllegati() {
-    alert('Latitude: ' + this.locationCoords.latitude + '\n' + 'Longitude: ' + this.locationCoords.longitude + '\n' +
-        'Audio: ' + this.audioName + '\n' + 'Timestamp: ' + this.timetest + '\n' + 'IMEI:' +  this.uid.IMEI +
-        '\n' + 'Text area:' + this.informazioniAggiuntive + '\n' + 'Motivation:' + this.motivation);
+    let audio = 'Null';
+    let photo = 'Null';
+    if (this.photoAttached) {
+      photo = this.photoName;
+    }
+    if (this.audioAttached) {
+      audio = this.audioName;
+    }
+    alert('Latitudine: ' + this.locationCoords.latitude + '\n' + 'Longitudine: ' + this.locationCoords.longitude + '\n' +
+        'Timestamp: ' + this.timetest + '\n' + 'IMEI: ' +  this.uid.IMEI +
+        '\n' + 'Motivo: ' + this.motivation + '\n' + 'Info Extra: ' + this.informazioniAggiuntive + '\n' + 'Audio: ' +
+        audio + '\n' + 'Foto: ' + photo);
   }
 
   // Check per vedere se l'applicazione ha l'accesso al GPS

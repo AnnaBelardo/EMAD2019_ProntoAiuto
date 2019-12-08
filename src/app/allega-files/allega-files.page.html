@@ -74,10 +74,7 @@
         <ion-item>
           <ion-label>Motivo</ion-label>
           <ion-select [(ngModel)]="motivation" interface="popover">
-            <ion-select-option value="Furto">Furto</ion-select-option>
-            <ion-select-option value="Incidente stradale">Incidente stradale</ion-select-option>
-            <ion-select-option value="Violenza domestica">Violenza domestica</ion-select-option>
-            <ion-select-option value="Altro...">Altro...</ion-select-option>
+            <ion-select-option *ngFor="let motivo of motivi" [value]="motivo">{{ motivo }}</ion-select-option>
           </ion-select>
         </ion-item>
       </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {Uid} from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
@@ -8,18 +8,18 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 
-const POLIZIA = 1;
-const CARABINIERI = 2;
-const PARAMEDICI = 3;
-const POMPIERI = 4;
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-
+export class HomePage implements OnInit {
+  POLIZIA = 1;
+  CARABINIERI = 2;
+  PARAMEDICI = 3;
+  POMPIERI = 4;
   constructor(private router: Router,
               private uid: Uid,
               private androidPermissions: AndroidPermissions,
@@ -30,12 +30,13 @@ export class HomePage {
     const paramediciButton = document.getElementById('paramediciButton');
     const pompieriButton = document.getElementById('pompieriButton');
   }
+  ngOnInit(): void {
+  }
   ionViewWillEnter() {
     this.getImeiPermission();
   }
-
-  goToAllega() {
-    this.router.navigate(['/allega-files']);
+  goToAllega(forzaDellOrdine) {
+    this.router.navigate(['/allega-files'], { state: { example: forzaDellOrdine } });
   }
   goToStatistiche() {
     this.router.navigate(['/cittadino-statistiche']);
