@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 // import {HTTP} from '@ionic-native/http/ngx';
 
 
+
 @Component({
   selector: 'app-allega-files',
   templateUrl: './allega-files.page.html',
@@ -254,14 +255,17 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  sendPostRequest() {
-    const headers = {
-      'Content-Type': 'application/json'
-    };
+//  sendPostRequest() {
+//    const headers = {
+//      'Content-Type': 'application/json'
+//    };
     // this.http.setDataSerializer('json');
-    this.http.post('http://127.0.0.1:8000/forma-login/', {
-      prova: 'prova',
-      asd: 'asd'
-    });
-  }
+//    this.http.post('http://httpbin.org/post', {
+//      prova: 'prova',
+//      asd: 'asd'
+//    });
+//  }
+
+
+
 }
