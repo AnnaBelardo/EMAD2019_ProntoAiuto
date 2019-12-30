@@ -266,24 +266,4 @@ export class AllegaFilesPage implements OnInit {
 //  }
 
 
-    sendPostRequest() {
-        // tslint:disable-next-line:prefer-const
-        let headers = new Headers();
-        headers.append('Accept', 'application/json');
-        headers.append('Content-Type', 'application/json' );
-        const requestOptions = new RequestOptions({ headers });
-
-        const postData = {
-            name: 'Customer004',
-            email: 'customer004@email.com',
-            tel: '0000252525'
-        };
-
-        this.http.post('http://127.0.0.1:3000/customers', postData, requestOptions)
-            .subscribe(data => {
-                console.log(data._body);
-            }, error => {
-                console.log(error);
-            });
-    }
 }
