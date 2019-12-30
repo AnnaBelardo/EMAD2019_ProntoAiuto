@@ -1,5 +1,7 @@
 {
   "name": "askForHelp-cittadino",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
