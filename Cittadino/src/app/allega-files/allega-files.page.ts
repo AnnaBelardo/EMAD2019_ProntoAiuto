@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 // import {HTTP} from '@ionic-native/http/ngx';
 
 
+
 @Component({
   selector: 'app-allega-files',
   templateUrl: './allega-files.page.html',
@@ -264,6 +265,7 @@ export class AllegaFilesPage implements OnInit {
 //      asd: 'asd'
 //    });
 //  }
+
 
 
 }
