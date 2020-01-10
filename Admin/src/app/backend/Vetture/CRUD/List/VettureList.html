@@ -1,0 +1,52 @@
+<div class="row" >
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Vetture </h4>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-primary btn-round" style="align-content: center" (click)="notificaPush()">Notifica Push</button>
+        <button mat-fab color="primary">Primary</button>
+        <div class="table-responsive">
+          <table mat-table class="table">
+            <thead class=" text-primary">
+            <th style="text-align: center">
+              Identificativo
+            </th>
+            <th style="text-align: center">
+              Tipologia
+            </th>
+            <th style="text-align: center">
+              Stato
+            </th>
+            <th style="text-align: center">
+              Azioni
+            </th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let vettura of vettureList | async">
+              <td style="text-align: center">
+                {{vettura.identificativo}}
+              </td>
+              <td style="text-align: center">
+                {{vettura.tipologia}}
+              </td>
+              <td style="text-align: center">
+                {{vettura.stato}}
+              </td>
+              <td style="text-align: center">
+                <div style="align-content: center">
+                  <button type="submit" class="btn btn-primary btn-round" style="align-content: center">Modifica</button>
+                  <button type="submit" class="btn btn-danger btn-round" style="text-align: center">Elimina</button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+

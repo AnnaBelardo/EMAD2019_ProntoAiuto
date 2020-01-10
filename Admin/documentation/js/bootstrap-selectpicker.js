@@ -10,7 +10,7 @@
 
       Creative Tim Modifications
 
-      Lines: 384, 384 we added Themify Icons 
+      Lines: 384, 384 we added Themify Icons
 
  */
 
@@ -258,7 +258,7 @@
   }
 
 
-  // List of HTML entities for escaping.
+  // CRUD of HTML entities for escaping.
   var escapeMap = {
     '&': '&amp;',
     '<': '&lt;',
