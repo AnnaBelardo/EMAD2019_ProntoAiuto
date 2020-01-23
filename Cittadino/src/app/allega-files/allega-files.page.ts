@@ -85,7 +85,7 @@ export class AllegaFilesPage implements OnInit {
     }
   }
 
-  takePicture() {
+  takePicturee() {
     const options: CameraOptions = {
       quality: 50,
       sourceType: this.camera.PictureSourceType.CAMERA,
