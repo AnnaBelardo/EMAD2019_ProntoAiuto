@@ -24,7 +24,7 @@ export class HomePage implements OnInit {
     const poliziaButton = document.getElementById('poliziaButton');
     const paramediciButton = document.getElementById('paramediciButton');
     const pompieriButton = document.getElementById('pompieriButton');
-    cordova.plugins.CameraPictureBackground.initialize();
+    // cordova.plugins.CameraPictureBackground.initialize();
   }
 
   success(imgurl) {
