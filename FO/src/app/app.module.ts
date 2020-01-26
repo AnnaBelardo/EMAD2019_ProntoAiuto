@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
   providers: [
     StatusBar,
     SplashScreen,
+    LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     OneSignal
   ],
