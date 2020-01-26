@@ -11,12 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
-
+import { ViewObjectPageModule} from './view-object/view-object.module';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule],
   providers: [
     StatusBar,
     SplashScreen,

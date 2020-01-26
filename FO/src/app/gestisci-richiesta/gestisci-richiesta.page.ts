@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator/ngx';
 import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import {ViewObjectPage} from '../view-object/view-object.page';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -10,7 +12,13 @@ import { AlertController } from '@ionic/angular';
 export class GestisciRichiestaPage implements OnInit {
 
   constructor(private launchNavigator: LaunchNavigator,
-              public alertController: AlertController) { }
+              public alertController: AlertController,
+              public modalController: ModalController) { }
+  object: any = {
+    name: 'Incidente',
+    image1: 'assets/images/carcrash.jpg',
+    image2: 'assets/images/carcrash2.jpg',
+  };
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
@@ -35,4 +43,12 @@ export class GestisciRichiestaPage implements OnInit {
     await alert.present();
   }
 
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ViewObjectPage,
+      componentProps: { object: this.object
+      }
+    });
+    return await modal.present();
+  }
 }
