@@ -10,10 +10,16 @@ import {Uid} from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import {ActivatedRoute, Router} from '@angular/router';
+import { saveAs } from 'file-saver';
+
 
 // import {HTTP} from '@ionic-native/http/ngx';
 
 
+
+import JSZip from 'jszip';
+
+import FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-allega-files',
@@ -173,8 +179,9 @@ export class AllegaFilesPage implements OnInit {
   }
 
   inviaRichiesta() {
-    this.getAllegati();
-    // this.sendPostRequest();
+    this.createTextFile();
+    //this.getAllegati();
+    this.sendPostRequest();
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -253,6 +260,41 @@ export class AllegaFilesPage implements OnInit {
         },
         error => alert('Error requesting location permissions ' + JSON.stringify(error))
     );
+  }
+
+  createTextFile() {
+    // tslint:disable-next-line:prefer-const
+    let jsonString = JSON.stringify({
+      Latitudine: this.locationCoords.latitude,
+      Longitudine: this.locationCoords.longitude + '\n',
+      Timestamp: this.timetest,
+      IMEI: this.uid.IMEI,
+      Motivo: this.motivation,
+      Info_extra: this.informazioniAggiuntive
+    });
+    const fileDir = cordova.file.externalApplicationStorageDirectory + 'files';
+    // tslint:disable-next-line:prefer-const
+    let filename = 'richiesta.json';
+    this.file.writeFile(fileDir, filename, jsonString, {replace: true}) ;
+  }
+
+  sendPostRequest() {
+    const formData = new FormData();
+    const dataJson = {
+      Latitudine: this.locationCoords.latitude,
+      Longitudine: this.locationCoords.longitude + '\n',
+      Timestamp: this.timetest,
+      IMEI: this.uid.IMEI,
+      Motivo: this.motivation,
+      Info_extra: this.informazioniAggiuntive
+    };
+    console.log('dataJson:', dataJson);
+    formData.append('data', JSON.stringify(dataJson));
+    formData.append('foto', cordova.file.externalApplicationStorageDirectory + 'files', 'fotoAllegata.jpg');
+    formData.append('audio', cordova.file.externalApplicationStorageDirectory + 'files', 'audioAllegato.3gp');
+    console.log('formData: ', formData.getAll('data'));
+
+    return this.http.post('url', formData);
   }
 
 //  sendPostRequest() {

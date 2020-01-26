@@ -24,6 +24,7 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { FilePath } from '@ionic-native/file-path/ngx';
 
+
 import { IonicStorageModule } from '@ionic/storage';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
