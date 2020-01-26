@@ -6,7 +6,7 @@ declare interface TableData {
 }
 
 @Component({
-    selector: 'table-cmp',
+    selector: 'app-table-cmp',
     moduleId: module.id,
     templateUrl: 'table.component.html'
 })
