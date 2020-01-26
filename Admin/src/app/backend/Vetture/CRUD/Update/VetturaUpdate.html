@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Modifica Unità</h5>
+      </div>
+      <div class="card-body">
+        <form *ngIf="updateVetturaForm" [formGroup]="updateVetturaForm" (ngSubmit)="onSubmit(updateVetturaForm.value)">
+          <div class="cross-validation" [class.cross-validation-error]="updateVetturaForm.touched || updateVetturaForm.dirty">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="identificativo">Identificativo *</label>
+                  <input id="identificativo" type="text" class="form-control" formControlName="identificativo">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="tipologia">Tipologia *</label>
+                  <select id="tipologia" class="form-control"  formControlName="tipologia">
+                    <option *ngFor="let p of tipoChoice | keyvalue" [value]="p.key">{{p.value}}</option>
+                  </select>
+                  <div *ngIf="tipologia.invalid && (tipologia.dirty || tipologia.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="tipologia.errors.required">
+                      Tipologia is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="imei">IMEI *</label>
+                  <input id="imei" type="text" class="form-control" formControlName="imei">
+                  <div *ngIf="imei.invalid && (imei.dirty || imei.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="imei.errors.required">
+                      Name is required.
+                    </div>
+                    <div *ngIf="imei.errors.minlength || imei.errors.maxlength">
+                      IMEI must be 15 long.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="playerId">ID Push *</label>
+                  <input id="playerId" type="text" class="form-control" formControlName="playerId">
+                  <div *ngIf="playerId.invalid && (playerId.dirty || playerId.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="playerId.errors.required">
+                      Name is required.
+                    </div>
+                    <div *ngIf="playerId.errors.minlength || playerId.errors.maxlength">
+                      ID Push must be 36 long.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="update ml-auto mr-auto">
+                <button type="submit" class="btn btn-primary btn-round" [disabled]="updateVetturaForm.invalid">Modifica</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

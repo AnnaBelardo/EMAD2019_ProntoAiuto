@@ -18,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {HttpClientModule} from '@angular/common/http';
+import {VettureModule} from '../../backend/Vetture/VettureModule';
 
 @NgModule({
   imports: [
@@ -27,7 +29,9 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     NgbModule,
     AngularFontAwesomeModule,
     FontAwesomeModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    VettureModule,
+    HttpClientModule,
   ],
   declarations: [
     DashboardComponent,
@@ -38,7 +42,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-  ]
+  ],
+  providers: [],
 })
 
 export class AdminLayoutModule {}
