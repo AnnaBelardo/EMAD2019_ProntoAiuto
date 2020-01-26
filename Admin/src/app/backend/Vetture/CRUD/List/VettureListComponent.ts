@@ -3,28 +3,38 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {VettureService} from '../../services/VettureService';
 import {Observable} from 'rxjs';
-import {Vetture} from '../../services/Vetture';
+import {Vetture} from '../DataModel/Vetture';
+import {Router} from '@angular/router';
 
-
-declare interface TableData {
-  headerRow: string[];
-  dataRows: string[][];
-}
 
 @Component({
   selector: 'app-vetture-list-component',
   templateUrl: 'VettureList.html'
 })
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class VettureListComponent implements OnInit {
   public vettureList: Observable<Vetture[]>;
-  constructor(private http: HttpClient, private vettureService: VettureService) {
+  constructor(private http: HttpClient, private vettureService: VettureService, private router: Router) {
   }
   ngOnInit() {
     this.vettureList = this.vettureService.getAllVetture();
   }
 
+  public deleteVettura(vettura: Vetture) {
+    this.vettureService.deleteVettura(vettura.id).subscribe(response => {
+      console.log('Response: ' + response);
+      this.redirect();
+    });
+  }
+
+  redirect() {
+    this.router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['vetture/list']);
+    });
+  }
+
+  // script per inviare una notifica all'app
   notificaPush() {
     const body = JSON.stringify({
       'app_id': 'a25229e0-e3d2-419c-8706-8c0abbe60353',

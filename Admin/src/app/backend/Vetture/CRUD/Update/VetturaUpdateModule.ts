@@ -1,22 +1,25 @@
 import {NgModule} from '@angular/core';
-import {VettureListComponent} from './VettureListComponent';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
+import { ReactiveFormsModule } from '@angular/forms';
 import {RouterModule} from '@angular/router';
+import {VetturaUpdateComponent} from './VetturaUpdateComponent';
+
 
 @NgModule({
   imports: [
     CommonModule,
     MatButtonModule,
-    RouterModule,
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
-    VettureListComponent
+    VetturaUpdateComponent
   ],
   declarations: [
-    VettureListComponent
+    VetturaUpdateComponent,
   ],
   providers: [],
 })
-export class VettureListModule {
+export class VetturaUpdateModule {
 }
