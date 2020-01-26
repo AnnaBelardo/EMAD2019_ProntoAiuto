@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator/ngx';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -8,7 +9,8 @@ import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navi
 })
 export class GestisciRichiestaPage implements OnInit {
 
-  constructor(private launchNavigator: LaunchNavigator) { }
+  constructor(private launchNavigator: LaunchNavigator,
+              public alertController: AlertController) { }
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
@@ -21,6 +23,16 @@ export class GestisciRichiestaPage implements OnInit {
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')
         );
+  }
+
+  async showalert() {
+    const alert = await this.alertController.create({
+      header: 'Richiesta effettuata',
+      message: 'La richiesta di linea verde è stata inoltrata con successo.',
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }
