@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="danger" (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios"></span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Files Allegati</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="1">
+        <span class="slider-nav arrow-prev"
+              (click)="slidePrev(slider,slideWithNav)">
+          <div class="prev-icon-custom custon-nav"
+               [class.disabled]="slider.isBeginningSlide"></div>
+        </span>
+        </ion-col>
+        <ion-col size="10">
+
+          <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
+                      (ionSlideDidChange)="SlideDidChange(slider,slideWithNav)">
+            <ion-slide *ngFor="let s of slider.slidesItems">
+              <ion-img [src]="s.image"></ion-img>
+            </ion-slide>
+          </ion-slides>
+
+        </ion-col>
+        <ion-col size="1">
+        <span class="slider-nav arrow-next"
+              (click)="slideNext(slider,slideWithNav)">
+          <div class="next-icon-custom custon-nav"
+               [class.disabled]="slider.isEndSlide"></div>
+        </span>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+  </ion-card>
+  <ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-label>Audio1</ion-label>
+        <ion-button slot="end" >
+          <ion-icon name="play"></ion-icon>
+        </ion-button>
+        <ion-button id="stopButton2" slot="end" >
+          <ion-icon name="square"></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-label>Audio2</ion-label>
+        <ion-button slot="end" >
+          <ion-icon name="play"></ion-icon>
+        </ion-button>
+        <ion-button id="stopButton" slot="end" >
+          <ion-icon name="square"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>
