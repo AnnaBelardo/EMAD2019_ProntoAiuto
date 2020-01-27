@@ -15,12 +15,13 @@ import {Uid} from '@ionic-native/uid/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
+import { ViewObjectPageModule} from './view-object/view-object.module';
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule],
   providers: [
     StatusBar,
     SplashScreen,
