@@ -1,4 +1,4 @@
 export const Apiconfig = {
-  url: 'http://localhost:8080',
-  urlValidators: 'http://localhost:8080/validators',
+  url: 'http://192.168.43.119:8080/',
+  urlValidators: 'http://192.168.43.119:8080//validators',
 };

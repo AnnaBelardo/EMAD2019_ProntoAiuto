@@ -6,7 +6,7 @@ import {Richieste} from '../CRUD/DataModel/Richieste';
 
 @Injectable({ providedIn: 'root' })
 export class RichiesteResource {
-  private readonly urlList = Apiconfig.url + '/richieste/list';
+  private readonly urlList = Apiconfig.url + '/richiesta/list';
   constructor(private httpClient: HttpClient) {
   }
   public getAll(): Observable<Richieste[]> {
