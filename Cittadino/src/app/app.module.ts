@@ -16,7 +16,6 @@ import { File } from '@ionic-native/file/ngx';
 import { Uid } from '@ionic-native/uid/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
-import { HTTP } from '@ionic-native/http/ngx';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
@@ -28,6 +27,7 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 
 
 
@@ -52,8 +52,9 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
     AndroidPermissions,
     Geolocation,
     LocationAccuracy,
-    HTTP,
     PhotoViewer,
+    Blob,
+    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
