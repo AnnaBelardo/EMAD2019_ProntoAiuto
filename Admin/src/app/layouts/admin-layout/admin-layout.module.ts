@@ -20,6 +20,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {HttpClientModule} from '@angular/common/http';
 import {VettureModule} from '../../backend/Vetture/VettureModule';
+import {RichiesteModule} from '../../backend/Richieste/RichiesteModule';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import {VettureModule} from '../../backend/Vetture/VettureModule';
     FontAwesomeModule,
     MatBottomSheetModule,
     VettureModule,
+    RichiesteModule,
     HttpClientModule,
   ],
   declarations: [

@@ -3,18 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="eae9dc1a-310e-440a-a210-3564cc7c8b08" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/backend/ApiConfig.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/backend/ApiConfig.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/backend/Richieste/services/RichiesteResource.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/backend/Richieste/services/RichiesteResource.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Cittadino/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Cittadino/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cittadino/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Cittadino/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cittadino/src/app/allega-files/allega-files.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Cittadino/src/app/allega-files/allega-files.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cittadino/src/app/allega-files/allega-files.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Cittadino/src/app/allega-files/allega-files.page.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Cittadino/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../Cittadino/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/src/app/home/home.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/src/app/home/home.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/src/app/home/home.page.html" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/src/app/home/home.page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FO/src/app/home/home.page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FO/src/app/home/home.page.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,27 +34,30 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FO" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app/backend/Richieste" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="C:\Users\Vincenzo\Documents\GitHub\EMAD\EMAD2019_ProntoAiuto\Admin\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\raffaele\Desktop\EMADPROGETTO\EMAD2019_ProntoAiuto\Admin\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Vincenzo\Documents\GitHub\EMAD2019_ProntoAiuto\Admin\src\app\backend\Vetture\CRUD\DataModel" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\raffaele\Desktop\EMADPROGETTO\EMAD2019_ProntoAiuto\Admin\src\app\backend\Richieste" />
+      <recent name="C:\Users\raffaele\Desktop\EMADPROGETTO\EMAD2019_ProntoAiuto\Admin\src\app\backend\Richieste\CRUD" />
       <recent name="C:\Users\Vincenzo\Documents\GitHub\EMAD2019_ProntoAiuto\Admin\src\app\backend\Vetture\CRUD\DataModel" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+    <configuration name="start --port 4300" type="js.build_tools.npm" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="start" />
       </scripts>
+      <arguments value="--port 4300" />
       <node-interpreter value="project" />
       <envs />
       <method v="2" />
@@ -93,7 +87,8 @@
       <updated>1578924884250</updated>
       <workItem from="1578924886633" duration="1028000" />
       <workItem from="1579821724115" duration="58949000" />
-      <workItem from="1580058931406" duration="5638000" />
+      <workItem from="1580063152802" duration="2846000" />
+      <workItem from="1580117639597" duration="4766000" />
     </task>
     <servers />
   </component>
@@ -101,43 +96,44 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="279" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579822730924">
+    <state x="279" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1580123300675">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1578924637050" />
-    <state x="279" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579822730924" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579922500887">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="279" y="85" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1580123300675" />
+    <state x="444" y="140" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1580118567841">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="444" y="140" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728@0.0.1366.728" timestamp="1580118567841" />
     <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1579922500887" />
     <state x="671" y="218" key="#run" timestamp="1579822697805">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="671" y="218" key="#run/0.0.1920.1040@0.0.1920.1040" timestamp="1579822697805" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1580059071372">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="286" y="0" key="CommitChangelistDialog2" timestamp="1580118124688">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1580059071372" />
-    <state width="1515" height="148" key="GridCell.Tab.0.bottom" timestamp="1580065634923">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="286" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1580118124688" />
+    <state width="1899" height="148" key="GridCell.Tab.0.bottom" timestamp="1580123302868">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1515" height="148" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1580065634923" />
-    <state width="1899" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1579822732727" />
-    <state width="1515" height="148" key="GridCell.Tab.0.center" timestamp="1580065634922">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1515" height="159" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1579922501080" />
+    <state width="1899" height="148" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1580123302868" />
+    <state width="1899" height="148" key="GridCell.Tab.0.center" timestamp="1580123302868">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1515" height="148" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1580065634922" />
-    <state width="1899" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1579822732727" />
-    <state width="1515" height="148" key="GridCell.Tab.0.left" timestamp="1580065634922">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1515" height="159" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1579922501080" />
+    <state width="1899" height="148" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1580123302868" />
+    <state width="1899" height="148" key="GridCell.Tab.0.left" timestamp="1580123302868">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1515" height="148" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1580065634922" />
-    <state width="1899" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1579822732726" />
-    <state width="1515" height="148" key="GridCell.Tab.0.right" timestamp="1580065634923">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state width="1515" height="159" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1579922501080" />
+    <state width="1899" height="148" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1580123302868" />
+    <state width="1899" height="148" key="GridCell.Tab.0.right" timestamp="1580123302868">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1515" height="148" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1580065634923" />
-    <state width="1899" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1579822732727" />
+    <state width="1515" height="159" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1579922501080" />
+    <state width="1899" height="148" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1580123302868" />
     <state width="1515" height="158" key="GridCell.Tab.1.bottom" timestamp="1579972516159">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -186,5 +182,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="93" y="93" width="1350" height="638" key="dock-window-2/0.0.1536.824@0.0.1536.824" timestamp="1579908021449" />
+    <state x="648" y="98" width="607" height="526" key="find.popup" timestamp="1580063890379">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="648" y="98" width="607" height="526" key="find.popup/0.0.1366.728@0.0.1366.728" timestamp="1580063890379" />
   </component>
 </project>
