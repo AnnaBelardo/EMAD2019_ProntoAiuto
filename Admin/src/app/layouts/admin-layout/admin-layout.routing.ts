@@ -11,11 +11,13 @@ import { UpgradeComponent } from '../../pages/upgrade/upgrade.component';
 import {VettureListComponent} from '../../backend/Vetture/CRUD/List/VettureListComponent';
 import {VettureCreateComponent} from '../../backend/Vetture/CRUD/Create/VettureCreateComponent';
 import {VetturaUpdateComponent} from '../../backend/Vetture/CRUD/Update/VetturaUpdateComponent';
+import {RichiesteListComponent} from '../../backend/Richieste/CRUD/List/RichiesteListComponent';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user',           component: UserComponent },
     { path: 'vetture/list',   component: VettureListComponent },
+    { path: 'richieste/list',   component: RichiesteListComponent },
     { path: 'vetture/create', component: VettureCreateComponent },
     { path: 'vettura/update/:id', component: VetturaUpdateComponent },
     { path: 'typography',     component: TypographyComponent },
