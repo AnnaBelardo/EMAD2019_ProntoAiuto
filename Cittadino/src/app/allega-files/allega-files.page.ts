@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, Platform} from '@ionic/angular';
 import {Media, MediaObject} from '@ionic-native/media/ngx';
-import {File, FileEntry } from '@ionic-native/file/ngx';
+import {File } from '@ionic-native/file/ngx';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
@@ -9,10 +9,9 @@ import {HttpClient} from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import {ActivatedRoute, Router} from '@angular/router';
-import { saveAs } from 'file-saver';
-
-
+import {Router} from '@angular/router';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+declare var cordova: any;
 // import {HTTP} from '@ionic-native/http/ngx';
 
 
@@ -20,6 +19,7 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
 import FileSaver from 'file-saver';
+import {LazyFileEntry} from '@angular-devkit/schematics/src/tree/entry';
 
 @Component({
   selector: 'app-allega-files',
@@ -58,7 +58,8 @@ export class AllegaFilesPage implements OnInit {
               private geolocation: Geolocation,
               private locationAccuracy: LocationAccuracy,
               private photoViewer: PhotoViewer,
-              private router: Router
+              private router: Router,
+              private transfer: FileTransfer
   ) {
     this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
@@ -179,9 +180,10 @@ export class AllegaFilesPage implements OnInit {
   }
 
   inviaRichiesta() {
-    this.createTextFile();
-    //this.getAllegati();
-    this.sendPostRequest();
+    // this.createTextFile();
+    // this.getAllegati();
+    // this.sendPostRequest();
+    this.upload();
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -278,23 +280,41 @@ export class AllegaFilesPage implements OnInit {
     this.file.writeFile(fileDir, filename, jsonString, {replace: true}) ;
   }
 
+  upload() {
+    const options: FileUploadOptions = {
+      fileKey: 'file',
+      fileName: 'fotoAllegata.jpg',
+      mimeType: 'image/jpeg',
+    };
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    // tslint:disable-next-line:max-line-length
+    fileTransfer.upload(encodeURI(cordova.file.externalApplicationStorageDirectory + 'files/fotoAllegata.jpg'), 'http://192.168.43.119:8080/vetture/create/', options, true)
+        .then((data) => {
+          alert(data);
+        }, (err) => {
+          alert(err);
+        });
+    }
+
   sendPostRequest() {
     const formData = new FormData();
     const dataJson = {
-      Latitudine: this.locationCoords.latitude,
-      Longitudine: this.locationCoords.longitude + '\n',
-      Timestamp: this.timetest,
-      IMEI: this.uid.IMEI,
-      Motivo: this.motivation,
-      Info_extra: this.informazioniAggiuntive
+      lat: this.locationCoords.latitude,
+      long: this.locationCoords.longitude,
+      data: this.timetest,
+      imie: this.uid.IMEI,
+      tipologia: this.motivation,
+      informazioni: this.informazioniAggiuntive
     };
     console.log('dataJson:', dataJson);
     formData.append('data', JSON.stringify(dataJson));
-    formData.append('foto', cordova.file.externalApplicationStorageDirectory + 'files', 'fotoAllegata.jpg');
-    formData.append('audio', cordova.file.externalApplicationStorageDirectory + 'files', 'audioAllegato.3gp');
+    // formData.append('file', cordova.file.externalApplicationStorageDirectory + 'files/', 'fotoAllegata.jpg');
+    // formData.append('file', '/storage/emulated/0/Android/data/io.ionic.starter/files/', 'audioAllegato.3gp');
     console.log('formData: ', formData.getAll('data'));
-
-    return this.http.post('url', formData);
+    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData).subscribe((response) =>
+      alert(response.toString()),
+        error => (alert(error.toString()))
+    );
   }
 
 //  sendPostRequest() {
