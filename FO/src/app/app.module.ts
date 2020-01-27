@@ -11,7 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import {Uid} from '@ionic-native/uid/ngx';
+import {Geolocation} from '@ionic-native/geolocation/ngx';
+import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
+import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import { ViewObjectPageModule} from './view-object/view-object.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +27,11 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
     SplashScreen,
     LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    OneSignal
+    OneSignal,
+    AndroidPermissions,
+    Geolocation,
+    LocationAccuracy,
+    Uid
   ],
   bootstrap: [AppComponent]
 })
