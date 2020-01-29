@@ -4,6 +4,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -12,8 +13,13 @@ import {Uid} from '@ionic-native/uid/ngx';
 })
 export class HomePage {
   // Per le coordinate GPS
+  time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timetest: any;
+  timer: number;
+  interval;
+  startDuration = 1;
+  state: 'start' | 'stop' = 'stop';
   constructor(private router: Router, private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation, private uid: Uid,
               private locationAccuracy: LocationAccuracy) {
@@ -23,7 +29,42 @@ export class HomePage {
       accuracy: '',
       timestamp: ''
     };
+    // @ts-ignore
     this.timetest = Date.now();
+  }
+
+  startTimer(duration: number) {
+    this.state = 'start';
+    clearInterval(this.interval);
+    this.timer = duration * 10;
+    this.updateTimeValue();
+    this.interval = setInterval( () => {
+      this.updateTimeValue();
+    }, 1000);
+  }
+
+  stopTimer() {
+    this.state = 'stop';
+    clearInterval(this.interval);
+  }
+
+  updateTimeValue() {
+    let minutes: any = this.timer / 60;
+    let seconds: any = this.timer % 60;
+
+    minutes = String('0' + Math.floor(minutes)).slice(-2);
+    seconds = String('0' + Math.floor(minutes)).slice(-2);
+
+    const text = minutes + ':' + seconds;
+
+    this.time.next(text);
+
+    --this.timer;
+
+    if (this.timer < -1) {
+      this.startTimer(this.startDuration);
+      alert('timer finito');
+    }
   }
 
   getImei() {
@@ -35,6 +76,7 @@ export class HomePage {
   ionViewWillEnter() {
     this.checkGPSPermission();
     this.getImeiPermission();
+    this.startTimer(this.startDuration);
   }
 
   getLocationCoordinates() {
@@ -120,5 +162,4 @@ export class HomePage {
       alert('Error! ' + error);
     });
   }
-
 }
