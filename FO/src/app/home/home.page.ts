@@ -63,7 +63,6 @@ export class HomePage {
 
     if (this.timer < -1) {
       this.startTimer(this.startDuration);
-      alert('timer finito');
     }
   }
 
@@ -161,5 +160,11 @@ export class HomePage {
     }).catch(error => {
       alert('Error! ' + error);
     });
+  }
+
+  sendPostToCentrale() {
+    alert(this.uid.IMEI);
+    alert(this.locationCoords.latitude);
+    alert(this.locationCoords.longitude);
   }
 }
