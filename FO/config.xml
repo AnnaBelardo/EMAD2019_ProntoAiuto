@@ -103,5 +103,4 @@
         <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyCiZfS9qWwKLNlBUXLqLJyc8jtA0bnvTA8" />
     </plugin>
     <allow-navigation href="http://localhost:8101" sessionid="579769fc" />
-    <allow-navigation href="http://localhost:8100" sessionid="641fcaaa" />
 </widget>
