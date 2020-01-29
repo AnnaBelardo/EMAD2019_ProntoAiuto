@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController, Platform} from '@ionic/angular';
 import {Media, MediaObject} from '@ionic-native/media/ngx';
-import {File } from '@ionic-native/file/ngx';
 import {Camera, CameraOptions} from '@ionic-native/camera/ngx';
 import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
@@ -10,16 +9,12 @@ import {Uid} from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import {Router} from '@angular/router';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+
+
 declare var cordova: any;
 // import {HTTP} from '@ionic-native/http/ngx';
 
-
-
-import JSZip from 'jszip';
-
-import FileSaver from 'file-saver';
-import {LazyFileEntry} from '@angular-devkit/schematics/src/tree/entry';
 
 @Component({
   selector: 'app-allega-files',
@@ -27,6 +22,33 @@ import {LazyFileEntry} from '@angular-devkit/schematics/src/tree/entry';
   styleUrls: ['./allega-files.page.scss'],
 })
 export class AllegaFilesPage implements OnInit {
+  constructor(public navCtrl: NavController,
+              private media: Media,
+              private file: File,
+              private fileToUpload: File,
+              public platform: Platform,
+              private uid: Uid,
+              private camera: Camera,
+              private http: HttpClient,
+              private androidPermissions: AndroidPermissions,
+              private geolocation: Geolocation,
+              private locationAccuracy: LocationAccuracy,
+              private photoViewer: PhotoViewer,
+              private router: Router,
+  ) {
+    this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
+    this.audioList = [];
+    localStorage.setItem('audiolist', JSON.stringify(this.audioList));
+    this.locationCoords = {
+      latitude: '',
+      longitude: '',
+      accuracy: '',
+      timestamp: ''
+    };
+    this.timetest = Date.now();
+  }
+
+
   // Per le foto
   capturedSnapURL: string;
   photoList: any[] = [];
@@ -47,31 +69,17 @@ export class AllegaFilesPage implements OnInit {
   timetest: any;
   tipoForza;
   motivi: any[] = [];
-  constructor(public navCtrl: NavController,
-              private media: Media,
-              private file: File,
-              public platform: Platform,
-              private uid: Uid,
-              private camera: Camera,
-              private http: HttpClient,
-              private androidPermissions: AndroidPermissions,
-              private geolocation: Geolocation,
-              private locationAccuracy: LocationAccuracy,
-              private photoViewer: PhotoViewer,
-              private router: Router,
-              private transfer: FileTransfer
-  ) {
-    this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
-    this.audioList = [];
-    localStorage.setItem('audiolist', JSON.stringify(this.audioList));
-    this.locationCoords = {
-      latitude: '',
-      longitude: '',
-      accuracy: '',
-      timestamp: ''
-    };
-    this.timetest = Date.now();
-  }
+
+//  sendPostRequest() {
+//    const headers = {
+//      'Content-Type': 'application/json'
+//    };
+    // this.http.setDataSerializer('json');
+//    this.http.post('http://httpbin.org/post', {
+//      prova: 'prova',
+//      asd: 'asd'
+//    });
+//  }
 
   ngOnInit() {
     switch (this.tipoForza) {
@@ -180,10 +188,8 @@ export class AllegaFilesPage implements OnInit {
   }
 
   inviaRichiesta() {
-    // this.createTextFile();
     // this.getAllegati();
-    // this.sendPostRequest();
-    this.upload();
+    this.sendPostRequest();
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -264,70 +270,33 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  createTextFile() {
-    // tslint:disable-next-line:prefer-const
-    let jsonString = JSON.stringify({
-      Latitudine: this.locationCoords.latitude,
-      Longitudine: this.locationCoords.longitude + '\n',
-      Timestamp: this.timetest,
-      IMEI: this.uid.IMEI,
-      Motivo: this.motivation,
-      Info_extra: this.informazioniAggiuntive
-    });
-    const fileDir = cordova.file.externalApplicationStorageDirectory + 'files';
-    // tslint:disable-next-line:prefer-const
-    let filename = 'richiesta.json';
-    this.file.writeFile(fileDir, filename, jsonString, {replace: true}) ;
-  }
-
-  upload() {
-    const options: FileUploadOptions = {
-      fileKey: 'file',
-      fileName: 'fotoAllegata.jpg',
-      mimeType: 'image/jpeg',
-    };
-    const fileTransfer: FileTransferObject = this.transfer.create();
-    // tslint:disable-next-line:max-line-length
-    fileTransfer.upload(encodeURI(cordova.file.externalApplicationStorageDirectory + 'files/fotoAllegata.jpg'), 'http://192.168.43.119:8080/vetture/create/', options, true)
-        .then((data) => {
-          alert(data);
-        }, (err) => {
-          alert(err);
-        });
-    }
-
-  sendPostRequest() {
+  async sendPostRequest() {
     const formData = new FormData();
-    const dataJson = {
-      lat: this.locationCoords.latitude,
-      long: this.locationCoords.longitude,
-      data: this.timetest,
-      imie: this.uid.IMEI,
-      tipologia: this.motivation,
-      informazioni: this.informazioniAggiuntive
-    };
-    console.log('dataJson:', dataJson);
-    formData.append('data', JSON.stringify(dataJson));
-    // formData.append('file', cordova.file.externalApplicationStorageDirectory + 'files/', 'fotoAllegata.jpg');
-    // formData.append('file', '/storage/emulated/0/Android/data/io.ionic.starter/files/', 'audioAllegato.3gp');
+    await this.to_base_64('fotoAllegata.jpg').then((res) => {
+      formData.append('img_data', res);
+    });
+    await this.to_base_64('audioAllegato.3gp').then((res) => {
+      formData.append('audio_data', res);
+    });
+    formData.append('lat', this.locationCoords.latitude);
+    formData.append('long', this.locationCoords.longitude);
+    formData.append('imei', this.uid.IMEI);
+    formData.append('tipologia', this.motivation);
+    formData.append('informazioni', this.informazioniAggiuntive);
     console.log('formData: ', formData.getAll('data'));
     this.http.post('http://192.168.43.119:8080/richiesta/create/', formData).subscribe((response) =>
-      alert(response.toString()),
+            alert(response.toString()),
         error => (alert(error.toString()))
     );
   }
 
-//  sendPostRequest() {
-//    const headers = {
-//      'Content-Type': 'application/json'
-//    };
-    // this.http.setDataSerializer('json');
-//    this.http.post('http://httpbin.org/post', {
-//      prova: 'prova',
-//      asd: 'asd'
-//    });
-//  }
-
-
-
+  async to_base_64(filename: string): Promise<string> {
+    let returnvalue = '';
+    await this.fileToUpload.readAsDataURL(cordova.file.externalApplicationStorageDirectory + 'files/', filename).then(res => {
+      returnvalue = res;
+    }).catch(err => {
+      alert(err);
+    });
+    return returnvalue;
+  }
 }

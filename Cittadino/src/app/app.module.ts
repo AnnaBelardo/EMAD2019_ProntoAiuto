@@ -27,7 +27,6 @@ import { FilePath } from '@ionic-native/file-path/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 
 
 
@@ -54,7 +53,6 @@ import {FileTransfer} from '@ionic-native/file-transfer/ngx';
     LocationAccuracy,
     PhotoViewer,
     Blob,
-    FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
