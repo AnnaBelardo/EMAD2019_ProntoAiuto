@@ -28,7 +28,7 @@ export class RichiesteListComponent implements OnInit {
   }
 
   stringoToDate(s: string) {
-    const data = new Date(s)
+    const data = new Date(s);
     return data.toDateString() + ' - ' + data.getHours() + ':' + data.getMinutes();
   }
 }
