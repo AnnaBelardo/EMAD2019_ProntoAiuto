@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import {HttpClientModule} from '@angular/common/http';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
@@ -25,6 +26,7 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
   providers: [
     OneSignal,
     StatusBar,
+    HttpClientModule,
     SplashScreen,
     LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

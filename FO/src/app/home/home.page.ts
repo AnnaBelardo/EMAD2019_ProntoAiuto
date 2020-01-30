@@ -4,6 +4,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
+import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 
 @Component({
@@ -17,11 +18,15 @@ export class HomePage {
   locationCoords: any;
   timetest: any;
   timer: number;
+  url = 'http://192.168.43.119:8080/vetture/update_position/';
   interval;
   startDuration = 1;
   state: 'start' | 'stop' = 'stop';
-  constructor(private router: Router, private androidPermissions: AndroidPermissions,
-              private geolocation: Geolocation, private uid: Uid,
+  constructor(private router: Router,
+              private androidPermissions: AndroidPermissions,
+              private geolocation: Geolocation,
+              private uid: Uid,
+              private http: HttpClient,
               private locationAccuracy: LocationAccuracy) {
     this.locationCoords = {
       latitude: '',
@@ -63,7 +68,7 @@ export class HomePage {
 
     if (this.timer < -1) {
       this.startTimer(this.startDuration);
-      alert('timer finito');
+      this.sendPostRequest();
     }
   }
 
@@ -161,5 +166,17 @@ export class HomePage {
     }).catch(error => {
       alert('Error! ' + error);
     });
+  }
+
+  async sendPostRequest() {
+    const formData = new FormData();
+    formData.append('lat', this.locationCoords.latitude);
+    formData.append('long', this.locationCoords.longitude);
+    formData.append('imei', this.uid.IMEI);
+    console.log('formData: ', formData.getAll('data'));
+    this.http.post(this.url, formData).subscribe((response) =>
+            alert(response.toString()),
+        error => (alert(error.toString()))
+    );
   }
 }
