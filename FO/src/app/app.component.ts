@@ -38,27 +38,26 @@ export class AppComponent {
     this.oneSignal.startInit('a25229e0-e3d2-419c-8706-8c0abbe60353');
 
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
-
     // Notifcation was received in general
     this.oneSignal.handleNotificationReceived().subscribe(data => {
       const msg = data.payload.body;
       const title = data.payload.title;
       const additionalData = data.payload.additionalData;
-      this.showAlert(title, msg, additionalData.task);
+      alert(additionalData.task);
+      this.showAlert(title, msg);
     });
 
     // Notification was really clicked/opened
     this.oneSignal.handleNotificationOpened().subscribe(data => {
       // Just a note that the data is a different place here!
       const additionalData = data.notification.payload.additionalData;
-
-      this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+      this.showAlert('Notification opened', 'You already read this before');
     });
 
     this.oneSignal.endInit();
   }
 
-  async showAlert(title, msg, task) {
+  async showAlert(title, msg) {
     const alert = await this.alertCtrl.create({
       header: title,
       subHeader: msg,

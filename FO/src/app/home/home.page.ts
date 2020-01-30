@@ -76,7 +76,7 @@ export class HomePage {
   ionViewWillEnter() {
     this.checkGPSPermission();
     this.getImeiPermission();
-    this.startTimer(this.startDuration);
+    // this.startTimer(this.startDuration);
   }
 
   getLocationCoordinates() {

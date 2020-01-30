@@ -23,11 +23,11 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule],
   providers: [
+    OneSignal,
     StatusBar,
     SplashScreen,
     LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    OneSignal,
     AndroidPermissions,
     Geolocation,
     LocationAccuracy,

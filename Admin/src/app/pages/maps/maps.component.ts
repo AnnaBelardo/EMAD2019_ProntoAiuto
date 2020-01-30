@@ -1,17 +1,21 @@
-import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Vetture} from '../../backend/Vetture/CRUD/DataModel/Vetture';
 import {HttpClient} from '@angular/common/http';
 import {VettureService} from '../../backend/Vetture/services/VettureService';
 import {Router} from '@angular/router';
 import {VetturePosizione} from '../../backend/Vetture/CRUD/DataModel/VetturePosizione';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-declare var google: any;
+import tt from '@tomtom-international/web-sdk-maps';
+
+
 
 @Component({
   moduleId: module.id,
   selector: 'app-maps-cmp',
-  templateUrl: 'maps.component.html'
+  templateUrl: 'maps.component.html',
+  styleUrls: ['maps.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 
 export class MapsComponent implements OnInit {
@@ -23,35 +27,15 @@ export class MapsComponent implements OnInit {
   }
 
   ngOnInit() {
-    const myLatlng = new google.maps.LatLng(40.955043, 14.275701);
-    const mapOptions = {
-      zoom: 13,
-      center: myLatlng,
-      scrollwheel: false, // we disable de scroll over the map, it is a really annoing when you scroll through page
-      styles: [{'featureType': 'water', 'stylers': [{'saturation': 43}, {'lightness': -11}, {'hue': '#0088ff'}]},
-        {
-          'featureType': 'road', 'elementType': 'geometry.fill', 'stylers': [{'hue': '#ff0000'}, {'saturation': -100},
-            {'lightness': 99}]
-        }, {
-          'featureType': 'road', 'elementType': 'geometry.stroke', 'stylers': [{'color': '#808080'},
-            {'lightness': 54}]
-        },
-        {'featureType': 'landscape.man_made', 'elementType': 'geometry.fill', 'stylers': [{'color': '#ece2d9'}]},
-        {'featureType': 'poi.park', 'elementType': 'geometry.fill', 'stylers': [{'color': '#ccdca1'}]},
-        {'featureType': 'road', 'elementType': 'labels.text.fill', 'stylers': [{'color': '#767676'}]},
-        {'featureType': 'road', 'elementType': 'labels.text.stroke', 'stylers': [{'color': '#ffffff'}]},
-        {'featureType': 'poi', 'stylers': [{'visibility': 'off'}]},
-        {'featureType': 'landscape.natural', 'elementType': 'geometry.fill', 'stylers': [{'visibility': 'on'}, {'color': '#b8cb93'}]},
-        {'featureType': 'poi.park', 'stylers': [{'visibility': 'on'}]},
-        {'featureType': 'poi.sports_complex', 'stylers': [{'visibility': 'on'}]},
-        {'featureType': 'poi.medical', 'stylers': [{'visibility': 'on'}]},
-        {'featureType': 'poi.business', 'stylers': [{'visibility': 'simplified'}]}]
-
-    };
-    this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    const trafficLayer = new google.maps.TrafficLayer();
-    trafficLayer.setMap(this.map);
-
+    this.map = tt.map({
+      key: 'pBDtSNH15AVCe1kLOKb1lgvdgWtGCHaG',
+      container: 'map',
+      style: 'tomtom://vector/1/basic-main',
+      center: [14.792207, 40.762352],
+      zoom: 12,
+    });
+    this.map.setLanguage('it-IT');
+    this.map.addControl(new tt.NavigationControl());
     this.vettureService.getAllVettureAndPosition().subscribe(response => {
         this.inizializzaMarkers(response);
       }
@@ -60,37 +44,18 @@ export class MapsComponent implements OnInit {
 
   inizializzaMarkers(response: any) {
     for (const vet of response) {
-      let icon;
-      switch (vet.tipologia.toString()) {
-        case 'Motociclo': {
-          icon = 'http://maps.google.com/mapfiles/kml/shapes/motorcycling.png';
-          break;
-        }
-        case 'Autovettura': {
-          icon = 'http://maps.google.com/mapfiles/kml/shapes/cabs.png';
-          break;
-        }
-        default: {
-          icon = 'http://maps.google.com/mapfiles/kml/paddle/red-circle.png';
-          break;
-        }
-      }
       const data = new Date(vet.ultimo_aggiornamento.toString());
-      const marker = new google.maps.Marker({
-        position: new google.maps.LatLng(vet.long, vet.lat),
-        icon: icon,
-        title: 'ID: ' + vet.identificativo.toString() + '\nStato: ' + vet.stato.toString() + '\nTipologia: ' +
-          vet.tipologia.toString() + '\nAggiornato: ' + data.toDateString() + ' ' + data.toTimeString() + '\nLat: ' +
-          vet.lat + '\nLong: ' + vet.long,
-      });
-      marker.setMap(this.map);
-      this.markers.push(marker);
+      const stato = vet.stato.toString();
+      const tipologia = vet.tipologia.toString();
+      const popuptext = '<b>Stato</b><br/>' + stato + '<br>' + '<b>Tipologia</b><br/>' + tipologia + '<br>' +
+        '<b>Ultimo Aggiornamento</b><br/>' + data + '<br>' + '<b>Lat, Long</b><br/>' + vet.lat + ', ' +  vet.long + '<br>';
+      this.createMarker('ic_map_poi_008-black.png', [vet.lat, vet.long], '#5327c3', popuptext);
     }
   }
 
   clearMarkers() {
     for (const mark of this.markers) {
-      mark.setMap(null);
+      mark.remove();
     }
   }
 
@@ -106,6 +71,31 @@ export class MapsComponent implements OnInit {
         this.inizializzaMarkers(response);
       }
     );
+  }
+
+  createMarker(icon, position, color, popupText) {
+    const markerElement = document.createElement('div');
+    markerElement.className = 'marker';
+
+    const markerContentElement = document.createElement('div');
+    markerContentElement.className = 'marker-content';
+    markerContentElement.style.backgroundColor = color;
+    markerElement.appendChild(markerContentElement);
+
+    const iconElement = document.createElement('div');
+    iconElement.className = 'marker-icon';
+    iconElement.style.backgroundImage =
+      'url(./assets/sdk_tomtom/images/' + icon + ')';
+    markerContentElement.appendChild(iconElement);
+
+    const popup = new tt.Popup({offset: 30}).setHTML(popupText);
+    // add marker to map
+    const marker = new tt.Marker({element: markerElement, anchor: 'bottom'})
+      .setLngLat(position)
+      .setPopup(popup)
+      .addTo(this.map);
+    this.markers.push(marker);
+
   }
 
 }
