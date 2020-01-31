@@ -26,4 +26,9 @@ export class RichiesteListComponent implements OnInit {
       this.router.navigate(['richieste/list']);
     });
   }
+
+  stringoToDate(s: string) {
+    const data = new Date(s);
+    return data.toDateString() + ' - ' + data.getHours() + ':' + data.getMinutes();
+  }
 }

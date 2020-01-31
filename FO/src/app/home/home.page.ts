@@ -4,6 +4,8 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -11,11 +13,15 @@ import {Uid} from '@ionic-native/uid/ngx';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
-  timetest: any;
-  constructor(private router: Router, private androidPermissions: AndroidPermissions,
-              private geolocation: Geolocation, private uid: Uid,
+  url = 'http://192.168.43.119:8080/vetture/update-position/';
+  constructor(private router: Router,
+              private androidPermissions: AndroidPermissions,
+              private geolocation: Geolocation,
+              private uid: Uid,
+              private http: HttpClient,
               private locationAccuracy: LocationAccuracy) {
     this.locationCoords = {
       latitude: '',
@@ -23,7 +29,6 @@ export class HomePage {
       accuracy: '',
       timestamp: ''
     };
-    this.timetest = Date.now();
   }
 
   getImei() {
@@ -121,4 +126,14 @@ export class HomePage {
     });
   }
 
+  sendPostRequest() {
+    const formData = new FormData();
+    formData.append('lat', this.locationCoords.latitude);
+    formData.append('long', this.locationCoords.longitude);
+    console.log('formData: ', formData.getAll('data'));
+    this.http.post(this.url + this.uid.IMEI + '/', formData).subscribe((response) =>
+            console.log(response.toString()),
+        error => (console.log(error.toString()))
+    );
+  }
 }

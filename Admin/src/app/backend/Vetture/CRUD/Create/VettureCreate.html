@@ -49,6 +49,22 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
+                  <label for="stato">Stato *</label>
+                  <select id="stato" class="form-control"  formControlName="stato">
+                    <option *ngFor="let p of statoChoice | keyvalue" [value]="p.key">{{p.value}}</option>
+                  </select>
+                  <div *ngIf="stato.invalid && (stato.dirty || stato.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="stato.errors.required">
+                      Stato is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
                   <label for="imei">IMEI *</label>
                   <input id="imei" type="text" class="form-control" formControlName="imei">
                   <div *ngIf="imei.invalid && (imei.dirty || imei.touched)"
