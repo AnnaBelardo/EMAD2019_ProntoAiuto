@@ -21,7 +21,7 @@ import tt from '@tomtom-international/web-sdk-maps';
 export class MapsComponent implements OnInit {
   private markers = [];
   private map: any;
-  private autoSaveInterval: number = setInterval( () => {this.refreshMarkers()}, 10000);
+  private autoSaveInterval: number = setInterval( () => { this.refreshMarkers(); }, 10000);
 
   constructor(private http: HttpClient, private vettureService: VettureService, private router: Router) {
   }
@@ -44,12 +44,13 @@ export class MapsComponent implements OnInit {
 
   inizializzaMarkers(response: any) {
     for (const vet of response) {
-      const data = new Date(vet.ultimo_aggiornamento.toString());
+      const data = vet.ultimo_aggiornamento.toString();
       const stato = vet.stato.toString();
       const tipologia = vet.tipologia.toString();
       const popuptext = '<b>Stato</b><br/>' + stato + '<br>' + '<b>Tipologia</b><br/>' + tipologia + '<br>' +
-        '<b>Ultimo Aggiornamento</b><br/>' + data + '<br>' + '<b>Lat, Long</b><br/>' + vet.lat + ', ' +  vet.long + '<br>';
-      this.createMarker('ic_map_poi_008-black.png', [vet.lat, vet.long], '#5327c3', popuptext);
+        '<b>Ultimo Aggiornamento</b><br/>' + this.stringoToDate(data) + '<br>' +
+        '<b>Lat, Long</b><br/>' + vet.lat + ', ' +  vet.long + '<br>';
+      this.createMarker('ic_map_poi_008-black.png', [vet.long, vet.lat], '#5327c3', popuptext);
     }
   }
 
@@ -98,4 +99,8 @@ export class MapsComponent implements OnInit {
 
   }
 
+  stringoToDate(s: string) {
+    const data = new Date(s);
+    return data.toDateString() + ' - ' + data.getHours() + ':' + data.getMinutes() + ':' + data.getSeconds();
+  }
 }

@@ -23,7 +23,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#EF8157');
       this.splashScreen.hide();
 
       if (this.platform.is('cordova')) {
@@ -34,21 +34,22 @@ export class AppComponent {
 
   setupPush() {
     this.oneSignal.startInit('a25229e0-e3d2-419c-8706-8c0abbe60353');
-
+    this.oneSignal.getPermissionSubscriptionState().then((status) => alert(status.subscriptionStatus.userId) );
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
     // Notifcation was received in general
     this.oneSignal.handleNotificationReceived().subscribe(data => {
       const msg = data.payload.body;
       const title = data.payload.title;
       const additionalData = data.payload.additionalData;
-      alert(additionalData.task);
+      alert(additionalData.req_pk);
       this.showAlert(title, msg);
-    });
+    },
+        error => { alert(error); }
+        );
 
     // Notification was really clicked/opened
     this.oneSignal.handleNotificationOpened().subscribe(data => {
       // Just a note that the data is a different place here!
-      const additionalData = data.notification.payload.additionalData;
       this.showAlert('Notification opened', 'You already read this before');
     });
 

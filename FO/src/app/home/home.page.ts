@@ -13,15 +13,10 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(); }, 10000);
   // Per le coordinate GPS
-  time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
-  timetest: any;
-  timer: number;
-  url = 'http://192.168.43.119:8080/vetture/update_position/';
-  interval;
-  startDuration = 1;
-  state: 'start' | 'stop' = 'stop';
+  url = 'http://192.168.43.119:8080/vetture/update-position/';
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -34,42 +29,6 @@ export class HomePage {
       accuracy: '',
       timestamp: ''
     };
-    // @ts-ignore
-    this.timetest = Date.now();
-  }
-
-  startTimer(duration: number) {
-    this.state = 'start';
-    clearInterval(this.interval);
-    this.timer = duration * 10;
-    this.updateTimeValue();
-    this.interval = setInterval( () => {
-      this.updateTimeValue();
-    }, 1000);
-  }
-
-  stopTimer() {
-    this.state = 'stop';
-    clearInterval(this.interval);
-  }
-
-  updateTimeValue() {
-    let minutes: any = this.timer / 60;
-    let seconds: any = this.timer % 60;
-
-    minutes = String('0' + Math.floor(minutes)).slice(-2);
-    seconds = String('0' + Math.floor(minutes)).slice(-2);
-
-    const text = minutes + ':' + seconds;
-
-    this.time.next(text);
-
-    --this.timer;
-
-    if (this.timer < -1) {
-      this.startTimer(this.startDuration);
-      this.sendPostRequest();
-    }
   }
 
   getImei() {
@@ -81,7 +40,6 @@ export class HomePage {
   ionViewWillEnter() {
     this.checkGPSPermission();
     this.getImeiPermission();
-    // this.startTimer(this.startDuration);
   }
 
   getLocationCoordinates() {
@@ -168,15 +126,14 @@ export class HomePage {
     });
   }
 
-  async sendPostRequest() {
+  sendPostRequest() {
     const formData = new FormData();
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
-    formData.append('imei', this.uid.IMEI);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(this.url, formData).subscribe((response) =>
-            alert(response.toString()),
-        error => (alert(error.toString()))
+    this.http.post(this.url + this.uid.IMEI + '/', formData).subscribe((response) =>
+            console.log(response.toString()),
+        error => (console.log(error.toString()))
     );
   }
 }

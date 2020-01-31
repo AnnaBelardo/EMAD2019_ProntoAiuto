@@ -23,6 +23,7 @@ export class VetturaUpdateComponent implements OnInit {
   public vetturaUpdate: Observable<Vetture>;
   tipoChoice = {'Autovettura': 'Autovettura', 'Motociclo': 'Motociclo', 'Corazzato': 'Corazzato', 'Elicottero': 'Elicottero',
     'Ambulanza': 'Ambulanza' };
+  statoChoice = {'Operativa': 'Operativa', 'Non Operativa': 'Non Operativa'}
 
   constructor(private vettureService: VettureService, private formBuilder: FormBuilder, private router: Router,
               private route: ActivatedRoute) {
@@ -38,6 +39,9 @@ export class VetturaUpdateComponent implements OnInit {
           ],
         ),
         tipologia: new FormControl(response.tipologia, [
+          Validators.required,
+        ]),
+        stato: new FormControl(response.stato, [
           Validators.required,
         ]),
         imei: new FormControl(response.imei, [
@@ -69,6 +73,7 @@ export class VetturaUpdateComponent implements OnInit {
   get tipologia() { return this.updateVetturaForm.get('tipologia'); }
   get imei() { return this.updateVetturaForm.get('imei'); }
   get playerId() { return this.updateVetturaForm.get('playerId'); }
+  get stato() { return this.updateVetturaForm.get('stato'); }
 
   redirect() {
     this.router.navigate(['vetture/list']);

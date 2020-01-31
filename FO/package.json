@@ -31,6 +31,7 @@
     "@ionic-native/uid": "^5.20.0",
     "@ionic/angular": "^4.7.1",
     "cordova-android": "8.1.0",
+    "cordova-browser": "^6.0.0",
     "cordova-plugin-actionsheet": "^2.3.3",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-dialogs": "^2.0.2",
@@ -97,7 +98,8 @@
       "cordova-plugin-dreamover-uid": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }
