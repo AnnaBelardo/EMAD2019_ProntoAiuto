@@ -16,7 +16,8 @@ export class GestisciRichiestaPage implements OnInit {
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
-  url = 'http://192.168.43.119:8080/vetture/update_position/';
+  urlPosizione = 'http://192.168.43.119:8080/vetture/update_position/';
+  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
   interval;
   startDuration = 1;
   state: 'start' | 'stop' = 'stop';
@@ -93,17 +94,27 @@ export class GestisciRichiestaPage implements OnInit {
 
     if (this.timer < -1) {
       this.startTimer(this.startDuration);
-      this.sendPostRequest();
+      this.sendPostRequest(this.urlPosizione);
     }
   }
 
-  async sendPostRequest() {
+  richiediSupporto() {
+    this.sendPostRequest(this.urlRichiesta);
+  }
+
+  async sendPostRequest(url) {
     const formData = new FormData();
-    formData.append('lat', this.locationCoords.latitude);
-    formData.append('long', this.locationCoords.longitude);
-    formData.append('imei', this.uid.IMEI);
-    console.log('formData: ', formData.getAll('data'));
-    this.http.post(this.url, formData).subscribe((response) =>
+    if (url === this.urlRichiesta) {
+     // append info aspettate dalla POST
+      formData.append('is_supporto', 'True');
+      console.log('formData: ', formData.getAll('data'));
+    } else {
+      formData.append('lat', this.locationCoords.latitude);
+      formData.append('long', this.locationCoords.longitude);
+      formData.append('imei', this.uid.IMEI);
+      console.log('formData: ', formData.getAll('data'));
+    }
+    this.http.post(url, formData).subscribe((response) =>
             alert(response.toString()),
         error => (alert(error.toString()))
     );
