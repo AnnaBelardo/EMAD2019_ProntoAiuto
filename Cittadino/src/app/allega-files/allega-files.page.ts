@@ -10,6 +10,7 @@ import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import {Router} from '@angular/router';
 import { File } from '@ionic-native/file/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 declare var cordova: any;
@@ -35,6 +36,7 @@ export class AllegaFilesPage implements OnInit {
               private locationAccuracy: LocationAccuracy,
               private photoViewer: PhotoViewer,
               private router: Router,
+              private oneSignal: OneSignal,
   ) {
     this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
@@ -189,7 +191,7 @@ export class AllegaFilesPage implements OnInit {
 
   inviaRichiesta() {
     // this.getAllegati();
-    this.sendPostRequest();
+    this.oneSignal.getPermissionSubscriptionState().then((status) => this.sendPostRequest(status.subscriptionStatus.userId));
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -270,7 +272,7 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  async sendPostRequest() {
+  async sendPostRequest(playerId: string) {
     const formData = new FormData();
     await this.to_base_64('fotoAllegata.jpg').then((res) => {
       formData.append('img_data', res);
@@ -278,16 +280,18 @@ export class AllegaFilesPage implements OnInit {
     await this.to_base_64('audioAllegato.3gp').then((res) => {
       formData.append('audio_data', res);
     });
+    formData.append('playerId', playerId);
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
     formData.append('tipologia', this.motivation);
     formData.append('informazioni', this.informazioniAggiuntive);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData).subscribe((response) =>
-            alert(response.toString()),
-        error => (alert(error.toString()))
-    );
+    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData,
+        {observe: 'response'}).subscribe((response) =>
+            alert(response.status.toString()),
+        error => (alert(error.status.toString()))
+     );
   }
 
   async to_base_64(filename: string): Promise<string> {

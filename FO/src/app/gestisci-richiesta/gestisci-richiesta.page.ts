@@ -6,6 +6,7 @@ import { ViewObjectPage } from '../view-object/view-object.page';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -13,6 +14,7 @@ import {Uid} from '@ionic-native/uid/ngx';
   styleUrls: ['./gestisci-richiesta.page.scss'],
 })
 export class GestisciRichiestaPage implements OnInit {
+  pk_req;
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
@@ -25,7 +27,8 @@ export class GestisciRichiestaPage implements OnInit {
               private http: HttpClient,
               private uid: Uid,
               public alertController: AlertController,
-              public modalController: ModalController) { }
+              public modalController: ModalController,
+              private route: ActivatedRoute) { }
   object: any = {
     name: 'Incidente',
     image1: 'assets/images/carcrash.jpg',
@@ -35,10 +38,12 @@ export class GestisciRichiestaPage implements OnInit {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
   ngOnInit() {
+    this.pk_req = this.route.snapshot.paramMap.get('pk_req');
+    alert(this.pk_req);
   }
 
   navigate() {
-    this.launchNavigator.navigate('40 58 8 40 N, 14 15 23 40 E', this.options)
+    this.launchNavigator.navigate([40.7590642, 14.7832711], this.options)
         .then(
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')

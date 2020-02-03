@@ -110,7 +110,7 @@ export class HomePage {
 
   getImeiPermission() {
     this.androidPermissions.checkPermission(
-        this.androidPermissions.PERMISSION.READ_PHOE_STATE
+        this.androidPermissions.PERMISSION.READ_PHONE_STATE
     ).then(res => {
       if (res.hasPermission) {
 
