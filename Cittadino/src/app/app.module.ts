@@ -20,6 +20,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import {HttpClientModule} from '@angular/common/http';
+import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
 
 import { FilePath } from '@ionic-native/file-path/ngx';
 
@@ -28,7 +29,8 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
-
+import { CameraPreview } from '@ionic-native/camera-preview/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,6 +54,9 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
     Geolocation,
     LocationAccuracy,
     PhotoViewer,
+    CameraPreview,
+    NativeStorage,
+    Base64ToGallery,
     Blob,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

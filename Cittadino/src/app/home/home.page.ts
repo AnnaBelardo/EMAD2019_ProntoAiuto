@@ -3,14 +3,15 @@ import { Router } from '@angular/router';
 import { Uid } from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
-import {getPlugin} from '@ionic-native/core/decorators/common';
-declare var cordova: any;
+import {File} from '@ionic-native/file/ngx';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+
   POLIZIA = 1;
   CARABINIERI = 2;
   PARAMEDICI = 3;
@@ -19,38 +20,17 @@ export class HomePage implements OnInit {
               private uid: Uid,
               private androidPermissions: AndroidPermissions,
               private locationAccuracy: LocationAccuracy,
+              private file: File,
   ) {
     const carabinieriButton = document.getElementById('carabinieriButton');
     const poliziaButton = document.getElementById('poliziaButton');
     const paramediciButton = document.getElementById('paramediciButton');
     const pompieriButton = document.getElementById('pompieriButton');
-    // cordova.plugins.CameraPictureBackground.initialize();
-  }
 
-  success(imgurl) {
-    console.log('Imgurl = ' + imgurl);
-  }
-
-  onFail(message) {
-    alert('Failed because: ' + message);
-  }
-
-  capturePhoto() {
-    const options = {
-      name: 'Image', // image suffix
-      dirName: 'CameraPictureBackground', // foldername
-      orientation: 'landscape', // or portrait
-      type: 'back' // or front
-    };
-
-    cordova.plugins.CameraPictureBackground.takePicture(this.success, this.onFail, options);
-
-    function success(imgurl) {
-      console.log('Imgurl = ' + imgurl);
-    }
   }
   ngOnInit(): void {
   }
+
   ionViewWillEnter() {
     this.getImeiPermission();
     this.getCameraPermission();

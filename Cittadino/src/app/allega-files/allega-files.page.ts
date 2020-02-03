@@ -10,7 +10,8 @@ import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import {Router} from '@angular/router';
 import { File } from '@ionic-native/file/ngx';
-
+import { CameraPreview, CameraPreviewPictureOptions } from '@ionic-native/camera-preview/ngx';
+import {Base64ToGallery, Base64ToGalleryOptions} from '@ionic-native/base64-to-gallery/ngx';
 
 declare var cordova: any;
 // import {HTTP} from '@ionic-native/http/ngx';
@@ -22,6 +23,33 @@ declare var cordova: any;
   styleUrls: ['./allega-files.page.scss'],
 })
 export class AllegaFilesPage implements OnInit {
+  public pictureOpts: CameraPreviewPictureOptions = {
+    width: 1280,
+    height: 1280,
+    quality: 85
+  };
+
+  selfieBase64: string;
+  public cameraPreviewOpts = {
+    x: 0,
+    y: 0,
+    width: window.screen.width,
+    height: window.screen.height,
+    camera: this.cameraPreview.CAMERA_DIRECTION.FRONT,
+    tapPhoto: true,
+    previewDrag: true,
+    storeToFile: false,
+    disableExifHeaderStripping: true,
+    toBack: true,
+    alpha: 1,
+  };
+  // opzioni per salvataggio su dispositivo
+  /*
+  public base64option: Base64ToGalleryOptions = {
+    prefix: 'img',
+    mediaScanner: false
+  };*/
+
   constructor(public navCtrl: NavController,
               private media: Media,
               private file: File,
@@ -35,6 +63,8 @@ export class AllegaFilesPage implements OnInit {
               private locationAccuracy: LocationAccuracy,
               private photoViewer: PhotoViewer,
               private router: Router,
+              private cameraPreview: CameraPreview,
+              private base64ToGallery: Base64ToGallery
   ) {
     this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
@@ -46,6 +76,16 @@ export class AllegaFilesPage implements OnInit {
       timestamp: ''
     };
     this.timetest = Date.now();
+    this.selfieBase64 = null;
+    this.cameraPreview.startCamera(this.cameraPreviewOpts).then(
+        (res) => {
+          console.log(res);
+          // alert(res);
+        },
+        (err) => {
+          console.log(err);
+          // alert(err);
+        });
   }
 
 
@@ -100,6 +140,33 @@ export class AllegaFilesPage implements OnInit {
     }
   }
 
+   async takeSelfie() {
+    // take a picture
+    this.cameraPreview.takePicture(this.pictureOpts).then((base64PictureData) => {
+      /*
+        if the storeToFile option is false (the default), then base64PictureData is returned.
+        base64PictureData is base64 encoded jpeg image. Use this data to store to a file or upload.
+        Its up to the you to figure out the best way to save it to disk or whatever for your application.
+      */
+
+      /*
+        if the storeToFile option is set to true, then a filePath is returned. Note that the file
+        is stored in temporary storage, so you should move it to a permanent location if you
+        don't want the OS to remove it arbitrarily.
+      */
+      this.selfieBase64 =  base64PictureData;
+     // alert(this.selfieBase64);
+      // il codice sottostante serve per salvare la foto in mem.interna -> pictures
+/*
+      const todecode = atob(base64PictureData);
+
+      this.base64ToGallery.base64ToGallery(btoa(todecode), this.base64option).then(
+          res => alert('Saved image to gallery ' + res),
+          err => alert('Error saving image to gallery ' + err)
+      );*/
+    });
+    // this.cameraPreview.stopCamera();
+  }
   takePicture() {
     const options: CameraOptions = {
       quality: 50,
@@ -188,6 +255,7 @@ export class AllegaFilesPage implements OnInit {
   }
 
   inviaRichiesta() {
+    this.takeSelfie();
     // this.getAllegati();
     this.sendPostRequest();
   }
@@ -283,6 +351,7 @@ export class AllegaFilesPage implements OnInit {
     formData.append('imei', this.uid.IMEI);
     formData.append('tipologia', this.motivation);
     formData.append('informazioni', this.informazioniAggiuntive);
+    formData.append('selfie.jpg', this.selfieBase64);
     console.log('formData: ', formData.getAll('data'));
     this.http.post('http://192.168.43.119:8080/richiesta/create/', formData).subscribe((response) =>
             alert(response.toString()),
