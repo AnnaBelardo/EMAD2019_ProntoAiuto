@@ -14,14 +14,13 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./gestisci-richiesta.page.scss'],
 })
 export class GestisciRichiestaPage implements OnInit {
-  pk_req;
+  pkReq;
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
   urlPosizione = 'http://192.168.43.119:8080/vetture/update_position/';
   urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
-  interval;
-  startDuration = 1;
   state: 'start' | 'stop' = 'stop';
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
@@ -38,8 +37,8 @@ export class GestisciRichiestaPage implements OnInit {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
   ngOnInit() {
-    this.pk_req = this.route.snapshot.paramMap.get('pk_req');
-    alert(this.pk_req);
+    this.pkReq = this.route.snapshot.paramMap.get('pk_req');
+    alert(this.pkReq);
   }
 
   navigate() {
@@ -67,40 +66,6 @@ export class GestisciRichiestaPage implements OnInit {
       }
     });
     return await modal.present();
-  }
-
-  startTimer(duration: number) {
-    this.state = 'start';
-    clearInterval(this.interval);
-    this.timer = duration * 10;
-    this.updateTimeValue();
-    this.interval = setInterval( () => {
-      this.updateTimeValue();
-    }, 1000);
-  }
-
-  stopTimer() {
-    this.state = 'stop';
-    clearInterval(this.interval);
-  }
-
-  updateTimeValue() {
-    let minutes: any = this.timer / 60;
-    let seconds: any = this.timer % 60;
-
-    minutes = String('0' + Math.floor(minutes)).slice(-2);
-    seconds = String('0' + Math.floor(minutes)).slice(-2);
-
-    const text = minutes + ':' + seconds;
-
-    this.time.next(text);
-
-    --this.timer;
-
-    if (this.timer < -1) {
-      this.startTimer(this.startDuration);
-      this.sendPostRequest(this.urlPosizione);
-    }
   }
 
   richiediSupporto() {
