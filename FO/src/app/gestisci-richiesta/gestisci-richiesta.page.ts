@@ -6,6 +6,7 @@ import { ViewObjectPage } from '../view-object/view-object.page';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -13,18 +14,20 @@ import {Uid} from '@ionic-native/uid/ngx';
   styleUrls: ['./gestisci-richiesta.page.scss'],
 })
 export class GestisciRichiestaPage implements OnInit {
+  pkReq;
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
-  url = 'http://192.168.43.119:8080/vetture/update_position/';
-  interval;
-  startDuration = 1;
+  urlPosizione = 'http://192.168.43.119:8080/vetture/update_position/';
+  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
   state: 'start' | 'stop' = 'stop';
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
               private uid: Uid,
               public alertController: AlertController,
-              public modalController: ModalController) { }
+              public modalController: ModalController,
+              private route: ActivatedRoute) { }
   object: any = {
     name: 'Incidente',
     image1: 'assets/images/carcrash.jpg',
@@ -34,10 +37,12 @@ export class GestisciRichiestaPage implements OnInit {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
   ngOnInit() {
+    this.pkReq = this.route.snapshot.paramMap.get('pk_req');
+    alert(this.pkReq);
   }
 
   navigate() {
-    this.launchNavigator.navigate('40 58 8 40 N, 14 15 23 40 E', this.options)
+    this.launchNavigator.navigate([40.7590642, 14.7832711], this.options)
         .then(
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')
@@ -63,47 +68,23 @@ export class GestisciRichiestaPage implements OnInit {
     return await modal.present();
   }
 
-  startTimer(duration: number) {
-    this.state = 'start';
-    clearInterval(this.interval);
-    this.timer = duration * 10;
-    this.updateTimeValue();
-    this.interval = setInterval( () => {
-      this.updateTimeValue();
-    }, 1000);
+  richiediSupporto() {
+    this.sendPostRequest(this.urlRichiesta);
   }
 
-  stopTimer() {
-    this.state = 'stop';
-    clearInterval(this.interval);
-  }
-
-  updateTimeValue() {
-    let minutes: any = this.timer / 60;
-    let seconds: any = this.timer % 60;
-
-    minutes = String('0' + Math.floor(minutes)).slice(-2);
-    seconds = String('0' + Math.floor(minutes)).slice(-2);
-
-    const text = minutes + ':' + seconds;
-
-    this.time.next(text);
-
-    --this.timer;
-
-    if (this.timer < -1) {
-      this.startTimer(this.startDuration);
-      this.sendPostRequest();
-    }
-  }
-
-  async sendPostRequest() {
+  async sendPostRequest(url) {
     const formData = new FormData();
-    formData.append('lat', this.locationCoords.latitude);
-    formData.append('long', this.locationCoords.longitude);
-    formData.append('imei', this.uid.IMEI);
-    console.log('formData: ', formData.getAll('data'));
-    this.http.post(this.url, formData).subscribe((response) =>
+    if (url === this.urlRichiesta) {
+     // append info aspettate dalla POST
+      formData.append('is_supporto', 'True');
+      console.log('formData: ', formData.getAll('data'));
+    } else {
+      formData.append('lat', this.locationCoords.latitude);
+      formData.append('long', this.locationCoords.longitude);
+      formData.append('imei', this.uid.IMEI);
+      console.log('formData: ', formData.getAll('data'));
+    }
+    this.http.post(url, formData).subscribe((response) =>
             alert(response.toString()),
         error => (alert(error.toString()))
     );

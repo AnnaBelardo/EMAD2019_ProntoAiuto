@@ -44,13 +44,19 @@ export class MapsComponent implements OnInit {
 
   inizializzaMarkers(response: any) {
     for (const vet of response) {
+      let color: string;
+      if (vet.disponibile) {
+        color = '#5327c3';
+      } else {
+        color = '#cc0000';
+      }
       const data = vet.ultimo_aggiornamento.toString();
       const stato = vet.stato.toString();
       const tipologia = vet.tipologia.toString();
       const popuptext = '<b>Stato</b><br/>' + stato + '<br>' + '<b>Tipologia</b><br/>' + tipologia + '<br>' +
         '<b>Ultimo Aggiornamento</b><br/>' + this.stringoToDate(data) + '<br>' +
         '<b>Lat, Long</b><br/>' + vet.lat + ', ' +  vet.long + '<br>';
-      this.createMarker('ic_map_poi_008-black.png', [vet.long, vet.lat], '#5327c3', popuptext);
+      this.createMarker('ic_map_poi_008-black.png', [vet.long, vet.lat], color, popuptext);
     }
   }
 

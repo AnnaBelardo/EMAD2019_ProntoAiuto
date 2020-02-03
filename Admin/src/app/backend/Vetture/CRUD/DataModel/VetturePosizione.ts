@@ -8,4 +8,5 @@ export interface VetturePosizione {
   lat: number;
   long: number;
   ultimo_aggiornamento: string;
+  disponibile: boolean
 }

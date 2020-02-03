@@ -12,6 +12,8 @@ import {Router} from '@angular/router';
 import { File } from '@ionic-native/file/ngx';
 import { CameraPreview, CameraPreviewPictureOptions } from '@ionic-native/camera-preview/ngx';
 import {Base64ToGallery, Base64ToGalleryOptions} from '@ionic-native/base64-to-gallery/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 
 declare var cordova: any;
 // import {HTTP} from '@ionic-native/http/ngx';
@@ -64,7 +66,8 @@ export class AllegaFilesPage implements OnInit {
               private photoViewer: PhotoViewer,
               private router: Router,
               private cameraPreview: CameraPreview,
-              private base64ToGallery: Base64ToGallery
+              private base64ToGallery: Base64ToGallery,
+              private oneSignal: OneSignal,
   ) {
     this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
@@ -257,7 +260,7 @@ export class AllegaFilesPage implements OnInit {
   inviaRichiesta() {
     this.takeSelfie();
     // this.getAllegati();
-    this.sendPostRequest();
+    this.oneSignal.getPermissionSubscriptionState().then((status) => this.sendPostRequest(status.subscriptionStatus.userId));
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -338,7 +341,7 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  async sendPostRequest() {
+  async sendPostRequest(playerId: string) {
     const formData = new FormData();
     await this.to_base_64('fotoAllegata.jpg').then((res) => {
       formData.append('img_data', res);
@@ -346,6 +349,7 @@ export class AllegaFilesPage implements OnInit {
     await this.to_base_64('audioAllegato.3gp').then((res) => {
       formData.append('audio_data', res);
     });
+    formData.append('playerId', playerId);
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
@@ -353,10 +357,11 @@ export class AllegaFilesPage implements OnInit {
     formData.append('informazioni', this.informazioniAggiuntive);
     formData.append('selfie.jpg', this.selfieBase64);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData).subscribe((response) =>
-            alert(response.toString()),
-        error => (alert(error.toString()))
-    );
+    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData,
+        {observe: 'response'}).subscribe((response) =>
+            alert(response.status.toString()),
+        error => (alert(error.status.toString()))
+     );
   }
 
   async to_base_64(filename: string): Promise<string> {

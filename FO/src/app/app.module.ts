@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
@@ -22,18 +22,17 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule, HttpClientModule],
   providers: [
     OneSignal,
     StatusBar,
-    HttpClientModule,
     SplashScreen,
     LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AndroidPermissions,
     Geolocation,
     LocationAccuracy,
-    Uid
+    Uid,
   ],
   bootstrap: [AppComponent]
 })

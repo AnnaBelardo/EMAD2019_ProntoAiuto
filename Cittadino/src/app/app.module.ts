@@ -16,13 +16,12 @@ import { File } from '@ionic-native/file/ngx';
 import { Uid } from '@ionic-native/uid/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import {HttpClientModule} from '@angular/common/http';
 import {Base64ToGallery} from '@ionic-native/base64-to-gallery/ngx';
-
-import { FilePath } from '@ionic-native/file-path/ngx';
 
 
 import { IonicStorageModule } from '@ionic/storage';
@@ -42,6 +41,7 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
     IonicStorageModule.forRoot()
   ],
   providers: [
+    OneSignal,
     StatusBar,
     SplashScreen,
     Uid,

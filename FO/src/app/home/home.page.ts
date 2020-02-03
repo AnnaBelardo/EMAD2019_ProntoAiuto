@@ -13,10 +13,11 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(); }, 10000);
+  urlPosizione = 'http://192.168.43.119:8080/vetture/update-position/';
+  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
-  url = 'http://192.168.43.119:8080/vetture/update-position/';
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -109,7 +110,7 @@ export class HomePage {
 
   getImeiPermission() {
     this.androidPermissions.checkPermission(
-        this.androidPermissions.PERMISSION.READ_PHOE_STATE
+        this.androidPermissions.PERMISSION.READ_PHONE_STATE
     ).then(res => {
       if (res.hasPermission) {
 
@@ -126,12 +127,20 @@ export class HomePage {
     });
   }
 
-  sendPostRequest() {
+  richiediSupporto() {
+    this.sendPostRequest(this.urlRichiesta);
+    alert('Una richiesta di supporto è stata inviata alla voltante più vicina.');
+  }
+
+  sendPostRequest(url) {
     const formData = new FormData();
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
+    if (url === this.urlRichiesta) {
+      formData.append('is_supporto', 'True');
+    }
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(this.url + this.uid.IMEI + '/', formData).subscribe((response) =>
+    this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
         error => (console.log(error.toString()))
     );

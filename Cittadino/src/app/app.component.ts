@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import {enableProdMode} from '@angular/core';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 
 enableProdMode();
 @Component({
@@ -16,14 +18,66 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private oneSignal: OneSignal,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.backgroundColorByHexString('#EF8157');
       this.splashScreen.hide();
+
+      if (this.platform.is('cordova')) {
+        this.setupPush();
+      }
     });
   }
+
+  setupPush() {
+    this.oneSignal.startInit('a25229e0-e3d2-419c-8706-8c0abbe60353');
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    // Notifcation was received in general
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+          const msg = data.payload.body;
+          const title = data.payload.title;
+          const additionalData = data.payload.additionalData;
+          alert(additionalData.req_pk);
+          this.showAlert(title, msg);
+        },
+        error => { alert(error); }
+    );
+
+    // Notification was really clicked/opened
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      // Just a note that the data is a different place here!
+      this.showAlert('Notification opened', 'You already read this before');
+    });
+
+    this.oneSignal.endInit();
+  }
+
+  async showAlert(title, msg) {
+    const alert = await this.alertCtrl.create({
+      header: title,
+      subHeader: msg,
+      buttons: [
+        {
+          text: `Accetta`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+          }
+        },
+        {
+          text: `Rifiuta`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
 }
