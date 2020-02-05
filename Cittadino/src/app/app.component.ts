@@ -64,17 +64,12 @@ export class AppComponent {
       subHeader: msg,
       buttons: [
         {
-          text: `Accetta`,
+          text: `Chiudi`,
           handler: () => {
             // E.g: Navigate to a specific screen
+            alert.dismiss();
           }
         },
-        {
-          text: `Rifiuta`,
-          handler: () => {
-            // E.g: Navigate to a specific screen
-          }
-        }
       ]
     });
     alert.present();

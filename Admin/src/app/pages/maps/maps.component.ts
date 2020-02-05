@@ -53,8 +53,10 @@ export class MapsComponent implements OnInit {
       const data = vet.ultimo_aggiornamento.toString();
       const stato = vet.stato.toString();
       const tipologia = vet.tipologia.toString();
+      const fo = vet.forza_ordine.toString();
       const popuptext = '<b>Stato</b><br/>' + stato + '<br>' + '<b>Tipologia</b><br/>' + tipologia + '<br>' +
-        '<b>Ultimo Aggiornamento</b><br/>' + this.stringoToDate(data) + '<br>' +
+        '<b>Forza dell\'ordine</b><br/>' + fo +
+        '<br>' + '<b>Ultimo Aggiornamento</b><br/>' + this.stringoToDate(data) + '<br>' +
         '<b>Lat, Long</b><br/>' + vet.lat + ', ' +  vet.long + '<br>';
       this.createMarker('ic_map_poi_008-black.png', [vet.long, vet.lat], color, popuptext);
     }

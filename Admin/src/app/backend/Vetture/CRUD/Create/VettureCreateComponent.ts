@@ -19,10 +19,10 @@ import {UniqueIdentificativoValidator} from '../Directives/identificativo.direct
 export class VettureCreateComponent implements OnInit {
   createVetturaForm;
   public vetturaNew: Observable<Vetture>;
-  tipoChoice = {'Autovettura': 'Autovettura', 'Motociclo': 'Motociclo', 'Corazzato': 'Corazzato', 'Elicottero': 'Elicottero',
-    'Ambulanza': 'Ambulanza' };
-  statoChoice = {'Operativa': 'Operativa', 'Non Operativa': 'Non Operativa'}
-
+  tipoChoice = {'Autovettura': 'Autovettura', 'Motociclo': 'Motociclo',
+    'Ambulanza': 'Ambulanza', 'Autocarro': 'Autocarro' };
+  statoChoice = {'Operativa': 'Operativa', 'Non Operativa': 'Non Operativa'};
+  foChoiche = { 'Polizia': 'Polizia', 'Carabinieri': 'Carabinieri', 'Paramedici': 'Paramedici', 'Pompieri': 'Pompieri'}
   constructor(private vettureService: VettureService, private formBuilder: FormBuilder, private router: Router,
               private identificativoValidator: UniqueIdentificativoValidator) {
   }
@@ -35,6 +35,9 @@ export class VettureCreateComponent implements OnInit {
       ], [this.identificativoValidator.validate.bind(this.identificativoValidator)],
       ),
       tipologia: new FormControl('', [
+        Validators.required,
+      ]),
+      forza_ordine: new FormControl('', [
         Validators.required,
       ]),
       stato: new FormControl('', [
@@ -70,6 +73,7 @@ export class VettureCreateComponent implements OnInit {
   get imei() { return this.createVetturaForm.get('imei'); }
   get playerId() { return this.createVetturaForm.get('playerId'); }
   get stato() { return this.createVetturaForm.get('stato'); }
+  get forza_ordine() { return this.createVetturaForm.get('forza_ordine'); }
 
   redirect() {
     this.router.navigate(['vetture/list']);

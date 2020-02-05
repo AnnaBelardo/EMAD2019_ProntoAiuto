@@ -112,6 +112,7 @@ export class AllegaFilesPage implements OnInit {
   timetest: any;
   tipoForza;
   motivi: any[] = [];
+  forzaOrdine: string;
 
 //  sendPostRequest() {
 //    const headers = {
@@ -123,19 +124,22 @@ export class AllegaFilesPage implements OnInit {
 //      asd: 'asd'
 //    });
 //  }
-
   ngOnInit() {
     switch (this.tipoForza) {
       case (1):
+        this.forzaOrdine = 'Polizia';
         this.motivi = ['Furto', 'Incidente stradale', 'Violenza domestica', 'Altro...'];
         break;
       case (2):
+        this.forzaOrdine = 'Carabinieri';
         this.motivi = ['Furto', 'Incidente stradale', 'Violenza domestica', 'Altro...'];
         break;
       case (3):
+        this.forzaOrdine = 'Paramedici';
         this.motivi = ['Malore improvviso', 'Incidente', 'Altro...'];
         break;
       case (4):
+        this.forzaOrdine = 'Pompieri';
         this.motivi = ['Incidente', 'Incendio', 'Dissesti statici', 'Altro...'];
         break;
       default:
@@ -260,7 +264,10 @@ export class AllegaFilesPage implements OnInit {
   inviaRichiesta() {
     this.takeSelfie();
     // this.getAllegati();
-    this.oneSignal.getPermissionSubscriptionState().then((status) => this.sendPostRequest(status.subscriptionStatus.userId));
+    this.cameraPreview.takePicture(this.pictureOpts).then((base64PictureData) => {
+      this.oneSignal.getPermissionSubscriptionState().then((status) =>
+          this.sendPostRequest(status.subscriptionStatus.userId, base64PictureData));
+    });
   }
 
   // Memorizzo le coordinate per riutilizzarle
@@ -341,7 +348,7 @@ export class AllegaFilesPage implements OnInit {
     );
   }
 
-  async sendPostRequest(playerId: string) {
+  async sendPostRequest(playerId: string, base64PictureData: string) {
     const formData = new FormData();
     await this.to_base_64('fotoAllegata.jpg').then((res) => {
       formData.append('img_data', res);
@@ -349,17 +356,21 @@ export class AllegaFilesPage implements OnInit {
     await this.to_base_64('audioAllegato.3gp').then((res) => {
       formData.append('audio_data', res);
     });
+    formData.append('selfie_data', base64PictureData);
     formData.append('playerId', playerId);
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
     formData.append('tipologia', this.motivation);
+    formData.append('is_supporto', 'False');
     formData.append('informazioni', this.informazioniAggiuntive);
-    formData.append('selfie.jpg', this.selfieBase64);
+    formData.append('forza_ordine', this.forzaOrdine);
     console.log('formData: ', formData.getAll('data'));
     this.http.post('http://192.168.43.119:8080/richiesta/create/', formData,
-        {observe: 'response'}).subscribe((response) =>
-            alert(response.status.toString()),
+        {observe: 'response'}).subscribe((response) => {
+      console.log(response.status.toString());
+      this.router.navigate(['home']);
+    },
         error => (alert(error.status.toString()))
      );
   }
@@ -372,5 +383,9 @@ export class AllegaFilesPage implements OnInit {
       alert(err);
     });
     return returnvalue;
+  }
+
+  inviaDisabled(): boolean {
+    return !this.motivation;
   }
 }

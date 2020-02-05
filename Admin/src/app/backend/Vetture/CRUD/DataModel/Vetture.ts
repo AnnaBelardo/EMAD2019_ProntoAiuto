@@ -5,4 +5,5 @@ export interface Vetture {
   tipologia: string;
   stato: string;
   playerId: string;
+  forza_ordine: string;
 }

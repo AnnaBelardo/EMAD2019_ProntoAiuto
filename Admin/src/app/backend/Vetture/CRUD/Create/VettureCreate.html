@@ -49,6 +49,22 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
+                  <label for="forza_ordine">Forza dell'ordine *</label>
+                  <select id="forza_ordine" class="form-control"  formControlName="forza_ordine">
+                    <option *ngFor="let p of foChoiche | keyvalue" [value]="p.key">{{p.value}}</option>
+                  </select>
+                  <div *ngIf="forza_ordine.invalid && (forza_ordine.dirty || forza_ordine.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="forza_ordine.errors.required">
+                      Forza dell'ordine is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
                   <label for="stato">Stato *</label>
                   <select id="stato" class="form-control"  formControlName="stato">
                     <option *ngFor="let p of statoChoice | keyvalue" [value]="p.key">{{p.value}}</option>

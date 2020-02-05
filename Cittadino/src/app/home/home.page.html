@@ -11,24 +11,24 @@
     <ion-row>
         <ion-col size="1"><div></div></ion-col>
         <ion-col size="10">
-            <ion-card class="border-arancione">
+            <ion-card class="border-arancione" *ngIf="richiesta != null">
                 <ion-row>
                     <ion-col size="12">
-                        <ion-text color="dark" class="ion-text-start; bold">
+                        <ion-text class="ion-text-start testo-bianco-grassetto">
                             Stato della richiesta:
                         </ion-text>
-                        <ion-text color="dark" class="ion-text-center">
-                            Presa in carico
+                        <ion-text class="ion-text-center testo-bianco">
+                            {{richiesta.stato}}
                         </ion-text>
                     </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col size="12">
-                        <ion-text color="dark" class="ion-text-start; bold">
+                        <ion-text class="ion-text-start testo-bianco-grassetto">
                             Tempo stimato:
                         </ion-text>
-                        <ion-text color="dark" class="ion-text-center">
-                            12m
+                        <ion-text class="ion-text-center testo-bianco">
+                            {{tempoStimatoFormattato()}} min.
                         </ion-text>
                     </ion-col>
                 </ion-row>
@@ -37,7 +37,7 @@
         <ion-col size="1"><div></div></ion-col>
     </ion-row>
     <ion-text color="dark" class="ion-text-center">
-        <h5>Chiedi aiuto a</h5>
+        <h5>Chiedi Aiuto</h5>
     </ion-text>
     <ion-row style="padding-top: 30px;">
 
@@ -47,20 +47,20 @@
     </ion-col>
     <ion-col size="5" >
       <div>
-          <ion-button id="carabinieriButton" (click)="goToAllega(CARABINIERI)" class="image-max">
+          <ion-button id="carabinieriButton" (click)="goToAllega(CARABINIERI)" class="image-max" [disabled]="richiestaDisabled()">
               <img src="../assets/icon/carabinieri.png">
           </ion-button>
-          <ion-button id="poliziaButton" (click)="goToAllega(POLIZIA)" class="image-max">
+          <ion-button id="poliziaButton" (click)="goToAllega(POLIZIA)" class="image-max" [disabled]="richiestaDisabled()">
               <img src="../assets/icon/polizia.png">
           </ion-button>
       </div>
     </ion-col>
     <ion-col size="5">
       <div>
-          <ion-button id="pompieriButton" (click)="goToAllega(POMPIERI)" class="image-max">
+          <ion-button id="pompieriButton" (click)="goToAllega(POMPIERI)" class="image-max" [disabled]="richiestaDisabled()">
               <img src="../assets/icon/pompiere.png">
           </ion-button>
-          <ion-button id="paramediciButton" (click)="goToAllega(PARAMEDICI)" class="image-max">
+          <ion-button id="paramediciButton" (click)="goToAllega(PARAMEDICI)" class="image-max" [disabled]="richiestaDisabled()">
               <img src="../assets/icon/paramedici.png">
           </ion-button>
       </div>
@@ -78,7 +78,7 @@
             </div>
         </ion-col>
         <ion-col size="10">
-            <div style="padding-top: 90px;">
+            <div style="padding-top: 50px;">
                 <ion-button id="statisticheButton" (click)="goToStatistiche()" class="image-max">
                     <img src="../assets/icon/statistiche.png">
                 </ion-button>

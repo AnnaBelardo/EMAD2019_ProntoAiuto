@@ -16,13 +16,10 @@
               Tipologia
             </th>
             <th style="text-align: center">
-              Supporto
+              Stato
             </th>
             <th style="text-align: center">
-              Latitudine
-            </th>
-            <th style="text-align: center">
-              Longitudine
+              Forza dell'ordine
             </th>
             <th style="text-align: center">
               Data
@@ -37,13 +34,10 @@
                 {{richiesta.tipologia}}
               </td>
               <td style="text-align: center">
-                {{richiesta.is_supporto}}
+                {{richiesta.stato}}
               </td>
               <td style="text-align: center">
-                {{richiesta.lat}}
-              </td>
-              <td style="text-align: center">
-                {{richiesta.long}}
+                {{richiesta.forza_ordine}}
               </td>
               <td style="text-align: center">
                 {{stringoToDate(richiesta.data.toString())}}

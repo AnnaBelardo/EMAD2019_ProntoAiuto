@@ -1,31 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Uid } from '@ionic-native/uid/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
-import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
-import {File} from '@ionic-native/file/ngx';
+import {HttpClient} from '@angular/common/http';
+import {Apiconfig} from '../ApiConfig';
+import {Observable} from 'rxjs';
+import {Richiesta} from '../DataModel/Richiesta';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
 
+@Injectable({ providedIn: 'root' })
+export class HomePage implements OnInit {
+  public richiesta: Richiesta;
+  urlCheckRichiesta = Apiconfig.url + 'richiesta/get/cittadino/';
   POLIZIA = 1;
   CARABINIERI = 2;
   PARAMEDICI = 3;
   POMPIERI = 4;
+  private autoSaveInterval: number = setInterval( () => { this.getRichiesta(); }, 5000);
   constructor(private router: Router,
               private uid: Uid,
               private androidPermissions: AndroidPermissions,
-              private locationAccuracy: LocationAccuracy,
-              private file: File,
+              private http: HttpClient,
   ) {
-    const carabinieriButton = document.getElementById('carabinieriButton');
-    const poliziaButton = document.getElementById('poliziaButton');
-    const paramediciButton = document.getElementById('paramediciButton');
-    const pompieriButton = document.getElementById('pompieriButton');
 
   }
   ngOnInit(): void {
@@ -78,5 +79,18 @@ export class HomePage implements OnInit {
     }).catch(error => {
       alert('Error! ' + error);
     });
+  }
+
+  getRichiesta() {
+    const richiesta = this.http.get(this.urlCheckRichiesta + this.uid.IMEI) as Observable<Richiesta[]>;
+    richiesta.subscribe((response) =>  this.richiesta = response[0]);
+  }
+
+  richiestaDisabled(): boolean {
+    return !(!this.richiesta);
+  }
+
+  tempoStimatoFormattato(): string {
+    return (Math.round(((this.richiesta.tempoDiArrivo / 60) + Number.EPSILON) * 100) / 100).toString();
   }
 }
