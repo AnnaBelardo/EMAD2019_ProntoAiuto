@@ -366,7 +366,7 @@ export class AllegaFilesPage implements OnInit {
     formData.append('informazioni', this.informazioniAggiuntive);
     formData.append('forza_ordine', this.forzaOrdine);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData,
+    this.http.post(ConnectionConfig.getBaseUrl() + '/richiesta/create/', formData,
         {observe: 'response'}).subscribe((response) => {
       console.log(response.status.toString());
       this.router.navigate(['home']);
