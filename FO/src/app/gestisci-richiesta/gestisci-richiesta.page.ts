@@ -21,9 +21,9 @@ export class GestisciRichiestaPage implements OnInit {
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
-  urlPosizione = 'http://192.168.43.119:8080/vetture/update_position/';
-  urlRichiestaCittadino = 'http://192.168.43.119:8080/richiesta/get/richiesta/detail/';
-  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
+  urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update_position/';
+  urlRichiestaCittadino = ConnectionConfig.getBaseUrl() + '/richiesta/get/richiesta/detail/';
+  urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   state: 'start' | 'stop' = 'stop';
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,

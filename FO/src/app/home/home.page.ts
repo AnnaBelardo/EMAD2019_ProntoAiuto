@@ -13,8 +13,8 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  urlPosizione = 'http://192.168.43.119:8080/vetture/update-position/';
-  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
+  urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update-position/';
+  urlRichiesta = ConnectionConfig.getBaseUrl() + 'richiesta/create/';
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
