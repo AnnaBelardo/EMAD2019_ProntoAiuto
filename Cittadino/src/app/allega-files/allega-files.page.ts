@@ -13,6 +13,7 @@ import { File } from '@ionic-native/file/ngx';
 import { CameraPreview, CameraPreviewPictureOptions } from '@ionic-native/camera-preview/ngx';
 import {Base64ToGallery, Base64ToGalleryOptions} from '@ionic-native/base64-to-gallery/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import {ConnectionConfig} from "../ConnectionConfig";
 
 
 declare var cordova: any;
