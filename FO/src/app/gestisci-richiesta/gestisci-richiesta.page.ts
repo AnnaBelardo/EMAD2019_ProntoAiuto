@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
 import {ActivatedRoute} from '@angular/router';
 import {Richiesta} from './Richiesta';
+import {ConnectionConfig} from '../ConnectionConfig';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -34,7 +35,7 @@ export class GestisciRichiestaPage implements OnInit {
   object: any = {
     name: 'Incidente',
     image1: 'assets/images/carcrash.jpg',
-    image2: 'assets/images/carcrash2.jpg',
+    image2: this.pkReq.image,
   };
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
@@ -46,7 +47,7 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   navigate() {
-    this.launchNavigator.navigate([40.7590642, 14.7832711], this.options)
+    this.launchNavigator.navigate([this.pkReq.latitude, this.pkReq.longitude], this.options)
         .then(
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')
