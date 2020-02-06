@@ -22,7 +22,7 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule, HttpClientModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ViewObjectPageModule, HttpClientModule ],
   providers: [
     OneSignal,
     StatusBar,
