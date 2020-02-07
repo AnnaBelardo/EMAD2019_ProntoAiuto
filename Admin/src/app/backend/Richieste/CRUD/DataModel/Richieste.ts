@@ -1,4 +1,5 @@
 export interface Richieste {
+  id: number;
   imei: string;
   tipologia: string;
   stato: string;
@@ -8,4 +9,11 @@ export interface Richieste {
   data: string;
   long: string;
   lat: string;
+  vettura: string;
+  vettura_imei: string;
+  selfie: string;
+  foto: string;
+  audio: string;
+  linea_verde_richiesta: boolean;
+  tempoDiArrivo: number;
 }

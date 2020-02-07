@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <div id='map'></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Dettaglio Richiesta</h5>
+      </div>
+      <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <b>IMEI</b><br>
+              {{imei}}
+            </div>
+            <div class="col-md-4">
+                <b>Latitudine</b><br>
+                {{latitudine}} N
+            </div>
+            <div class="col-md-4">
+                <b>Longitudine</b><br>
+                {{longitudine}} E
+            </div>
+          </div>
+        <br>
+          <div class="row">
+            <div class="col-md-4">
+              <b>Tipologia</b><br>
+              {{tipologia}}
+            </div>
+            <div class="col-md-4">
+              <b>Informazioni</b><br>
+              {{informazioni}}
+            </div>
+            <div class="col-md-4">
+              <b>Stato</b><br>
+              {{stato}}
+            </div>
+          </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+              <b>Forza dell'ordine</b><br>
+              {{forzaOrdine}}
+            </div>
+            <div class="col-md-4">
+              <b>ID vettura</b><br>
+              {{idVettura}}
+            </div>
+            <div class="col-md-4">
+              <b>IMEI vettura</b><br>
+              {{imeiVettura}}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <b>Linea verde richiesta</b><br>
+            {{lineaVerde}}
+          </div>
+          <div class="col-md-4">
+            <b>Richiesta di supporto</b><br>
+            {{supporto}}
+          </div>
+          <div class="col-md-4">
+            <b>Tempo di arrivo</b><br>
+            {{tempoStimatoFormattato()}} min.
+          </div>
+        </div>
+          <br>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Foto allegate</h4>
+      </div>
+      <div class="card-body">
+        <ngb-carousel>
+          <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+              <img src="{{ selfie }}" class="rotate180">
+            </div>
+            <div class="carousel-caption">
+              <h3>Selfie</h3>
+            </div>
+          </ng-template>
+          <ng-template ngbSlide>
+            <div class="picsum-img-wrapper">
+              <img src="{{ foto }}">
+            </div>
+            <div class="carousel-caption">
+              <h3>Foto</h3>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Audio allegato</h4>
+      </div>
+      <div class="card-body" id="cardBodyAudio">
+
+      </div>
+    </div>
+  </div>
+</div>

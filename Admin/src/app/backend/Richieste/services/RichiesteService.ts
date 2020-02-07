@@ -12,4 +12,8 @@ export class RichiesteService {
   public getAllRichieste(): Observable<Richieste[]> {
     return this.vettureResource.getAll();
   }
+
+  public getRichiesta(idRichiesta: number): Observable<Richieste> {
+    return this.vettureResource.getRichiesta(idRichiesta);
+  }
 }

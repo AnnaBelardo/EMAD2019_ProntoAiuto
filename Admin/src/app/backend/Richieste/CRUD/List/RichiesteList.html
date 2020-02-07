@@ -24,6 +24,9 @@
             <th style="text-align: center">
               Data
             </th>
+            <th style="text-align: center">
+              Azioni
+            </th>
             </thead>
             <tbody>
             <tr *ngFor="let richiesta of richiesteList | async">
@@ -41,6 +44,11 @@
               </td>
               <td style="text-align: center">
                 {{stringoToDate(richiesta.data.toString())}}
+              </td>
+              <td style="text-align: center">
+                <div style="align-content: center">
+                  <button type="submit" class="btn btn-info btn-round" style="align-content: center" [routerLink]="['/richieste/details', richiesta.id]">Dettaglio</button>
+                </div>
               </td>
             </tr>
             </tbody>

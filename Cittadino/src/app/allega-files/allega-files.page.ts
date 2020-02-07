@@ -97,7 +97,7 @@ export class AllegaFilesPage implements OnInit {
   photoList: any[] = [];
   photoName = 'fotoAllegata.jpg';
   // Per le note audio
-  audioName = 'audioAllegato.3gp';
+  audioName = 'audioAllegato.mp3';
   recording = false;
   playing = false;
   audioPath: string;
@@ -353,7 +353,7 @@ export class AllegaFilesPage implements OnInit {
     await this.to_base_64('fotoAllegata.jpg').then((res) => {
       formData.append('img_data', res);
     });
-    await this.to_base_64('audioAllegato.3gp').then((res) => {
+    await this.to_base_64('audioAllegato.mp3').then((res) => {
       formData.append('audio_data', res);
     });
     formData.append('selfie_data', base64PictureData);

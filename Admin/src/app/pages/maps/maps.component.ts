@@ -1,9 +1,6 @@
-import {Observable} from 'rxjs';
-import {Vetture} from '../../backend/Vetture/CRUD/DataModel/Vetture';
 import {HttpClient} from '@angular/common/http';
 import {VettureService} from '../../backend/Vetture/services/VettureService';
 import {Router} from '@angular/router';
-import {VetturePosizione} from '../../backend/Vetture/CRUD/DataModel/VetturePosizione';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import tt from '@tomtom-international/web-sdk-maps';

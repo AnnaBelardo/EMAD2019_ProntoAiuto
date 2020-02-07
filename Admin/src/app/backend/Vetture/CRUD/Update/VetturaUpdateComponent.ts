@@ -23,8 +23,8 @@ export class VetturaUpdateComponent implements OnInit {
   public vetturaUpdate: Observable<Vetture>;
   tipoChoice = {'Autovettura': 'Autovettura', 'Motociclo': 'Motociclo', 'Corazzato': 'Corazzato', 'Elicottero': 'Elicottero',
     'Ambulanza': 'Ambulanza' };
-  statoChoice = {'Operativa': 'Operativa', 'Non Operativa': 'Non Operativa'}
-  foChoiche = { 'Polizia': 'Polizia', 'Carabinieri': 'Carabinieri', 'Paramedici': 'Paramedici', 'Pompieri': 'Pompieri'}
+  statoChoice = {'Operativa': 'Operativa', 'Non Operativa': 'Non Operativa'};
+  foChoiche = { 'Polizia': 'Polizia', 'Carabinieri': 'Carabinieri', 'Paramedici': 'Paramedici', 'Pompieri': 'Pompieri'};
 
   constructor(private vettureService: VettureService, private formBuilder: FormBuilder, private router: Router,
               private route: ActivatedRoute) {
