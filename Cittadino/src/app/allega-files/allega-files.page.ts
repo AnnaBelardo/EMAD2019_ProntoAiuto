@@ -13,6 +13,7 @@ import { File } from '@ionic-native/file/ngx';
 import { CameraPreview, CameraPreviewPictureOptions } from '@ionic-native/camera-preview/ngx';
 import {Base64ToGallery, Base64ToGalleryOptions} from '@ionic-native/base64-to-gallery/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import {ConnectionConfig} from "../ConnectionConfig";
 
 
 declare var cordova: any;
@@ -366,7 +367,7 @@ export class AllegaFilesPage implements OnInit {
     formData.append('informazioni', this.informazioniAggiuntive);
     formData.append('forza_ordine', this.forzaOrdine);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post('http://192.168.43.119:8080/richiesta/create/', formData,
+    this.http.post(ConnectionConfig.getBaseUrl() + '/richiesta/create/', formData,
         {observe: 'response'}).subscribe((response) => {
       console.log(response.status.toString());
       this.router.navigate(['home']);

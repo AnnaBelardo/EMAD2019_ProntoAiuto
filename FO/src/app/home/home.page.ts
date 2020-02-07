@@ -5,7 +5,7 @@ import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject} from 'rxjs';
+import {ConnectionConfig} from '../ConnectionConfig';
 
 @Component({
   selector: 'app-home',
@@ -13,11 +13,13 @@ import {BehaviorSubject} from 'rxjs';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  urlPosizione = 'http://192.168.43.119:8080/vetture/update-position/';
-  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
+  urlUpdateDisp = ConnectionConfig.getBaseUrl() + '/vetture/update-disp/';
+  urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update-position/';
+  urlRichiesta = ConnectionConfig.getBaseUrl() + 'richiesta/create/';
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
+  var1: any;
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -39,8 +41,8 @@ export class HomePage {
   }
 
   ionViewWillEnter() {
-    this.checkGPSPermission();
-    this.getImeiPermission();
+     this.checkGPSPermission();
+     this.getImeiPermission();
   }
 
   getLocationCoordinates() {
@@ -93,6 +95,12 @@ export class HomePage {
       }
     });
   }
+  change(event) {
+   // alert('prova');
+    // if(this.var1 == false && this.var2 == false){
+    this.sendPostToUpdateDisp(this.urlUpdateDisp, this.var1);
+    // }
+  }
 
   askToTurnOnGPS() {
     this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
@@ -104,9 +112,7 @@ export class HomePage {
     );
   }
 
-  goToGestisciRichiesta() {
-    this.router.navigate(['/gestisci-richiesta']);
-  }
+
 
   getImeiPermission() {
     this.androidPermissions.checkPermission(
@@ -143,6 +149,18 @@ export class HomePage {
     this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
         error => (console.log(error.toString()))
+    );
+  }
+
+
+  sendPostToUpdateDisp(url, disp) {
+    const formData = new FormData();
+    formData.append('disponibile', disp);
+    console.log('formData: ', formData.getAll('data'));
+    alert(url + this.uid.IMEI + '/');
+    this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
+            console.log(response.toString()),
+        error => (alert(error.toString()))
     );
   }
 }

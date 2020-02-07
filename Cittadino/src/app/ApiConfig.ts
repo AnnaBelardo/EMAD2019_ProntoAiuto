@@ -1,3 +1,5 @@
+import {ConnectionConfig} from "./ConnectionConfig";
+
 export const Apiconfig = {
-  url: 'http://192.168.43.119:8080/',
+  url: ConnectionConfig.getBaseUrl() + '/',
 };

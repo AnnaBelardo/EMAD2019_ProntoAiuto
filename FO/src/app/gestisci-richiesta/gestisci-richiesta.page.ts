@@ -3,10 +3,12 @@ import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navi
 import { AlertController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { ViewObjectPage } from '../view-object/view-object.page';
-import { BehaviorSubject } from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import {Uid} from '@ionic-native/uid/ngx';
 import {ActivatedRoute} from '@angular/router';
+import {Richiesta} from './Richiesta';
+import {ConnectionConfig} from '../ConnectionConfig';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -15,12 +17,14 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class GestisciRichiestaPage implements OnInit {
   pkReq;
+  richiesta: Richiesta;
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
-  urlPosizione = 'http://192.168.43.119:8080/vetture/update_position/';
-  urlRichiesta = 'http://192.168.43.119:8080/richiesta/create/';
+  urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update_position/';
+  urlRichiestaCittadino = ConnectionConfig.getBaseUrl() + '/richiesta/get/richiesta/detail/';
+  urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   state: 'start' | 'stop' = 'stop';
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
@@ -31,18 +35,19 @@ export class GestisciRichiestaPage implements OnInit {
   object: any = {
     name: 'Incidente',
     image1: 'assets/images/carcrash.jpg',
-    image2: 'assets/images/carcrash2.jpg',
+    image2: this.pkReq.image,
   };
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
   ngOnInit() {
     this.pkReq = this.route.snapshot.paramMap.get('pk_req');
-    alert(this.pkReq);
+    this.getDatiRichiesta();
+    alert(this.richiesta.imei);
   }
 
   navigate() {
-    this.launchNavigator.navigate([40.7590642, 14.7832711], this.options)
+    this.launchNavigator.navigate([this.pkReq.latitude, this.pkReq.longitude], this.options)
         .then(
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')
@@ -60,9 +65,16 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   async presentModal() {
+    const infoPack: any = {
+      name: this.richiesta.tipologia,
+      image1: this.richiesta.selfieAllegato,
+      image2: this.richiesta.fotoAllegata,
+      audio: this.richiesta.audioAllegato,
+    };
+
     const modal = await this.modalController.create({
       component: ViewObjectPage,
-      componentProps: { object: this.object
+      componentProps: { object: infoPack
       }
     });
     return await modal.present();
@@ -87,6 +99,18 @@ export class GestisciRichiestaPage implements OnInit {
     this.http.post(url, formData).subscribe((response) =>
             alert(response.toString()),
         error => (alert(error.toString()))
+    );
+  }
+
+  getRichiesta(): Observable<Richiesta> {
+    return this.http.get<Richiesta>(this.urlRichiestaCittadino + this.pkReq + '/', {responseType: 'json'});
+  }
+
+  getDatiRichiesta() {
+    this.getRichiesta().subscribe(
+        data => {
+          this.richiesta = data;
+        }
     );
   }
 }
