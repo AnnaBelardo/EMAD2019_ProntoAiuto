@@ -23,6 +23,7 @@ export class GestisciRichiestaPage implements OnInit {
   locationCoords: any;
   timer: number;
   urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update_position/';
+  urlLineaVerde = ConnectionConfig.getBaseUrl() + '/richiesta/richiesta-linea-verde/';
   urlRichiestaCittadino = ConnectionConfig.getBaseUrl() + '/richiesta/get/richiesta/detail/';
   urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   state: 'start' | 'stop' = 'stop';
@@ -50,7 +51,8 @@ export class GestisciRichiestaPage implements OnInit {
         );
   }
 
-  async showalert() {
+  async richiestaLineaVerde() {
+    this.sendPostLineaVerde(this.urlLineaVerde);
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di linea verde è stata inoltrata con successo.',
@@ -91,6 +93,15 @@ export class GestisciRichiestaPage implements OnInit {
         error => (alert(error.toString()))
     );
   }
+
+  async sendPostLineaVerde(url) {
+    const formData = new FormData();
+    this.http.post(url, formData).subscribe((response) =>
+            alert(response.toString()),
+        error => (alert(error.toString()))
+    );
+  }
+
 
   getRichiesta(): Observable<Richiesta> {
     return this.http.get(this.urlRichiestaCittadino + this.pkReq + '/') as Observable<Richiesta>;
