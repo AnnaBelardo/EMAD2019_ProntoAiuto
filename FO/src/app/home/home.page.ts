@@ -160,7 +160,7 @@ export class HomePage {
     alert(url + this.uid.IMEI + '/');
     this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
-        error => (alert(error.toString()))
+        error => (alert(error.status.toString()))
     );
   }
 }

@@ -74,7 +74,6 @@ export class AppComponent {
           handler: () => {
             this.http.get(this.urlAccetta + this.uid.IMEI + '/' + additionalData.req_pk + '/',
                 {observe: 'response'}).subscribe((response) => {
-                  alert(response.status.toString());
                   this.router.navigate(['gestisci-richiesta', additionalData.req_pk]);
                 },
                 error => (console.log(error.status))
@@ -91,7 +90,8 @@ export class AppComponent {
             );
           }
         }
-      ]
+      ],
+      backdropDismiss: false,
     });
     alertCustom.present();
   }

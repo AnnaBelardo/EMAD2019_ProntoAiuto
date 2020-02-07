@@ -8,7 +8,7 @@ export interface Richiesta {
     data: string;
     long: string;
     lat: string;
-    selfieAllegato: string;
-    fotoAllegata: string;
-    audioAllegato: string;
+    selfie: string;
+    foto: string;
+    audio: string;
 }

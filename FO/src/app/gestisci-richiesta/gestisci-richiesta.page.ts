@@ -32,18 +32,14 @@ export class GestisciRichiestaPage implements OnInit {
               public alertController: AlertController,
               public modalController: ModalController,
               private route: ActivatedRoute) { }
-  object: any = {
-    name: 'Incidente',
-    image1: 'assets/images/carcrash.jpg',
-    image2: this.pkReq.image,
-  };
+  object: any;
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
   };
   ngOnInit() {
     this.pkReq = this.route.snapshot.paramMap.get('pk_req');
+    alert(this.pkReq);
     this.getDatiRichiesta();
-    alert(this.richiesta.imei);
   }
 
   navigate() {
@@ -65,16 +61,10 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   async presentModal() {
-    const infoPack: any = {
-      name: this.richiesta.tipologia,
-      image1: this.richiesta.selfieAllegato,
-      image2: this.richiesta.fotoAllegata,
-      audio: this.richiesta.audioAllegato,
-    };
-
+    alert(this.object.audio);
     const modal = await this.modalController.create({
       component: ViewObjectPage,
-      componentProps: { object: infoPack
+      componentProps: { object: this.object
       }
     });
     return await modal.present();
@@ -103,13 +93,18 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   getRichiesta(): Observable<Richiesta> {
-    return this.http.get<Richiesta>(this.urlRichiestaCittadino + this.pkReq + '/', {responseType: 'json'});
+    return this.http.get(this.urlRichiestaCittadino + this.pkReq + '/') as Observable<Richiesta>;
   }
 
   getDatiRichiesta() {
     this.getRichiesta().subscribe(
         data => {
-          this.richiesta = data;
+          this.object = {
+            name: data.tipologia,
+            image1: ConnectionConfig.getBaseUrl() + data.selfie,
+            image2: ConnectionConfig.getBaseUrl() + data.foto,
+            audio: ConnectionConfig.getBaseUrl() + data.audio,
+          };
         }
     );
   }
