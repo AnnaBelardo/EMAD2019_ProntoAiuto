@@ -69,6 +69,7 @@ export class GestisciRichiestaPage implements OnInit {
       name: this.richiesta.tipologia,
       image1: this.richiesta.selfieAllegato,
       image2: this.richiesta.fotoAllegata,
+      audio: this.richiesta.audioAllegato,
     };
 
     const modal = await this.modalController.create({
