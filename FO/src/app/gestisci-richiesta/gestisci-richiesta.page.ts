@@ -19,6 +19,7 @@ export class GestisciRichiestaPage implements OnInit {
   pkReq;
   latitudine;
   longitudine;
+  returnStm = false;
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
@@ -53,14 +54,15 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   async richiestaLineaVerde() {
-    this.sendPostLineaVerde(this.urlLineaVerde);
+    this.sendPostLineaVerde(this.urlLineaVerde + this.pkReq);
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di linea verde è stata inoltrata con successo.',
       buttons: ['OK']
     });
-
-    await alert.present();
+    if (this.returnStm) {
+      await alert.present();
+    }
   }
 
   async presentModal() {
@@ -98,7 +100,7 @@ export class GestisciRichiestaPage implements OnInit {
   async sendPostLineaVerde(url) {
     const formData = new FormData();
     this.http.post(url, formData).subscribe((response) =>
-            alert(response.toString()),
+            this.returnStm = true,
         error => (alert(error.toString()))
     );
   }
