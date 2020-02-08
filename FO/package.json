@@ -45,7 +45,8 @@
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^5.0.4",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "@ionic-native/media": "latest"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.801.2",

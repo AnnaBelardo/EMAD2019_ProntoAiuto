@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NavParams } from '@ionic/angular';
 import { IonSlides } from '@ionic/angular';
+import {Media, MediaObject} from '@ionic-native/media/ngx';
+
 
 
 @Component({
@@ -14,6 +16,8 @@ export class ViewObjectPage implements OnInit {
 
   object: any;
   slider: any;
+  audio: MediaObject;
+  playing = false;
 
   slideOptsOne = {
     initialSlide: 0,
@@ -21,7 +25,9 @@ export class ViewObjectPage implements OnInit {
     autoplay: true
   };
 
-  constructor(navParams: NavParams, public viewCtrl: ModalController) {
+  constructor(navParams: NavParams, public viewCtrl: ModalController,
+              private media: Media,
+  ) {
     this.object = navParams.get('object');
     this.slider = {
           isBeginningSlide: true,
@@ -76,6 +82,22 @@ export class ViewObjectPage implements OnInit {
     this.viewCtrl.dismiss({age: 25});
   }
 
+  playAudio(file) {
+    this.audio = this.media.create(this.object.audio);
+    this.audio.play();
+    this.audio.setVolume(0.8);
+    this.playing = true;
+    this.audio.onStatusUpdate.subscribe((statusCode) => {
+      if (statusCode === 4) {
+        document.getElementById('stopButton').click();
+      }
+    });
+  }
+
+  stopAudio() {
+    this.audio.stop();
+    this.playing = false;
+  }
   ngOnInit() {
   }
 
