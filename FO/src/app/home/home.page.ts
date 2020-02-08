@@ -6,6 +6,8 @@ import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
 import {HttpClient} from '@angular/common/http';
 import {ConnectionConfig} from '../ConnectionConfig';
+import {Observable} from 'rxjs';
+import {Disponibilita} from '../gestisci-richiesta/Disponibilita';
 
 @Component({
   selector: 'app-home',
@@ -15,11 +17,12 @@ import {ConnectionConfig} from '../ConnectionConfig';
 export class HomePage {
   urlUpdateDisp = ConnectionConfig.getBaseUrl() + '/vetture/update-disp/';
   urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update-position/';
-  urlRichiesta = ConnectionConfig.getBaseUrl() + 'richiesta/create/';
+  urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
+  urlDisponibilita = ConnectionConfig.getBaseUrl() + '/vetture/get-disp/';
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
-  var1: any;
+  isDisponibile: any;
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -43,6 +46,19 @@ export class HomePage {
   ionViewWillEnter() {
      this.checkGPSPermission();
      this.getImeiPermission();
+     this.getDisponibilitaDati();
+  }
+
+  getDisponibilita(): Observable<Disponibilita> {
+    return this.http.get(this.urlDisponibilita + this.uid.IMEI + '/') as Observable<Disponibilita>;
+  }
+
+  getDisponibilitaDati() {
+    this.getDisponibilita().subscribe(
+        data => {
+         this.isDisponibile = data.disponibile;
+        }
+    );
   }
 
   getLocationCoordinates() {
@@ -95,10 +111,9 @@ export class HomePage {
       }
     });
   }
+
   change(event) {
-   // alert('prova');
-    // if(this.var1 == false && this.var2 == false){
-    this.sendPostToUpdateDisp(this.urlUpdateDisp, this.var1);
+    this.sendPostToUpdateDisp(this.urlUpdateDisp, this.isDisponibile);
     // }
   }
 

@@ -15,7 +15,7 @@
             <ion-label color="dark" class="ion-text-start; bold">
               DISPONIBILE
             </ion-label>
-            <ion-toggle  [(ngModel)]="var1"
+            <ion-toggle  [(ngModel)]="isDisponibile"
                          color="success" (ionChange)="change($event)" >
             </ion-toggle>
       </ion-item>
@@ -31,7 +31,7 @@
     </ion-col>
     <ion-col size="5" >
       <div >
-        <ion-button id="carabinieriButton" (click)="goToGestisciRichiesta()"  class="image-max" >
+        <ion-button id="carabinieriButton" (click)="richiediSupporto()"  class="image-max" >
           <img src="../assets/icon/carabinieri.png">
         </ion-button>
         <ion-button id="poliziaButton" (click)="getImei()" class="image-max" >
