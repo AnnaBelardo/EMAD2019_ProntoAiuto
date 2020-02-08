@@ -46,20 +46,11 @@
   <ion-card>
     <ion-list>
       <ion-item>
-        <ion-label>Audio1</ion-label>
-        <ion-button slot="end" >
+        <ion-label>{{object.audio.filename}}</ion-label>
+        <ion-button (click)="playAudio(object.audio.filename)" slot="end" *ngIf="!playing" >
           <ion-icon name="play"></ion-icon>
         </ion-button>
-        <ion-button id="stopButton2" slot="end" >
-          <ion-icon name="square"></ion-icon>
-        </ion-button>
-      </ion-item>
-      <ion-item>
-        <ion-label>Audio2</ion-label>
-        <ion-button slot="end" >
-          <ion-icon name="play"></ion-icon>
-        </ion-button>
-        <ion-button id="stopButton" slot="end" >
+        <ion-button id="stopButton" (click)="stopAudio()" slot="end" *ngIf="playing" >
           <ion-icon name="square"></ion-icon>
         </ion-button>
       </ion-item>
