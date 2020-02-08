@@ -17,7 +17,8 @@ import {ConnectionConfig} from '../ConnectionConfig';
 })
 export class GestisciRichiestaPage implements OnInit {
   pkReq;
-  richiesta: Richiesta;
+  latitudine;
+  longitudine;
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
@@ -39,12 +40,12 @@ export class GestisciRichiestaPage implements OnInit {
   };
   ngOnInit() {
     this.pkReq = this.route.snapshot.paramMap.get('pk_req');
-    alert(this.pkReq);
+    // alert(this.pkReq);
     this.getDatiRichiesta();
   }
 
   navigate() {
-    this.launchNavigator.navigate([this.pkReq.latitude, this.pkReq.longitude], this.options)
+    this.launchNavigator.navigate([this.latitudine, this.longitudine], this.options)
         .then(
             success => console.log('launched navigator'),
             error => console.log('launched navigator error')
@@ -110,6 +111,8 @@ export class GestisciRichiestaPage implements OnInit {
   getDatiRichiesta() {
     this.getRichiesta().subscribe(
         data => {
+          this.latitudine = data.lat;
+          this.longitudine = data.long;
           this.object = {
             name: data.tipologia,
             image1: ConnectionConfig.getBaseUrl() + data.selfie,

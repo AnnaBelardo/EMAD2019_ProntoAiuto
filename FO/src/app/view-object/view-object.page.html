@@ -44,16 +44,14 @@
 
   </ion-card>
   <ion-card>
-    <ion-list>
       <ion-item>
-        <ion-label>{{object.audio.filename}}</ion-label>
-        <ion-button (click)="playAudio(object.audio.filename)" slot="end" *ngIf="!playing" >
+        <ion-label>Audio Allegato</ion-label>
+        <ion-button (click)="playAudio()" slot="end" *ngIf="!playing" >
           <ion-icon name="play"></ion-icon>
         </ion-button>
         <ion-button id="stopButton" (click)="stopAudio()" slot="end" *ngIf="playing" >
           <ion-icon name="square"></ion-icon>
         </ion-button>
       </ion-item>
-    </ion-list>
   </ion-card>
 </ion-content>

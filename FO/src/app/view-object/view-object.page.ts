@@ -82,7 +82,7 @@ export class ViewObjectPage implements OnInit {
     this.viewCtrl.dismiss({age: 25});
   }
 
-  playAudio(file) {
+  playAudio() {
     this.audio = this.media.create(this.object.audio);
     this.audio.play();
     this.audio.setVolume(0.8);

@@ -17,6 +17,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import { ViewObjectPageModule} from './view-object/view-object.module';
+import { Media } from '@ionic-native/media/ngx';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ViewObjectPageModule} from './view-object/view-object.module';
     Geolocation,
     LocationAccuracy,
     Uid,
+    Media,
   ],
   bootstrap: [AppComponent]
 })
