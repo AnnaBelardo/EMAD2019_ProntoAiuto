@@ -1,8 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { Injectable } from '@angular/core';
 import { RichiesteService} from '../../services/RichiesteService';
-import {Observable} from 'rxjs';
-import { Richieste} from '../DataModel/Richieste';
 import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
@@ -13,7 +11,7 @@ import {Apiconfig} from '../../../ApiConfig';
 @Component({
   selector: 'app-richiesta-details-component',
   templateUrl: 'RichiestaDetails.html',
-  styleUrls: ['Richiesta.component.css'],
+  styleUrls: ['RichiestaDetails.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 
@@ -25,7 +23,6 @@ export class RichiestaDetailsComponent implements OnInit {
   public imei: string;
   public foto: string;
   public audio: string;
-  public audioOgg: string;
   public latitudine: string;
   public longitudine: string;
   public tipologia: string;
@@ -33,8 +30,9 @@ export class RichiestaDetailsComponent implements OnInit {
   public stato: string;
   public forzaOrdine: string;
   public idVettura: string;
+  public vetturaIdDettaglio: number;
   public imeiVettura: string;
-  public lineaVerde: boolean;
+  public lineaVerde: string;
   public supporto: string;
   public tempoArrivo: number;
 
@@ -53,11 +51,12 @@ export class RichiestaDetailsComponent implements OnInit {
         this.forzaOrdine = richiesta.forza_ordine;
         this.idVettura = richiesta.vettura;
         this.imeiVettura = richiesta.vettura_imei;
-        this.lineaVerde = richiesta.linea_verde_richiesta;
-        this.supporto = richiesta.is_supporto;
+        this.lineaVerde = this.formattabooleano(String(richiesta.linea_verde_richiesta));
+        this.supporto = this.formattabooleano(richiesta.is_supporto.toString());
         this.tempoArrivo = richiesta.tempoDiArrivo;
         this.selfie = Apiconfig.urlMedia + richiesta.selfie;
         this.audio = Apiconfig.urlMedia + richiesta.audio;
+        this.vetturaIdDettaglio = richiesta.vetturaIdDettaglio;
         // this.audioOgg = Apiconfig.urlMedia + (richiesta.audio.replace('.mp3', '.ogg'));
         this.foto = Apiconfig.urlMedia + richiesta.foto;
         document.getElementById('cardBodyAudio').insertAdjacentHTML('afterbegin', '<audio controls>\n' +
@@ -87,4 +86,11 @@ export class RichiestaDetailsComponent implements OnInit {
     return (Math.round(((this.tempoArrivo / 60) + Number.EPSILON) * 100) / 100).toString();
   }
 
+  formattabooleano(value: string): string {
+    if (value.toLowerCase() === 'false') {
+      return 'No';
+    } else {
+      return 'Si';
+    }
+  }
 }

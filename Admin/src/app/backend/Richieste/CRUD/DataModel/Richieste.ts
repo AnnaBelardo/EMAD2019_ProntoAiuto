@@ -16,4 +16,5 @@ export interface Richieste {
   audio: string;
   linea_verde_richiesta: boolean;
   tempoDiArrivo: number;
+  vetturaIdDettaglio: number;
 }

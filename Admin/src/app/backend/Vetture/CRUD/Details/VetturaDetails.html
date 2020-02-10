@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-body">
+        <div id='map'></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <div class="card card-user">
+      <div class="card-header">
+        <h5 class="card-title">Dettaglio Vettura {{ identificativo }}</h5>
+      </div>
+      <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <b>IMEI</b><br>
+              {{imei}}
+            </div>
+            <div class="col-md-4">
+                <b>Stato</b><br>
+                {{stato}}
+            </div>
+            <div class="col-md-4">
+              <b>Disponibile</b><br>
+              {{disponibile}}
+            </div>
+          </div>
+        <br>
+        <div class="row">
+        <div class="col-md-4">
+              <b>Forza dell'ordine</b><br>
+              {{forzaOrdine}}
+            </div>
+          <div class="col-md-4">
+            <b>Tipologia</b><br>
+            {{tipologia}}
+          </div>
+          <div class="col-md-4">
+            <b>Richiesta attiva</b><br>
+            <a href="#/richieste/details/{{richiesta}}">{{richiesta}}</a>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <b>Latitudine</b><br>
+            {{latitudine}}
+          </div>
+          <div class="col-md-4">
+            <b>Longitudine</b><br>
+            {{longitudine}}
+          </div>
+          <div class="col-md-4">
+          <b>Ultimo aggiornamento posizione</b><br>
+              {{stringoToDate(agg_pos)}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
