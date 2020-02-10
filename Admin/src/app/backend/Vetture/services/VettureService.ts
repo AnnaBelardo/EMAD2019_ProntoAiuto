@@ -33,4 +33,8 @@ export class VettureService {
   public updateVetturaGet(vetturaId: number): Observable<Vetture> {
     return this.vettureResource.updateGet(vetturaId);
   }
+
+  public getVettura(idRVettura: number): Observable<Vetture> {
+    return this.vettureResource.getVettura(idRVettura);
+  }
 }

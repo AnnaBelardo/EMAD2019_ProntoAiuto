@@ -1,17 +1,17 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="nero">
     <ion-buttons slot="start">
       <ion-button color="danger" (click)="dismiss()">
         <span ion-text color="primary" showWhen="ios"></span>
         <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Files Allegati</ion-title>
+    <ion-title class="bianco">Files Allegati</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <ion-card style="border-color: #eb7338!important;border:1px solid ">
     <ion-grid>
       <ion-row>
         <ion-col size="1">
@@ -21,12 +21,14 @@
                [class.disabled]="slider.isBeginningSlide"></div>
         </span>
         </ion-col>
-        <ion-col size="10">
+        <ion-col size="10" >
 
           <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
                       (ionSlideDidChange)="SlideDidChange(slider,slideWithNav)">
-            <ion-slide *ngFor="let s of slider.slidesItems">
-              <ion-img [src]="s.image"></ion-img>
+            <ion-slide>
+              <ion-img [src]=slider.slidesItems[0].image></ion-img>
+            </ion-slide><ion-slide>
+              <ion-img class="rotate180" [src]=slider.slidesItems[1].image></ion-img>
             </ion-slide>
           </ion-slides>
 
@@ -43,7 +45,7 @@
 
 
   </ion-card>
-  <ion-card>
+  <ion-card style="border-color: #eb7338!important;border:1px solid ">
       <ion-item>
         <ion-label>Audio Allegato</ion-label>
         <ion-button (click)="playAudio()" slot="end" *ngIf="!playing" >

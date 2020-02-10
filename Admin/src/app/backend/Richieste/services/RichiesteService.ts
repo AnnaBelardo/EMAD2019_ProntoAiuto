@@ -6,14 +6,14 @@ import {RichiesteResource} from './RichiesteResource';
 @Injectable({ providedIn: 'root' })
 export class RichiesteService {
 
-  constructor(private vettureResource: RichiesteResource) {
+  constructor(private richiesteResource: RichiesteResource) {
   }
 
   public getAllRichieste(): Observable<Richieste[]> {
-    return this.vettureResource.getAll();
+    return this.richiesteResource.getAll();
   }
 
   public getRichiesta(idRichiesta: number): Observable<Richieste> {
-    return this.vettureResource.getRichiesta(idRichiesta);
+    return this.richiesteResource.getRichiesta(idRichiesta);
   }
 }

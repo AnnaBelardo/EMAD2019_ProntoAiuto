@@ -12,6 +12,8 @@ export class VettureResource {
   private readonly urlCreate = Apiconfig.url + '/vetture/create/';
   private readonly urlDelete = Apiconfig.url + '/vetture/delete';
   private readonly urlUpdate = Apiconfig.url + '/vetture/update';
+  private readonly urlVettura = Apiconfig.url + '/vetture/get/vettura/details/';
+
   constructor(private httpClient: HttpClient) {
   }
   public getAll(): Observable<Vetture[]> {
@@ -31,5 +33,8 @@ export class VettureResource {
   }
   public updatePost(vetturaFormData: FormData, vetturaId: number): Observable<Vetture> {
     return this.httpClient.post(this.urlUpdate + '/' + vetturaId + '/', vetturaFormData) as Observable<Vetture>;
+  }
+  public getVettura(vetturaId: number): Observable<Vetture> {
+    return this.httpClient.get(this.urlVettura + vetturaId + '/') as Observable<Vetture>;
   }
 }

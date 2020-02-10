@@ -6,4 +6,10 @@ export interface Vetture {
   stato: string;
   playerId: string;
   forza_ordine: string;
+  latitudine: string;
+  longitudine: string;
+  forzaOrdine: string;
+  disponibile: boolean;
+  richiesta: number;
+  agg_pos: string;
 }
