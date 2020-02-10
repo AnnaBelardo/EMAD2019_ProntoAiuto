@@ -313,7 +313,7 @@ export class AllegaFilesPage implements OnInit {
           }
         },
         err => {
-          alert(err);
+          alert('Error GPS' + err);
         }
     );
   }
@@ -372,7 +372,7 @@ export class AllegaFilesPage implements OnInit {
       console.log(response.status.toString());
       this.router.navigate(['home']);
     },
-        error => (alert(error.status.toString()))
+        error => (alert('Error' + error.status.toString()))
      );
   }
 
@@ -381,7 +381,7 @@ export class AllegaFilesPage implements OnInit {
     await this.fileToUpload.readAsDataURL(cordova.file.externalApplicationStorageDirectory + 'files/', filename).then(res => {
       returnvalue = res;
     }).catch(err => {
-      alert(err);
+      alert('File Error!' + err);
     });
     return returnvalue;
   }
