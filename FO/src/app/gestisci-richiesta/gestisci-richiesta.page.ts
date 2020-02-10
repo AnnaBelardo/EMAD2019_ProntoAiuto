@@ -19,6 +19,8 @@ export class GestisciRichiestaPage implements OnInit {
   pkReq;
   latitudine;
   longitudine;
+  returnStm = false;
+  retunResponse = false;
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
@@ -53,18 +55,19 @@ export class GestisciRichiestaPage implements OnInit {
   }
 
   async richiestaLineaVerde() {
-    this.sendPostLineaVerde(this.urlLineaVerde);
+    this.sendPostLineaVerde(this.urlLineaVerde + this.pkReq);
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di linea verde è stata inoltrata con successo.',
       buttons: ['OK']
     });
-
-    await alert.present();
+    if (this.returnStm) {
+      await alert.present();
+    }
   }
 
   async presentModal() {
-    alert(this.object.audio);
+   //  alert(this.object.audio);
     const modal = await this.modalController.create({
       component: ViewObjectPage,
       componentProps: { object: this.object
@@ -73,8 +76,16 @@ export class GestisciRichiestaPage implements OnInit {
     return await modal.present();
   }
 
-  richiediSupporto() {
+  async richiediSupporto() {
     this.sendPostRequest(this.urlRichiesta);
+    const alert = await this.alertController.create({
+      header: 'Richiesta effettuata',
+      message: 'La richiesta di supporto è stata inoltrata con successo.',
+      buttons: ['OK']
+    });
+    if (this.retunResponse) {
+      await alert.present();
+    }
   }
 
   async sendPostRequest(url) {
@@ -89,17 +100,16 @@ export class GestisciRichiestaPage implements OnInit {
       formData.append('imei', this.uid.IMEI);
       console.log('formData: ', formData.getAll('data'));
     }
-    this.http.post(url, formData).subscribe((response) =>
-            alert(response.toString()),
-        error => (alert(error.toString()))
+    this.http.post(url, formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
+        error => (alert('Error!' + error.toString()))
     );
   }
 
   async sendPostLineaVerde(url) {
     const formData = new FormData();
     this.http.post(url, formData).subscribe((response) =>
-            alert(response.toString()),
-        error => (alert(error.toString()))
+            this.returnStm = true,
+        error => (alert('Error!' + error.toString()))
     );
   }
 
