@@ -13,6 +13,7 @@ import {VettureCreateComponent} from '../../backend/Vetture/CRUD/Create/VettureC
 import {VetturaUpdateComponent} from '../../backend/Vetture/CRUD/Update/VetturaUpdateComponent';
 import {RichiesteListComponent} from '../../backend/Richieste/CRUD/List/RichiesteListComponent';
 import {RichiestaDetailsComponent} from '../../backend/Richieste/CRUD/Details/RichiestaDetailsComponent';
+import {VetturaDetailsComponent} from '../../backend/Vetture/CRUD/Details/VetturaDetailsComponent';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -20,6 +21,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'vetture/list',   component: VettureListComponent },
     { path: 'richieste/list',   component: RichiesteListComponent },
     { path: 'richieste/details/:id',   component: RichiestaDetailsComponent },
+    { path: 'vetture/details/:id',   component: VetturaDetailsComponent },
     { path: 'vetture/create', component: VettureCreateComponent },
     { path: 'vettura/update/:id', component: VetturaUpdateComponent },
     { path: 'typography',     component: TypographyComponent },

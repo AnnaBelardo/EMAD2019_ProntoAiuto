@@ -7,18 +7,21 @@ import {UniqueIdentificativoValidatorDirective} from './CRUD/Directives/identifi
 import {ValidatorsService} from './services/ValidatorsService';
 import {ValidatorsResource} from './services/ValidatorsResource';
 import {VetturaUpdateModule} from './CRUD/Update/VetturaUpdateModule';
+import {VetturaDetailsModule} from './CRUD/Details/VetturaDetailsModule';
 
 
 @NgModule({
   imports: [
     VettureListModule,
     VettureCreateModule,
-    VetturaUpdateModule
+    VetturaUpdateModule,
+    VetturaDetailsModule
   ],
   exports: [
     VettureListModule,
     VettureCreateModule,
-    VetturaUpdateModule
+    VetturaUpdateModule,
+    VetturaDetailsModule
   ],
   declarations: [
     UniqueIdentificativoValidatorDirective
