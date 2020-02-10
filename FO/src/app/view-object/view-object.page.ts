@@ -19,10 +19,12 @@ export class ViewObjectPage implements OnInit {
   audio: MediaObject;
   playing = false;
 
+  //    autoHeight:true,
   slideOptsOne = {
     initialSlide: 0,
     slidesPerView: 1,
-    autoplay: true
+    autoplay: false,
+    autoHeight: true
   };
 
   constructor(navParams: NavParams, public viewCtrl: ModalController,

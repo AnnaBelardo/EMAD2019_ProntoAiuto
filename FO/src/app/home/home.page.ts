@@ -86,7 +86,7 @@ export class HomePage {
           }
         },
         err => {
-          alert(err);
+          alert('Errore GPS ' + err);
         }
     );
   }
@@ -172,10 +172,10 @@ export class HomePage {
     const formData = new FormData();
     formData.append('disponibile', disp);
     console.log('formData: ', formData.getAll('data'));
-    alert(url + this.uid.IMEI + '/');
+    // alert(url + this.uid.IMEI + '/');
     this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
-        error => (alert(error.status.toString()))
+        error => (alert('Error!' + error.status.toString()))
     );
   }
 }
