@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card style="border-color: #eb7338!important;border:1px solid ">
+  <ion-card class="customcard">
     <ion-grid>
       <ion-row>
         <ion-col size="1">
@@ -45,7 +45,7 @@
 
 
   </ion-card>
-  <ion-card style="border-color: #eb7338!important;border:1px solid ">
+  <ion-card class="customcard">
       <ion-item>
         <ion-label>Audio Allegato</ion-label>
         <ion-button (click)="playAudio()" slot="end" *ngIf="!playing" >
