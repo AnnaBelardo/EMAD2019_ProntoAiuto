@@ -27,8 +27,8 @@ declare var cordova: any;
 })
 export class AllegaFilesPage implements OnInit {
   public pictureOpts: CameraPreviewPictureOptions = {
-    width: 1280,
-    height: 1280,
+    width: 1080,
+    height: 1920,
     quality: 85
   };
 
@@ -51,8 +51,8 @@ export class AllegaFilesPage implements OnInit {
   public base64option: Base64ToGalleryOptions = {
     prefix: 'img',
     mediaScanner: false
-  };*/
-
+  };
+*/
   constructor(public navCtrl: NavController,
               private media: Media,
               private file: File,
@@ -180,7 +180,9 @@ export class AllegaFilesPage implements OnInit {
       quality: 50,
       sourceType: this.camera.PictureSourceType.CAMERA,
       saveToPhotoAlbum: false,
-      correctOrientation: true
+      correctOrientation: true,
+      targetWidth: 1080,
+      targetHeight: 1920,
     };
     this.camera.getPicture(options).then(imagePath => {
       const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
