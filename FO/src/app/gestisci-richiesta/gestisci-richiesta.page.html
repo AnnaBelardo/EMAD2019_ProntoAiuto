@@ -16,11 +16,11 @@
         <ion-col size="9" style="margin-left: 15px">
           <p>
             <ion-text  color="dark" class="bold"> <h4 class="bold">Tipologia: </h4> </ion-text>
-            <ion-text> </ion-text>
-            <ion-text > <h5> Incidente stradale </h5> </ion-text>
+            <ion-text>  </ion-text>
+            <ion-text > <h5> {{tipologia}} </h5> </ion-text>
           </p>
           <ion-text color="dark" class="bold"> <h4 class="bold">Ulteriori informazioni: </h4> </ion-text>
-          <p> <ion-text > <h5>Ci sono dei feriti! </h5> </ion-text>
+          <p> <ion-text > <h5>{{informazioni}}</h5> </ion-text>
           </p>
         </ion-col>
         <ion-col size="2">
@@ -56,20 +56,20 @@
     </ion-col>
     <ion-col size="4">
       <div>
-        <ion-button id="carabinieriButton" (click)="richiediSupporto()" class="image-max" >
+        <ion-button id="carabinieriButton" (click)="richiediSupporto('Carabinieri')" class="image-max" >
           <img src="../assets/icon/carabinieri.png">
         </ion-button>
-        <ion-button id="poliziaButton" (click)="richiediSupporto()" class="image-max" >
+        <ion-button id="poliziaButton" (click)="richiediSupporto('Polizia')" class="image-max" >
           <img src="../assets/icon/polizia.png">
         </ion-button>
       </div>
     </ion-col>
     <ion-col size="4">
       <div>
-        <ion-button id="pompieriButton" (click)="richiediSupporto()" class="image-max">
+        <ion-button id="pompieriButton" (click)="richiediSupporto('Pompieri')" class="image-max">
           <img src="../assets/icon/pompiere.png">
         </ion-button>
-        <ion-button id="paramediciButton" (click)="richiediSupporto()" class="image-max">
+        <ion-button id="paramediciButton" (click)="richiediSupporto('Paramedici')" class="image-max">
           <img src="../assets/icon/paramedici.png">
         </ion-button>
       </div>

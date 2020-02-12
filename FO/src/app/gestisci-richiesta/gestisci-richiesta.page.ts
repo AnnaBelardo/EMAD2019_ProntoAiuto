@@ -20,6 +20,8 @@ export class GestisciRichiestaPage implements OnInit {
   pkReq;
   latitudine;
   longitudine;
+  tipologia;
+  informazioni;
   returnStm = false;
   retunResponse = false;
   private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
@@ -32,7 +34,6 @@ export class GestisciRichiestaPage implements OnInit {
   urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   urlRichiestaSupporto = ConnectionConfig.getBaseUrl() + '/richiesta/create-supporto/';
   state: 'start' | 'stop' = 'stop';
-  informazioni: string;
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
               private uid: Uid,
@@ -139,9 +140,9 @@ export class GestisciRichiestaPage implements OnInit {
         data => {
           this.latitudine = data.lat;
           this.longitudine = data.long;
+          this.tipologia = data.tipologia;
           this.informazioni = data.informazioni;
           this.object = {
-            name: data.tipologia,
             image1: ConnectionConfig.getBaseUrl() + data.selfie,
             image2: ConnectionConfig.getBaseUrl() + data.foto,
             audio: ConnectionConfig.getBaseUrl() + data.audio,

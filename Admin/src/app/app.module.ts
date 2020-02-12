@@ -9,10 +9,11 @@ import { NavbarModule} from './shared/navbar/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { AppComponent } from './app.component';
 import { AppRoutes } from './app.routing';
-import { LogInComponent } from './log-in/log-in.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import {HttpClientModule} from '@angular/common/http';
 import {LogInModule} from './log-in/LogInModule';
+import {RichiesteResource} from './backend/Richieste/services/RichiesteResource';
+import {RichiesteService} from './backend/Richieste/services/RichiesteService';
 
 
 
@@ -35,7 +36,10 @@ import {LogInModule} from './log-in/LogInModule';
     HttpClientModule,
     LogInModule,
   ],
-  providers: [],
+  providers: [
+    RichiesteResource,
+    RichiesteService,
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -10,6 +10,6 @@ export interface Vetture {
   longitudine: string;
   forzaOrdine: string;
   disponibile: boolean;
-  richiesta: number;
+  richiesta_attuale_assegnata: number;
   agg_pos: string;
 }

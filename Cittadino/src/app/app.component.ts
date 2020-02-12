@@ -43,7 +43,6 @@ export class AppComponent {
           const msg = data.payload.body;
           const title = data.payload.title;
           const additionalData = data.payload.additionalData;
-          alert(additionalData.req_pk);
           this.showAlert(title, msg);
         },
         error => { alert(error); }

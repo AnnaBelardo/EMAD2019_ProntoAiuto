@@ -26,9 +26,9 @@
           <ion-slides pager="true" [options]="slideOptsOne" #slideWithNav
                       (ionSlideDidChange)="SlideDidChange(slider,slideWithNav)">
             <ion-slide>
-              <ion-img [src]=slider.slidesItems[0].image></ion-img>
+              <ion-img class="rotate180" [src]=slider.slidesItems[0].image></ion-img>
             </ion-slide><ion-slide>
-              <ion-img class="rotate180" [src]=slider.slidesItems[1].image></ion-img>
+              <ion-img  [src]=slider.slidesItems[1].image></ion-img>
             </ion-slide>
           </ion-slides>
 

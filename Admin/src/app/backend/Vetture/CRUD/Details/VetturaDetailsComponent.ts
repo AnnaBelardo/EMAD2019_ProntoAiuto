@@ -43,7 +43,7 @@ export class VetturaDetailsComponent implements OnInit {
         this.forzaOrdine = vettura.forza_ordine;
         this.stato = vettura.stato;
         this.disponibile = this.formattabooleano(String(vettura.disponibile));
-        this.richiesta = vettura.richiesta;
+        this.richiesta = vettura.richiesta_attuale_assegnata;
         this.agg_pos = vettura.agg_pos;
         this.map = tt.map({
           key: 'pBDtSNH15AVCe1kLOKb1lgvdgWtGCHaG',

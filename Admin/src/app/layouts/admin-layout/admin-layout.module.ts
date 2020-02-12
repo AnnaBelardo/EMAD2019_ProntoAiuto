@@ -21,6 +21,8 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {HttpClientModule} from '@angular/common/http';
 import {VettureModule} from '../../backend/Vetture/VettureModule';
 import {RichiesteModule} from '../../backend/Richieste/RichiesteModule';
+import {RichiesteResource} from '../../backend/Richieste/services/RichiesteResource';
+import {RichiesteService} from '../../backend/Richieste/services/RichiesteService';
 
 @NgModule({
   imports: [
@@ -45,7 +47,10 @@ import {RichiesteModule} from '../../backend/Richieste/RichiesteModule';
     MapsComponent,
     NotificationsComponent,
   ],
-  providers: [],
+  providers: [
+    RichiesteResource,
+    RichiesteService,
+  ],
 })
 
 export class AdminLayoutModule {}
