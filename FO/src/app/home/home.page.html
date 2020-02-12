@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar  color="tertiary">
     <ion-row>
-      <ion-img src="../assets/icon/prontoaiutosenzasfondo.png" class="logo" ></ion-img>
-      <ion-title>PRONTO AIUTO</ion-title>
+      <ion-img src="../assets/icon/logoConLinea.png" class="logo"></ion-img>
+      <ion-title>PRONTOAIUTO</ion-title>
     </ion-row>
   </ion-toolbar>
 </ion-header>
@@ -31,20 +31,20 @@
     </ion-col>
     <ion-col size="5" >
       <div >
-        <ion-button id="carabinieriButton" (click)="richiediSupporto()"  class="image-max" >
+        <ion-button id="carabinieriButton" (click)="richiediSupporto('Carabinieri')"  class="image-max" >
           <img src="../assets/icon/carabinieri.png">
         </ion-button>
-        <ion-button id="poliziaButton" (click)="getImei()" class="image-max" >
+        <ion-button id="poliziaButton" (click)="richiediSupporto('Polizia')" class="image-max" >
           <img src="../assets/icon/polizia.png">
         </ion-button>
       </div>
     </ion-col>
     <ion-col size="5">
       <div>
-        <ion-button id="pompieriButton" (click)="richiediSupporto()" class="image-max">
+        <ion-button id="pompieriButton" (click)="richiediSupporto('Pompieri')" class="image-max">
           <img src="../assets/icon/pompiere.png">
         </ion-button>
-        <ion-button id="paramediciButton" (click)="richiediSupporto()" class="image-max">
+        <ion-button id="paramediciButton" (click)="richiediSupporto('Paramedici')" class="image-max">
           <img src="../assets/icon/paramedici.png">
         </ion-button>
       </div>

@@ -8,6 +8,7 @@ import {HttpClient} from '@angular/common/http';
 import {ConnectionConfig} from '../ConnectionConfig';
 import {Observable} from 'rxjs';
 import {Disponibilita} from '../gestisci-richiesta/Disponibilita';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 @Component({
   selector: 'app-home',
@@ -19,14 +20,16 @@ export class HomePage {
   urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update-position/';
   urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   urlDisponibilita = ConnectionConfig.getBaseUrl() + '/vetture/get-disp/';
-  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequestPosizione(); }, 10000);
   // Per le coordinate GPS
   locationCoords: any;
   isDisponibile: any;
+  forzaOrdine: string;
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
               private uid: Uid,
+              private oneSignal: OneSignal,
               private http: HttpClient,
               private locationAccuracy: LocationAccuracy) {
     this.locationCoords = {
@@ -148,20 +151,38 @@ export class HomePage {
     });
   }
 
-  richiediSupporto() {
-    this.sendPostRequest(this.urlRichiesta);
+  richiediSupporto(fo: string) {
+    this.oneSignal.getPermissionSubscriptionState().then((status) =>
+        this.sendPostRequestSupporto(status.subscriptionStatus.userId, fo));
     alert('Una richiesta di supporto è stata inviata alla voltante più vicina.');
   }
 
-  sendPostRequest(url) {
+  async sendPostRequestSupporto(playerId: string, fo: string) {
+    const formData = new FormData();
+    formData.append('playerId', playerId);
+    formData.append('lat', this.locationCoords.latitude);
+    formData.append('long', this.locationCoords.longitude);
+    formData.append('imei', this.uid.IMEI);
+    formData.append('tipologia', 'Supporto');
+    formData.append('is_supporto', null);
+    formData.append('informazioni', null);
+    formData.append('forza_ordine', fo);
+    console.log('formData: ', formData.getAll('data'));
+    this.http.post(this.urlRichiesta, formData,
+        {observe: 'response'}).subscribe((response) => {
+          console.log(response.status.toString());
+        },
+        error => (alert('Error' + error.status.toString()))
+    );
+  }
+
+  sendPostRequestPosizione() {
     const formData = new FormData();
     formData.append('lat', this.locationCoords.latitude);
     formData.append('long', this.locationCoords.longitude);
-    if (url === this.urlRichiesta) {
-      formData.append('is_supporto', 'True');
-    }
+    formData.append('imei', this.uid.IMEI);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
+    this.http.post(this.urlPosizione, formData).subscribe((response) =>
             console.log(response.toString()),
         error => (console.log(error.toString()))
     );
@@ -172,7 +193,6 @@ export class HomePage {
     const formData = new FormData();
     formData.append('disponibile', disp);
     console.log('formData: ', formData.getAll('data'));
-    // alert(url + this.uid.IMEI + '/');
     this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
         error => (alert('Error!' + error.status.toString()))

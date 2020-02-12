@@ -9,6 +9,7 @@ import {Uid} from '@ionic-native/uid/ngx';
 import {ActivatedRoute} from '@angular/router';
 import {Richiesta} from './Richiesta';
 import {ConnectionConfig} from '../ConnectionConfig';
+import {OneSignal} from '@ionic-native/onesignal/ngx';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -29,10 +30,13 @@ export class GestisciRichiestaPage implements OnInit {
   urlLineaVerde = ConnectionConfig.getBaseUrl() + '/richiesta/richiesta-linea-verde/';
   urlRichiestaCittadino = ConnectionConfig.getBaseUrl() + '/richiesta/get/richiesta/detail/';
   urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
+  urlRichiestaSupporto = ConnectionConfig.getBaseUrl() + '/richiesta/create-supporto/';
   state: 'start' | 'stop' = 'stop';
+  informazioni: string;
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
               private uid: Uid,
+              private oneSignal: OneSignal,
               public alertController: AlertController,
               public modalController: ModalController,
               private route: ActivatedRoute) { }
@@ -76,8 +80,20 @@ export class GestisciRichiestaPage implements OnInit {
     return await modal.present();
   }
 
-  async richiediSupporto() {
-    this.sendPostRequest(this.urlRichiesta);
+  async sendPostRequest(url) {
+    const formData = new FormData();
+    formData.append('lat', this.locationCoords.latitude);
+    formData.append('long', this.locationCoords.longitude);
+    formData.append('imei', this.uid.IMEI);
+    console.log('formData: ', formData.getAll('data'));
+    this.http.post(url, formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
+        error => (alert('Error!' + error.toString()))
+    );
+  }
+
+  async richiediSupporto(fo: string) {
+    this.oneSignal.getPermissionSubscriptionState().then((status) =>
+        this.sendPostRequestSupporto(status.subscriptionStatus.userId, fo));
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di supporto è stata inoltrata con successo.',
@@ -88,20 +104,19 @@ export class GestisciRichiestaPage implements OnInit {
     }
   }
 
-  async sendPostRequest(url) {
+  async sendPostRequestSupporto(playerId: string, fo: string) {
     const formData = new FormData();
-    if (url === this.urlRichiesta) {
-     // append info aspettate dalla POST
-      formData.append('is_supporto', 'True');
-      console.log('formData: ', formData.getAll('data'));
-    } else {
-      formData.append('lat', this.locationCoords.latitude);
-      formData.append('long', this.locationCoords.longitude);
-      formData.append('imei', this.uid.IMEI);
-      console.log('formData: ', formData.getAll('data'));
-    }
-    this.http.post(url, formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
-        error => (alert('Error!' + error.toString()))
+    formData.append('playerId', playerId);
+    formData.append('imei', this.uid.IMEI);
+    formData.append('forza_ordine', fo);
+    formData.append('pk_req', this.pkReq);
+    console.log('formData: ', formData.getAll('data'));
+    this.http.post(this.urlRichiestaSupporto, formData,
+        {observe: 'response'}).subscribe((response) => {
+          console.log(response.status.toString());
+          this.retunResponse = true;
+        },
+        error => (alert('Error' + error.status.toString()))
     );
   }
 
@@ -123,6 +138,7 @@ export class GestisciRichiestaPage implements OnInit {
         data => {
           this.latitudine = data.lat;
           this.longitudine = data.long;
+          this.informazioni = data.informazioni;
           this.object = {
             name: data.tipologia,
             image1: ConnectionConfig.getBaseUrl() + data.selfie,

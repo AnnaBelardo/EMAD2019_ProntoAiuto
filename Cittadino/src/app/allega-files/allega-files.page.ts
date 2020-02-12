@@ -363,7 +363,7 @@ export class AllegaFilesPage implements OnInit {
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
     formData.append('tipologia', this.motivation);
-    formData.append('is_supporto', 'False');
+    formData.append('is_supporto', null);
     formData.append('informazioni', this.informazioniAggiuntive);
     formData.append('forza_ordine', this.forzaOrdine);
     console.log('formData: ', formData.getAll('data'));
