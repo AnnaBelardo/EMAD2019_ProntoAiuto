@@ -24,8 +24,7 @@ export class GestisciRichiestaPage implements OnInit {
   informazioni;
   returnStm = false;
   retunResponse = false;
-  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione + this.uid.IMEI + '/'); }, 10000);
-  time: BehaviorSubject<string> = new BehaviorSubject('00:00');
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
   locationCoords: any;
   timer: number;
   urlPosizione = ConnectionConfig.getBaseUrl() + '/vetture/update_position/';
@@ -88,7 +87,7 @@ export class GestisciRichiestaPage implements OnInit {
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(url, formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
+    this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
         error => (alert('Error!' + error.toString()))
     );
   }

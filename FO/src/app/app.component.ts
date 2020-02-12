@@ -91,7 +91,8 @@ export class AppComponent {
           }
         }
       ],
-      backdropDismiss: false,
+      // serve per bloccare la notifica
+      // backdropDismiss: false,
     });
     alertCustom.present();
   }
