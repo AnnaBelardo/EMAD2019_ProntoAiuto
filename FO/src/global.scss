@@ -32,3 +32,16 @@
 .bold {
   font-weight: bold;
 }
+
+.customModal .modal-wrapper {
+  // height: auto;
+  position: absolute !important;
+  width: 85% !important;
+  min-height: 1100px !important;
+  height: fit-content !important;
+  //top: 0 !important;
+  // bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: auto !important;
+}

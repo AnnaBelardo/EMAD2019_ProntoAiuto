@@ -7,24 +7,24 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-<ion-grid no-padding fixed="xs">
-  <ion-row padding-top="20px">
-    <ion-col size="2"><div></div></ion-col>
-    <ion-col size="8">
+<ion-grid>
+  <ion-row style="padding-top: 150px">
+    <ion-col size="3"><div></div></ion-col>
+    <ion-col size="6">
       <ion-item lines="none">
             <ion-label color="dark" class="ion-text-start; bold">
-              DISPONIBILE
+              <h1 style="font-weight: bold;">DISPONIBILE</h1>
             </ion-label>
-            <ion-toggle  [(ngModel)]="isDisponibile"
+            <ion-toggle style="zoom: 1.5" [(ngModel)]="isDisponibile"
                          color="success" (ionChange)="change($event)" >
             </ion-toggle>
       </ion-item>
     </ion-col>
-    <ion-col size="2"><div></div></ion-col>
+    <ion-col size="3"><div></div></ion-col>
   </ion-row>
 
 
-  <ion-row  style="align-items: flex-start;padding-top: 120px">
+  <ion-row  style="align-items: flex-start;padding-top: 70px">
     <ion-col size="1" >
       <div>
       </div>

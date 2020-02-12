@@ -75,7 +75,8 @@ export class GestisciRichiestaPage implements OnInit {
     const modal = await this.modalController.create({
       component: ViewObjectPage,
       componentProps: { object: this.object
-      }
+      },
+      cssClass: 'customModal'
     });
     return await modal.present();
   }
