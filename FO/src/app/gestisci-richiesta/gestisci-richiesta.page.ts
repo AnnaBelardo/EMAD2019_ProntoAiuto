@@ -24,7 +24,7 @@ export class GestisciRichiestaPage implements OnInit {
   informazioni;
   returnStm = false;
   retunResponse = false;
-  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione); }, 10000);
+  private autoSaveInterval: number = setInterval( () => { this.sendPostRequest(this.urlPosizione + this.uid.IMEI + '/'); }, 10000);
   time: BehaviorSubject<string> = new BehaviorSubject('00:00');
   locationCoords: any;
   timer: number;
@@ -111,7 +111,7 @@ export class GestisciRichiestaPage implements OnInit {
     formData.append('playerId', playerId);
     formData.append('imei', this.uid.IMEI);
     formData.append('forza_ordine', fo);
-    formData.append('pk_req', this.pkReq);
+    formData.append('id_richiesta', this.pkReq);
     console.log('formData: ', formData.getAll('data'));
     this.http.post(this.urlRichiestaSupporto, formData,
         {observe: 'response'}).subscribe((response) => {

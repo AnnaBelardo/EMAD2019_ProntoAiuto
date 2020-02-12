@@ -182,7 +182,7 @@ export class HomePage {
     formData.append('long', this.locationCoords.longitude);
     formData.append('imei', this.uid.IMEI);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(this.urlPosizione, formData).subscribe((response) =>
+    this.http.post(this.urlPosizione + this.uid.IMEI + '/', formData).subscribe((response) =>
             console.log(response.toString()),
         error => (console.log(error.toString()))
     );
