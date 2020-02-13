@@ -55,7 +55,7 @@ export class AppComponent {
       const msg = data.payload.body;
       const title = data.payload.title;
       const additionalData = data.payload.additionalData;
-      if (additionalData.richiesta_from === 1 || additionalData.richeista_from === 2 || additionalData.richiesta_from === 3){
+      if (additionalData.richiesta_from === 1 || additionalData.richiesta_from === 2 || additionalData.richiesta_from === 3) {
         this.showAlert(title, msg, additionalData);
       } else {
         this.showAlertRisposta(title, msg);
