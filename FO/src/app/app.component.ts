@@ -8,6 +8,7 @@ import {Uid} from '@ionic-native/uid/ngx';
 import {HttpClient} from '@angular/common/http';
 import {Apiconfig} from './ApiConfig';
 import {Router} from '@angular/router';
+import {LaunchNavigator, LaunchNavigatorOptions} from '@ionic-native/launch-navigator/ngx';
 
 
 @Component({
@@ -18,8 +19,12 @@ import {Router} from '@angular/router';
 export class AppComponent {
   urlRifiuta = Apiconfig.url + 'richiesta/rifiuta/';
   urlAccetta = Apiconfig.url + 'richiesta/accetta/';
+  options: LaunchNavigatorOptions = {
+    app: this.launchNavigator.APP.GOOGLE_MAPS
+  };
   constructor(
     private platform: Platform,
+    private launchNavigator: LaunchNavigator,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private oneSignal: OneSignal,
@@ -50,22 +55,52 @@ export class AppComponent {
       const msg = data.payload.body;
       const title = data.payload.title;
       const additionalData = data.payload.additionalData;
-      this.showAlert(title, msg, additionalData);
+      if (additionalData.richesta_from === 1 || additionalData.richesta_from === 2 || additionalData.richesta_from === 3){
+        this.showAlert(title, msg, additionalData);
+      } else {
+        this.showAlertRisposta(title, msg);
+      }
     },
         error => { alert(error); }
         );
 
     // Notification was really clicked/opened
-    this.oneSignal.handleNotificationOpened().subscribe(data => {
+    // this.oneSignal.handleNotificationOpened().subscribe(data => {
       // Just a note that the data is a different place here!
-      this.showAlert('Notification opened', 'You already read this before', 'l');
-    });
+      // this.showAlert('Notification opened', 'You already read this before', 'l');
+    // });
 
     this.oneSignal.endInit();
   }
 
+  navigate(lat, long) {
+    this.launchNavigator.navigate([lat, long], this.options)
+        .then(
+            success => console.log('launched navigator'),
+            error => console.log('launched navigator error')
+        );
+  }
+
+
+  async showAlertRisposta(title, msg) {
+    const alert = await this.alertCtrl.create({
+      header: title,
+      subHeader: msg,
+      buttons: [
+        {
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    alert.present();
+  }
+
   async showAlert(title, msg, additionalData) {
-    const alertCustom = await this.alertCtrl.create({
+    const alertRichiesta = await this.alertCtrl.create({
       header: title,
       subHeader: msg,
       buttons: [
@@ -74,7 +109,11 @@ export class AppComponent {
           handler: () => {
             this.http.get(this.urlAccetta + this.uid.IMEI + '/' + additionalData.req_pk + '/',
                 {observe: 'response'}).subscribe((response) => {
-                  this.router.navigate(['gestisci-richiesta', additionalData.req_pk]);
+                  if (additionalData.richiesta_from === 2) {
+                    this.navigate(additionalData.lat, additionalData.long);
+                  } else {
+                    this.router.navigate(['gestisci-richiesta', additionalData.req_pk]);
+                  }
                 },
                 error => (console.log(error.status))
             );
@@ -92,8 +131,8 @@ export class AppComponent {
         }
       ],
       // serve per bloccare la notifica
-      // backdropDismiss: false,
+      backdropDismiss: false,
     });
-    alertCustom.present();
+    alertRichiesta.present();
   }
 }
