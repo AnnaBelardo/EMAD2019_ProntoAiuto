@@ -38,7 +38,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#EF8157');
+      // this.statusBar.backgroundColorByHexString('#EF8157');
       this.splashScreen.hide();
 
       if (this.platform.is('cordova')) {
@@ -65,10 +65,16 @@ export class AppComponent {
         );
 
     // Notification was really clicked/opened
-    // this.oneSignal.handleNotificationOpened().subscribe(data => {
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
       // Just a note that the data is a different place here!
-      // this.showAlert('Notification opened', 'You already read this before', 'l');
-    // });
+      const msg = data.notification.payload.body;
+      const title = data.notification.payload.title;
+      const additionalData = data.notification.payload.additionalData;
+      if (additionalData.richiesta_from === 1 || additionalData.richiesta_from === 2 || additionalData.richiesta_from === 3) {
+        this.showAlert(title, msg, additionalData);
+      } else {
+        this.showAlertRisposta(title, msg);
+      }    });
 
     this.oneSignal.endInit();
   }
@@ -101,6 +107,7 @@ export class AppComponent {
 
   async showAlert(title, msg, additionalData) {
     const alertRichiesta = await this.alertCtrl.create({
+      backdropDismiss: false,
       header: title,
       subHeader: msg,
       buttons: [
@@ -130,8 +137,6 @@ export class AppComponent {
           }
         }
       ],
-      // serve per bloccare la notifica
-      backdropDismiss: false,
     });
     alertRichiesta.present();
   }

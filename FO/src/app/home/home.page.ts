@@ -9,6 +9,7 @@ import {ConnectionConfig} from '../ConnectionConfig';
 import {Observable} from 'rxjs';
 import {Disponibilita} from '../gestisci-richiesta/Disponibilita';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -31,7 +32,8 @@ export class HomePage {
               private uid: Uid,
               private oneSignal: OneSignal,
               private http: HttpClient,
-              private locationAccuracy: LocationAccuracy) {
+              private locationAccuracy: LocationAccuracy,
+              private alertCtrl: AlertController) {
     this.locationCoords = {
       latitude: '',
       longitude: '',
@@ -151,10 +153,24 @@ export class HomePage {
     });
   }
 
-  richiediSupporto(fo: string) {
+  async richiediSupporto(fo: string) {
     this.oneSignal.getPermissionSubscriptionState().then((status) =>
         this.sendPostRequestSupporto(status.subscriptionStatus.userId, fo));
-    alert('Una richiesta di supporto è stata inviata alla voltante più vicina.');
+    const alert = await this.alertCtrl.create({
+      header: 'Richiesta Inoltrata',
+      subHeader: 'Una richiesta di supporto è stata inviata alla voltante più vicina.',
+      buttons: [
+        {
+          cssClass: 'my-alert',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    alert.present();
   }
 
   async sendPostRequestSupporto(playerId: string, fo: string) {
