@@ -64,7 +64,7 @@
           </div>
           <div class="col-md-4">
             <b>Richiesta di supporto</b><br>
-            {{supporto}}
+            <a href="#/richieste/details/{{supporto}}" *ngIf="supporto !== 'null'" data-ui-sref-opts="{reload: true}">Dettaglio richiesta {{supporto}}</a>
           </div>
           <div class="col-md-4">
             <b>Tempo di arrivo</b><br>
@@ -78,13 +78,13 @@
 </div>
 <div class="row">
   <div class="col-md-8">
-    <div class="card">
+    <div class="card" *ngIf="foto_yes || selfie_yes">
       <div class="card-header">
         <h4 class="card-title">Foto allegate</h4>
       </div>
       <div class="card-body">
         <ngb-carousel>
-          <ng-template ngbSlide>
+          <ng-template ngbSlide *ngIf="selfie_yes">
             <div class="picsum-img-wrapper">
               <img src="{{ selfie }}" class="rotate180">
             </div>
@@ -92,7 +92,7 @@
               <h3>Selfie</h3>
             </div>
           </ng-template>
-          <ng-template ngbSlide>
+          <ng-template ngbSlide *ngIf="foto_yes">
             <div class="picsum-img-wrapper">
               <img src="{{ foto }}">
             </div>
@@ -105,7 +105,7 @@
     </div>
   </div>
   <div class="col-md-4">
-    <div class="card">
+    <div class="card" *ngIf="audio_yes">
       <div class="card-header">
         <h4 class="card-title">Audio allegato</h4>
       </div>

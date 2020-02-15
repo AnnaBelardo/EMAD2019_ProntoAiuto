@@ -4,7 +4,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx';
 import {LocationAccuracy} from '@ionic-native/location-accuracy/ngx';
 import {AndroidPermissions} from '@ionic-native/android-permissions/ngx';
 import {Uid} from '@ionic-native/uid/ngx';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ConnectionConfig} from '../ConnectionConfig';
 import {Observable} from 'rxjs';
 import {Disponibilita} from '../gestisci-richiesta/Disponibilita';
@@ -193,9 +193,9 @@ export class HomePage {
     const formData = new FormData();
     formData.append('disponibile', disp);
     console.log('formData: ', formData.getAll('data'));
-    this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) =>
-            console.log(response.toString()),
-        error => (alert('Error!' + error.status.toString()))
+    this.http.post(url + this.uid.IMEI + '/', formData, {observe: 'response'}).subscribe((response) =>
+            console.log(response.status.toString()),
+        (error: HttpErrorResponse) => (alert(error.message))
     );
   }
 }

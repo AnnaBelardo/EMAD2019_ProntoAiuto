@@ -35,13 +35,31 @@ export class RichiestaDetailsComponent implements OnInit {
   public lineaVerde: string;
   public supporto: string;
   public tempoArrivo: number;
+  public foto_yes: boolean;
+  public selfie_yes: boolean;
+  public audio_yes: boolean;
 
   constructor(private richiesteService: RichiesteService, private router: Router,
               private route: ActivatedRoute) {
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    };
+    this.foto_yes = true;
+    this.selfie_yes = true;
+    this.audio_yes = true;
   }
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
     this.richiesteService.getRichiesta(this.id).subscribe((richiesta) => {
+        if (richiesta.audio === null) {
+          this.audio_yes = false;
+        }
+        if (richiesta.selfie === null) {
+          this.selfie_yes = false;
+        }
+        if (richiesta.foto === null) {
+          this.foto_yes = false;
+        }
         this.imei = richiesta.imei;
         this.latitudine = richiesta.lat;
         this.longitudine = richiesta.long;
@@ -52,16 +70,18 @@ export class RichiestaDetailsComponent implements OnInit {
         this.idVettura = richiesta.vettura;
         this.imeiVettura = richiesta.vettura_imei;
         this.lineaVerde = this.formattabooleano(String(richiesta.linea_verde_richiesta));
-        this.supporto = this.formattabooleano(richiesta.is_supporto.toString());
+        this.supporto = richiesta.is_supporto;
         this.tempoArrivo = richiesta.tempoDiArrivo;
         this.selfie = Apiconfig.urlMedia + richiesta.selfie;
         this.audio = Apiconfig.urlMedia + richiesta.audio;
         this.vetturaIdDettaglio = richiesta.vetturaIdDettaglio;
         // this.audioOgg = Apiconfig.urlMedia + (richiesta.audio.replace('.mp3', '.ogg'));
         this.foto = Apiconfig.urlMedia + richiesta.foto;
-        document.getElementById('cardBodyAudio').insertAdjacentHTML('afterbegin', '<audio controls>\n' +
-          '<source  src="' + this.audio + '" type="audio/mpeg">\n' +
-          '</audio>');
+        if (this.audio_yes) {
+          document.getElementById('cardBodyAudio').insertAdjacentHTML('afterbegin', '<audio controls>\n' +
+            '<source  src="' + this.audio + '" type="audio/mpeg">\n' +
+            '</audio>');
+        }
         this.map = tt.map({
           key: 'pBDtSNH15AVCe1kLOKb1lgvdgWtGCHaG',
           container: 'map',

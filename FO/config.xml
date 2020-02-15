@@ -23,6 +23,7 @@
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
+            <application android:usesCleartextTraffic="true" />
         </edit-config>
         <resource-file src="resources/android/xml/network_security_config.xml" target="app/src/main/res/xml/network_security_config.xml" />
         <allow-intent href="market:*" />
@@ -102,7 +103,4 @@
     <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" source="npm">
         <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyCiZfS9qWwKLNlBUXLqLJyc8jtA0bnvTA8" />
     </plugin>
-    <allow-navigation href="http://localhost:8101" sessionid="579769fc" />
-    <allow-navigation href="http://localhost:8100" sessionid="d00d742e" />
-    <allow-navigation href="http://localhost:8102" sessionid="6c53147f" />
 </widget>
