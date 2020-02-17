@@ -10,6 +10,7 @@ import {Observable} from 'rxjs';
 import {Disponibilita} from '../gestisci-richiesta/Disponibilita';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import {AlertController} from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -26,6 +27,8 @@ export class HomePage {
   locationCoords: any;
   isDisponibile: any;
   forzaOrdine: string;
+  isTablet: any;
+
   constructor(private router: Router,
               private androidPermissions: AndroidPermissions,
               private geolocation: Geolocation,
@@ -33,7 +36,9 @@ export class HomePage {
               private oneSignal: OneSignal,
               private http: HttpClient,
               private locationAccuracy: LocationAccuracy,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController,
+              public platform: Platform) {
+    this.isTablet = platform.is('tablet');
     this.locationCoords = {
       latitude: '',
       longitude: '',
@@ -65,7 +70,23 @@ export class HomePage {
         }
     );
   }
-
+  async alertError(errore) {
+    const alert = await this.alertCtrl.create({
+      header: 'Errore!',
+      subHeader: errore,
+      buttons: [
+        {
+          cssClass: 'customAlertButton',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    await  alert.present();
+  }
   getLocationCoordinates() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.locationCoords.latitude = resp.coords.latitude;
@@ -73,7 +94,7 @@ export class HomePage {
       this.locationCoords.accuracy = resp.coords.accuracy;
       this.locationCoords.timestamp = resp.timestamp;
     }).catch((error) => {
-      alert('Error getting location' + error);
+      this.alertError('Error getting location ' + error);
     });
   }
 
@@ -91,7 +112,7 @@ export class HomePage {
           }
         },
         err => {
-          alert('Errore GPS ' + err);
+          this.alertError('Errore GPS ' + err);
         }
     );
   }
@@ -110,7 +131,7 @@ export class HomePage {
                 },
                 error => {
                   // Se l'utente rifiuta mostro l'errore
-                  alert('requestPermission Error requesting location permissions ' + error);
+                  this.alertError('requestPermission Error requesting location permissions ' + error);
                 }
             );
       }
@@ -119,7 +140,6 @@ export class HomePage {
 
   change(event) {
     this.sendPostToUpdateDisp(this.urlUpdateDisp, this.isDisponibile);
-    // }
   }
 
   askToTurnOnGPS() {
@@ -128,7 +148,7 @@ export class HomePage {
           // Quando il GPS è ON prendo le coordinate accurate
           this.getLocationCoordinates();
         },
-        error => alert('Error requesting location permissions ' + JSON.stringify(error))
+        error => this.alertError('Error requesting location permissions ' + JSON.stringify(error))
     );
   }
 
@@ -145,11 +165,11 @@ export class HomePage {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_PHONE_STATE).then(res => {
           // alert('Persmission Granted Please Restart App!');
         }).catch(error => {
-          alert('Error! ' + error);
+          this.alertError('Error! ' + error);
         });
       }
     }).catch(error => {
-      alert('Error! ' + error);
+      this.alertError('Error! ' + error);
     });
   }
 
@@ -161,7 +181,7 @@ export class HomePage {
       subHeader: 'Una richiesta di supporto è stata inviata alla voltante più vicina.',
       buttons: [
         {
-          cssClass: 'my-alert',
+          cssClass: 'customAlertButton',
           text: `Chiudi`,
           handler: () => {
             // E.g: Navigate to a specific screen
@@ -188,7 +208,7 @@ export class HomePage {
         {observe: 'response'}).subscribe((response) => {
           console.log(response.status.toString());
         },
-        error => (alert('Error' + error.status.toString()))
+        error => (this.alertError('Error' + error.status.toString()))
     );
   }
 

@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-grid>
+<ion-grid *ngIf="isTablet">
   <ion-row>
   <ion-col size="1"></ion-col>
   <ion-col size="10">
@@ -85,7 +85,7 @@
       </div>
     </ion-col>
     <ion-col size="8" style="text-align: center; margin-top: 20px">
-      <ion-button style=" width: 100%; height: 120%"> <h3>RICHIEDI LINEA VERDE</h3></ion-button>
+      <ion-button style=" width: 100%; height: 120%" (click)="richiestaLineaVerde()"> <h3>RICHIEDI LINEA VERDE</h3></ion-button>
     </ion-col>
     <ion-col size="2">
       <div>
@@ -99,6 +99,108 @@
     </ion-col>
     <ion-col size="8" style="text-align: center; margin-top: 20px">
       <ion-button style=" width: 100%; height: 120%"><h3> VAI SUL POSTO </h3></ion-button>
+    </ion-col>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid *ngIf="!isTablet" style="padding: 10px;">
+  <ion-row >
+    <ion-col size="12">
+      <ion-text  color="dark" class="bold">Tipologia: </ion-text>
+      <ion-text> </ion-text>
+      <ion-text  color="dark"> Incidente stradale</ion-text>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="9">
+      <div>
+        <ion-text class="bold">Ulteriori informazioni: </ion-text>
+        <ion-textarea
+                disabled
+                readonly
+                value="Ci sono dei feriti!">
+        </ion-textarea>
+      </div>
+    </ion-col>
+    <ion-col size="3">
+      <div>
+        <ion-button (click)="presentModal()">
+          <img src="../assets/icon/allegati.png" style="width : 100% ; height : 100%" ng-click="nextpage()" >
+        </ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+    <ion-col size="8">
+      <ion-text color="dark" class="bold" ><h6 style="text-align: center">Richiedi supporto a</h6></ion-text>
+    </ion-col>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="1">
+      <div>
+      </div>
+    </ion-col>
+    <ion-col size="5">
+      <div>
+        <ion-button  id="carabinieriButtonTablet" (click)="richiediSupporto('Carabinieri')"  class="image-max" >
+          <img src="../assets/icon/carabinieri.png">
+        </ion-button>
+        <ion-button  id="poliziaButtonTablet" (click)="richiediSupporto('Polizia')" class="image-max" >
+          <img src="../assets/icon/polizia.png">
+        </ion-button>
+      </div>
+    </ion-col>
+    <ion-col size="5">
+      <div>
+        <ion-button id="pompieriButtonTablet" (click)="richiediSupporto('Pompieri')"  class="image-max">
+          <img src="../assets/icon/pompiere.png">
+        </ion-button>
+        <ion-button id="paramediciButtonTablet" (click)="richiediSupporto('Paramedici')" class="image-max">
+          <img src="../assets/icon/paramedici.png">
+        </ion-button>
+      </div>
+    </ion-col>
+    <ion-col size="1">
+      <div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="2" >
+      <div>
+      </div>
+    </ion-col>
+    <ion-col size="8" style="text-align: center;">
+      <ion-button  style=" width: 100%" (click)="richiestaLineaVerde()">RICHIEDI LINEA VERDE</ion-button>
+    </ion-col>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+    <ion-col size="8" style="text-align: center;">
+      <div>
+        <ion-button style=" width: 100%">VAI SUL POSTO </ion-button>
+      </div>
     </ion-col>
     <ion-col size="2">
       <div>

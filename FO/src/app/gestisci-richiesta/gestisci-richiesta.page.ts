@@ -10,6 +10,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Richiesta} from './Richiesta';
 import {ConnectionConfig} from '../ConnectionConfig';
 import {OneSignal} from '@ionic-native/onesignal/ngx';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-gestisci-richiesta',
@@ -33,13 +34,17 @@ export class GestisciRichiestaPage implements OnInit {
   urlRichiesta = ConnectionConfig.getBaseUrl() + '/richiesta/create/';
   urlRichiestaSupporto = ConnectionConfig.getBaseUrl() + '/richiesta/create-supporto/';
   state: 'start' | 'stop' = 'stop';
+  isTablet: any;
   constructor(private launchNavigator: LaunchNavigator,
               private http: HttpClient,
               private uid: Uid,
               private oneSignal: OneSignal,
               public alertController: AlertController,
               public modalController: ModalController,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              public platform: Platform) {
+    this.isTablet = platform.is('tablet');
+  }
   object: any;
   options: LaunchNavigatorOptions = {
     app: this.launchNavigator.APP.GOOGLE_MAPS
@@ -57,13 +62,38 @@ export class GestisciRichiestaPage implements OnInit {
             error => console.log('launched navigator error')
         );
   }
-
+  async alertError(errore) {
+    const alert = await this.alertController.create({
+      header: 'Errore!',
+      subHeader: errore,
+      buttons: [
+        {
+          cssClass: 'customAlertButton',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    await  alert.present();
+  }
   async richiestaLineaVerde() {
     this.sendPostLineaVerde(this.urlLineaVerde + this.pkReq);
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di linea verde è stata inoltrata con successo.',
-      buttons: ['OK']
+      buttons: [
+        {
+          cssClass: 'customAlertButton',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
     });
     if (this.returnStm) {
       await alert.present();
@@ -88,7 +118,7 @@ export class GestisciRichiestaPage implements OnInit {
     formData.append('imei', this.uid.IMEI);
     console.log('formData: ', formData.getAll('data'));
     this.http.post(url + this.uid.IMEI + '/', formData).subscribe((response) => this.retunResponse = true, // alert(response.toString()),
-        error => (alert('Error!' + error.toString()))
+        error => (this.alertError('Error!' + error.toString()))
     );
   }
 
@@ -98,7 +128,16 @@ export class GestisciRichiestaPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di supporto è stata inoltrata con successo.',
-      buttons: ['OK']
+      buttons: [
+      {
+        cssClass: 'customAlertButton',
+        text: `Chiudi`,
+        handler: () => {
+          // E.g: Navigate to a specific screen
+          alert.dismiss();
+        }
+      },
+    ]
     });
     if (this.retunResponse) {
       await alert.present();
@@ -117,7 +156,7 @@ export class GestisciRichiestaPage implements OnInit {
           console.log(response.status.toString());
           this.retunResponse = true;
         },
-        error => (alert('Error' + error.status.toString()))
+        error => (this.alertError('Error' + error.status.toString()))
     );
   }
 

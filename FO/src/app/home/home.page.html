@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content>
 <ion-grid>
-  <ion-row style="padding-top: 150px">
+  <ion-row  *ngIf="isTablet" style="padding-top: 150px">
     <ion-col size="3"><div></div></ion-col>
     <ion-col size="6">
       <ion-item lines="none">
@@ -22,9 +22,37 @@
     </ion-col>
     <ion-col size="3"><div></div></ion-col>
   </ion-row>
-
-
+  <ion-row *ngIf="!isTablet" padding-top="20px">
+    <ion-col size="2"><div></div></ion-col>
+    <ion-col size="8">
+      <ion-item lines="none">
+        <ion-label color="dark" class="ion-text-start; bold">
+          DISPONIBILE
+        </ion-label>
+        <ion-toggle  [(ngModel)]="isDisponibile"
+                     color="success" (ionChange)="change($event)" >
+        </ion-toggle>
+      </ion-item>
+    </ion-col>
+    <ion-col size="2"><div></div></ion-col>
+  </ion-row>
   <ion-row  style="align-items: flex-start;padding-top: 70px">
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+    <ion-col *ngIf="!isTablet" size="8">
+      <ion-text color="dark" class="bold" ><h6 style="text-align: center">Richiedi supporto a</h6></ion-text>
+    </ion-col>
+    <ion-col *ngIf="isTablet" size="8">
+      <ion-text color="dark" ><h2 style="text-align: center">Richiedi supporto a</h2></ion-text>
+    </ion-col>
+    <ion-col size="2">
+      <div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row >
     <ion-col size="1" >
       <div>
       </div>
