@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {Apiconfig} from '../ApiConfig';
 import {Observable} from 'rxjs';
 import {Richiesta} from '../DataModel/Richiesta';
+import {AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -26,12 +27,30 @@ export class HomePage implements OnInit {
               private uid: Uid,
               private androidPermissions: AndroidPermissions,
               private http: HttpClient,
+              public alertController: AlertController
   ) {
 
   }
   ngOnInit(): void {
   }
 
+  async alertError(errore) {
+    const alert = await this.alertController.create({
+      header: 'Errore!',
+      subHeader: errore,
+      buttons: [
+        {
+          cssClass: 'customAlertButton',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    await  alert.present();
+  }
   ionViewWillEnter() {
     this.getImeiPermission();
     this.getCameraPermission();
@@ -54,11 +73,11 @@ export class HomePage implements OnInit {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.CAMERA).then(res => {
           // alert('Persmission Granted Please Restart App!');
         }).catch(error => {
-          alert('Error! ' + error);
+          this.alertError('Error! ' + error);
         });
       }
     }).catch(error => {
-      alert('Error! ' + error);
+      this.alertError('Error! ' + error);
     });
   }
 
@@ -73,11 +92,11 @@ export class HomePage implements OnInit {
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_PHONE_STATE).then(res => {
           // alert('Persmission Granted Please Restart App!');
         }).catch(error => {
-          alert('Error! ' + error);
+          this.alertError('Error! ' + error);
         });
       }
     }).catch(error => {
-      alert('Error! ' + error);
+      this.alertError('Error! ' + error);
     });
   }
 

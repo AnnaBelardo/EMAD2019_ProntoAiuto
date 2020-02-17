@@ -26,7 +26,6 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.backgroundColorByHexString('#EF8157');
       this.splashScreen.hide();
 
       if (this.platform.is('cordova')) {

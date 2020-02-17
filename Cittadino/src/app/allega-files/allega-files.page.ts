@@ -14,6 +14,7 @@ import { CameraPreview, CameraPreviewPictureOptions } from '@ionic-native/camera
 import {Base64ToGallery, Base64ToGalleryOptions} from '@ionic-native/base64-to-gallery/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import {ConnectionConfig} from '../ConnectionConfig';
+import {AlertController} from '@ionic/angular';
 
 
 declare var cordova: any;
@@ -69,6 +70,8 @@ export class AllegaFilesPage implements OnInit {
               private cameraPreview: CameraPreview,
               private base64ToGallery: Base64ToGallery,
               private oneSignal: OneSignal,
+              private alertCtrl: AlertController,
+
   ) {
     this.tipoForza = this.router.getCurrentNavigation().extras.state.example;
     this.audioList = [];
@@ -148,6 +151,23 @@ export class AllegaFilesPage implements OnInit {
     }
   }
 
+  async alertError(errore) {
+    const alert = await this.alertCtrl.create({
+      header: 'Errore!',
+      subHeader: errore,
+      buttons: [
+        {
+          cssClass: 'customAlertButton',
+          text: `Chiudi`,
+          handler: () => {
+            // E.g: Navigate to a specific screen
+            alert.dismiss();
+          }
+        },
+      ]
+    });
+    await  alert.present();
+  }
    async takeSelfie() {
     // take a picture
     this.cameraPreview.takePicture(this.pictureOpts).then((base64PictureData) => {
@@ -202,7 +222,7 @@ export class AllegaFilesPage implements OnInit {
       this.file.removeFile(cacheImagePath.substring(0, cacheImagePath.lastIndexOf('/')), currentName).then(res => {
       });
     }, error => {
-      alert('Error while storing file.' + error);
+      this.alertError('Error while storing file.' + error);
     });
   }
 
@@ -281,7 +301,7 @@ export class AllegaFilesPage implements OnInit {
       this.locationCoords.accuracy = resp.coords.accuracy;
       this.locationCoords.timestamp = resp.timestamp;
     }).catch((error) => {
-      alert('Error getting location' + error);
+      this.alertError('Error getting location' + error);
     });
   }
 
@@ -315,7 +335,7 @@ export class AllegaFilesPage implements OnInit {
           }
         },
         err => {
-          alert('Error GPS' + err);
+          this.alertError('Error GPS' + err);
         }
     );
   }
@@ -334,7 +354,7 @@ export class AllegaFilesPage implements OnInit {
                 },
                 error => {
                   // Se l'utente rifiuta mostro l'errore
-                  alert('requestPermission Error requesting location permissions ' + error);
+                  this.alertError('requestPermission Error requesting location permissions ' + error);
                 }
             );
       }
@@ -347,7 +367,7 @@ export class AllegaFilesPage implements OnInit {
           // Quando il GPS è ON prendo le coordinate accurate
           this.getLocationCoordinates();
         },
-        error => alert('Error requesting location permissions ' + JSON.stringify(error))
+        error => this.alertError('Error requesting location permissions ' + JSON.stringify(error))
     );
   }
 
@@ -374,7 +394,7 @@ export class AllegaFilesPage implements OnInit {
       console.log(response.status.toString());
       this.router.navigate(['home']);
     },
-        error => (alert('Error' + error.status.toString()))
+        error => (this.alertError('Error ' + error.status.toString()))
      );
   }
 
@@ -383,7 +403,7 @@ export class AllegaFilesPage implements OnInit {
     await this.fileToUpload.readAsDataURL(cordova.file.externalApplicationStorageDirectory + 'files/', filename).then(res => {
       returnvalue = res;
     }).catch(err => {
-      alert('File Error!' + err);
+      this.alertError('File Error! ' + err);
     });
     return returnvalue;
   }
