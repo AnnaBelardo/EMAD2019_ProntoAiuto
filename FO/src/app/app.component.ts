@@ -133,7 +133,6 @@ export class AppComponent {
           handler: () => {
             this.http.get(this.urlRifiuta + this.uid.IMEI + '/' + additionalData.req_pk + '/' + additionalData.richiesta_from + '/',
                 {observe: 'response'}).subscribe((response) =>
-                    alert(response.status.toString()),
                 error => (console.log(error.toString()))
             );
           }

@@ -107,31 +107,28 @@
   </ion-row>
 </ion-grid>
 <ion-grid *ngIf="!isTablet" style="padding: 10px;">
-  <ion-row >
-    <ion-col size="12">
-      <ion-text  color="dark" class="bold">Tipologia: </ion-text>
-      <ion-text> </ion-text>
-      <ion-text  color="dark"> Incidente stradale</ion-text>
-    </ion-col>
-  </ion-row>
-
   <ion-row>
-    <ion-col size="9">
-      <div>
-        <ion-text class="bold">Ulteriori informazioni: </ion-text>
-        <ion-textarea
-                disabled
-                readonly
-                value="Ci sono dei feriti!">
-        </ion-textarea>
-      </div>
-    </ion-col>
-    <ion-col size="3">
-      <div>
-        <ion-button (click)="presentModal()">
-          <img src="../assets/icon/allegati.png" style="width : 100% ; height : 100%" ng-click="nextpage()" >
-        </ion-button>
-      </div>
+    <ion-col size="12">
+      <ion-card  class="cardmia" >
+        <ion-row>
+          <ion-col size="8">
+            <p>
+              <ion-text  color="dark" class="bold"> Tipologia: </ion-text>
+              <ion-text>  </ion-text>
+              <ion-text > {{tipologia}}  </ion-text>
+            </p>
+            <ion-text color="dark" class="bold">Ulteriori informazioni:</ion-text>
+            <p> <ion-text > {{informazioni}} </ion-text>
+            </p>
+          </ion-col>
+          <ion-col size="3">
+            <ion-button (click)="presentModal()"  style="  margin-top: 20px;height: 40%;width: 100%">
+              <img src="../assets/icon/allegati.png" style="width : 100% ; height : 100%" ng-click="nextpage()" >
+            </ion-button>
+          </ion-col>
+          <ion-col size="1"></ion-col>
+        </ion-row>
+      </ion-card>
     </ion-col>
   </ion-row>
 

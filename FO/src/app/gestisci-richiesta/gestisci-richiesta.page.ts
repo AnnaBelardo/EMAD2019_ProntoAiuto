@@ -173,7 +173,7 @@ export class GestisciRichiestaPage implements OnInit {
     const formData = new FormData();
     this.http.post(url, formData).subscribe((response) =>
             this.returnStm = true,
-        error => (alert('Error!' + error.toString()))
+        error => (this.alertError('Error!' + error.toString()))
     );
   }
 
