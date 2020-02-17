@@ -2,7 +2,8 @@
   <ion-toolbar  color="tertiary">
     <ion-row>
       <ion-img src="../assets/icon/logoConLinea.png" class="logo"></ion-img>
-      <ion-title>PRONTOAIUTO</ion-title>
+      <ion-title *ngIf="!isTablet">PRONTOAIUTO</ion-title>
+      <ion-title *ngIf="isTablet" ><h3>PRONTOAIUTO</h3></ion-title>
     </ion-row>
   </ion-toolbar>
 </ion-header>

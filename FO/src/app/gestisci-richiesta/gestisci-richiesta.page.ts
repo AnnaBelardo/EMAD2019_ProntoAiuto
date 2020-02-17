@@ -80,7 +80,7 @@ export class GestisciRichiestaPage implements OnInit {
     await  alert.present();
   }
   async richiestaLineaVerde() {
-    this.sendPostLineaVerde(this.urlLineaVerde + this.pkReq);
+    this.sendPostLineaVerde(this.urlLineaVerde + this.pkReq + '/');
     const alert = await this.alertController.create({
       header: 'Richiesta effettuata',
       message: 'La richiesta di linea verde è stata inoltrata con successo.',
@@ -102,13 +102,22 @@ export class GestisciRichiestaPage implements OnInit {
 
   async presentModal() {
    //  alert(this.object.audio);
-    const modal = await this.modalController.create({
-      component: ViewObjectPage,
-      componentProps: { object: this.object
-      },
-      cssClass: 'customModal'
-    });
-    return await modal.present();
+    if (this.isTablet) {
+      const modal = await this.modalController.create({
+        component: ViewObjectPage,
+        componentProps: { object: this.object
+        },
+        cssClass: 'customModal'
+      });
+      return await modal.present();
+    } else {
+      const modal = await this.modalController.create({
+        component: ViewObjectPage,
+        componentProps: { object: this.object
+        }
+      });
+      return await modal.present();
+    }
   }
 
   async sendPostRequest(url) {

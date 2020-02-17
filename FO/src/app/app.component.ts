@@ -94,6 +94,7 @@ export class AppComponent {
       subHeader: msg,
       buttons: [
         {
+          cssClass: 'customAlertButton',
           text: `Chiudi`,
           handler: () => {
             // E.g: Navigate to a specific screen
@@ -112,6 +113,7 @@ export class AppComponent {
       subHeader: msg,
       buttons: [
         {
+          cssClass: 'customAlertButton',
           text: `Accetta`,
           handler: () => {
             this.http.get(this.urlAccetta + this.uid.IMEI + '/' + additionalData.req_pk + '/',
@@ -129,7 +131,7 @@ export class AppComponent {
         {
           text: `Rifiuta`,
           handler: () => {
-            this.http.get(this.urlRifiuta + this.uid.IMEI + '/' + additionalData.req_pk + '/',
+            this.http.get(this.urlRifiuta + this.uid.IMEI + '/' + additionalData.req_pk + '/' + additionalData.richiesta_from + '/',
                 {observe: 'response'}).subscribe((response) =>
                     alert(response.status.toString()),
                 error => (console.log(error.toString()))
